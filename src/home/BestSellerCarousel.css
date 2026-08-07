@@ -1,0 +1,437 @@
+/* Best Seller Carousel Styles */
+.best-seller-section {
+  padding: 80px 0;
+  background: #ffffff;
+  width: 100%;
+}
+
+.best-seller-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+.best-seller-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.best-seller-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  margin: 0 0 10px 0;
+  position: relative;
+  display: inline-block;
+}
+
+.best-seller-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: #1a1a1a;
+}
+
+.best-seller-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 18px 0 0 0;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+/* Carousel Wrapper */
+.carousel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 10px 0;
+}
+
+/* Viewport clips the sliding track */
+.carousel-viewport {
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Track holds ALL items in a row and slides via transform */
+.carousel-track {
+  display: flex;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Each item's width is set inline in exact pixels (measured from the
+   viewport) so the whole catalog lives on one continuous strip and
+   every click moves exactly one full card — no partial/half card. */
+.carousel-item {
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* Spacing lives on an inner wrapper (not on .carousel-item itself),
+   so it doesn't get added on top of the measured pixel width and
+   throw the slide math off. */
+.carousel-item-inner {
+  height: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+/* Product Card */
+.product-card {
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.product-link {
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-image-wrapper {
+  position: relative;
+  padding-top: 100%;
+  background: #f8f8f8;
+  overflow: hidden;
+}
+
+.product-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+.best-seller-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #1a1a1a;
+  color: #ffffff;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.product-info {
+  padding: 16px 16px 12px;
+  flex: 1;
+}
+
+.product-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+  letter-spacing: 0.3px;
+}
+
+.product-brand {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 8px 0;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.product-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+  width: 100%;
+  padding: 12px 20px;
+  background: #1a1a1a;
+  color: #ffffff;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: auto;
+}
+
+.add-to-cart-btn:hover {
+  background: #333333;
+}
+
+.add-to-cart-btn:active {
+  transform: scale(0.98);
+}
+
+/* Navigation Arrows */
+.carousel-arrow {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  color: #1a1a1a;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+}
+
+.carousel-arrow:hover:not(:disabled) {
+  background: #1a1a1a;
+  color: #ffffff;
+  border-color: #1a1a1a;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+.carousel-arrow:disabled,
+.carousel-arrow.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.carousel-arrow:disabled:hover {
+  background: #ffffff;
+  color: #1a1a1a;
+  transform: none;
+}
+
+/* Pagination Dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d0d0d0;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.dot.active {
+  background: #1a1a1a;
+  width: 30px;
+  border-radius: 5px;
+}
+
+.dot:hover:not(.active) {
+  background: #a0a0a0;
+}
+
+/* View All Button */
+.view-all-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.view-all-btn {
+  padding: 14px 48px;
+  background: transparent;
+  color: #1a1a1a;
+  border: 2px solid #1a1a1a;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.view-all-btn:hover {
+  background: #1a1a1a;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================ */
+/* RESPONSIVE DESIGN */
+/* ============================================ */
+
+/* Tablet - 2 items */
+@media screen and (max-width: 1024px) {
+  .best-seller-section {
+    padding: 60px 0;
+  }
+
+  .best-seller-title {
+    font-size: 28px;
+  }
+
+  .carousel-arrow {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+  }
+}
+
+/* Mobile - 1 item */
+@media screen and (max-width: 768px) {
+  .best-seller-section {
+    padding: 40px 0;
+  }
+
+  .best-seller-container {
+    padding: 0 15px;
+  }
+
+  .best-seller-header {
+    margin-bottom: 30px;
+  }
+
+  .best-seller-title {
+    font-size: 22px;
+    letter-spacing: 3px;
+  }
+
+  .best-seller-title::after {
+    width: 40px;
+    bottom: -6px;
+  }
+
+  .best-seller-subtitle {
+    font-size: 14px;
+    margin-top: 14px;
+  }
+
+  /* Arrows stay visible on mobile now so users can still page through
+     the full catalog one item at a time; remove this rule if you'd
+     rather rely on swipe alone. */
+  .carousel-arrow {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+  }
+
+  .product-name {
+    font-size: 16px;
+  }
+
+  .product-price {
+    font-size: 16px;
+  }
+
+  .product-info {
+    padding: 12px 12px 10px;
+  }
+
+  .add-to-cart-btn {
+    font-size: 13px;
+    padding: 10px 16px;
+  }
+
+  .view-all-btn {
+    padding: 12px 32px;
+    font-size: 13px;
+  }
+
+  .carousel-dots {
+    margin-top: 20px;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dot.active {
+    width: 24px;
+  }
+}
+
+/* Small Mobile */
+@media screen and (max-width: 480px) {
+  .best-seller-section {
+    padding: 30px 0;
+  }
+
+  .best-seller-title {
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  .best-seller-subtitle {
+    font-size: 12px;
+  }
+
+  .product-name {
+    font-size: 14px;
+  }
+
+  .product-brand {
+    font-size: 12px;
+  }
+
+  .product-price {
+    font-size: 14px;
+  }
+
+  .add-to-cart-btn {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  .view-all-btn {
+    padding: 10px 24px;
+    font-size: 12px;
+  }
+
+  .best-seller-badge {
+    font-size: 9px;
+    padding: 3px 8px;
+    top: 8px;
+    left: 8px;
+  }
+}

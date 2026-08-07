@@ -1,0 +1,290 @@
+.track-order-page {
+  min-height: 100vh;
+  padding: 120px 20px 60px;
+  background: #f8f4f0;
+}
+
+.track-order-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.track-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.track-header h1 {
+  font-size: 2.5rem;
+  color: #2d1b12;
+  margin-bottom: 10px;
+}
+
+.track-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.track-form {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.track-input-group {
+  display: flex;
+  gap: 12px;
+}
+
+.track-input {
+  flex: 1;
+  padding: 14px 18px;
+  border: 2px solid #e0d6ce;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.track-input:focus {
+  border-color: #8b5e3c;
+  outline: none;
+}
+
+.track-btn {
+  padding: 14px 30px;
+  background: #2d1b12;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s;
+  white-space: nowrap;
+}
+
+.track-btn:hover:not(:disabled) {
+  background: #4a2d1e;
+}
+
+.track-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.track-error {
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: #f8d7da;
+  color: #721c24;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.track-result {
+  margin-top: 30px;
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+
+.order-header {
+  border-bottom: 2px solid #f0e8e0;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.order-id-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.order-id-status h2 {
+  font-size: 1.2rem;
+  color: #2d1b12;
+  word-break: break-all;
+}
+
+.order-status-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.order-date {
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+/* Status Timeline */
+.status-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 25px 0;
+  padding: 0 20px;
+}
+
+.timeline-step {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.timeline-step:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid #e0d6ce;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+  color: #e0d6ce;
+}
+
+.timeline-dot.completed {
+  border-color: #27ae60;
+  background: #27ae60;
+  color: white;
+}
+
+.timeline-dot.active {
+  border-color: #f39c12;
+  background: #f39c12;
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.timeline-line {
+  position: absolute;
+  left: 15px;
+  top: 32px;
+  bottom: 0;
+  width: 2px;
+  background: #e0d6ce;
+}
+
+.timeline-step:last-child .timeline-line {
+  display: none;
+}
+
+.timeline-content {
+  margin-left: 16px;
+  padding-top: 4px;
+}
+
+.step-name {
+  font-weight: 600;
+  color: #2d1b12;
+  display: block;
+}
+
+.step-status {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* Order Summary */
+.order-summary-section,
+.shipping-section,
+.payment-section {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #f0e8e0;
+}
+
+.order-summary-section h3,
+.shipping-section h3,
+.payment-section h3 {
+  font-size: 1.1rem;
+  color: #2d1b12;
+  margin-bottom: 12px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f0e8e0;
+  font-size: 0.95rem;
+}
+
+.order-totals {
+  margin-top: 12px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  color: #555;
+}
+
+.total-row.grand-total {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #2d1b12;
+  padding-top: 10px;
+  border-top: 2px solid #f0e8e0;
+  margin-top: 5px;
+}
+
+.shipping-section p {
+  color: #555;
+  margin: 4px 0;
+  line-height: 1.6;
+}
+
+.payment-section p {
+  color: #555;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .track-input-group {
+    flex-direction: column;
+  }
+  
+  .track-btn {
+    justify-content: center;
+  }
+  
+  .order-id-status {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .status-timeline {
+    padding: 0 10px;
+  }
+}

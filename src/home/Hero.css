@@ -1,0 +1,467 @@
+/* ============================================
+   HERO SECTION - LUXURY DESIGN
+   ============================================ */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  height: 100vh;
+  max-height: 900px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(165deg, #f9f4ef 0%, #f0e8de 40%, #e8ddd0 100%);
+  overflow: hidden;
+  padding: 0 5%;
+}
+
+/* ===== PARTICLES REMOVED ===== */
+/* .hero-particles { ... } */
+
+/* ===== BACKGROUND GLOW ===== */
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  width: 60%;
+  height: 80%;
+  transform: translateY(-50%);
+  background: radial-gradient(ellipse, rgba(212, 175, 55, 0.12) 0%, rgba(212, 175, 55, 0.04) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== CONTAINER ===== */
+.hero-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  height: 100%;
+}
+
+/* ============================================
+   LEFT CONTENT
+   ============================================ */
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 600px;
+}
+
+/* ===== BADGE REMOVED ===== */
+/* .hero-badge { ... } */
+/* .badge-icon { ... } */
+
+/* --- Title --- */
+.hero-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.8rem, 5.5vw, 4.8rem);
+  font-weight: 700;
+  line-height: 1.05;
+  color: #2d1b12;
+  letter-spacing: -0.02em;
+}
+
+.title-line {
+  display: block;
+}
+
+.title-line.highlight {
+  color: #8b7355;
+}
+
+/* --- Description --- */
+.hero-description {
+  font-size: clamp(0.95rem, 1.1vw, 1.15rem);
+  line-height: 1.7;
+  color: #6b5a4b;
+  max-width: 460px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  margin: 4px 0 8px;
+}
+
+/* --- Buttons --- */
+.hero-buttons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 36px;
+  background: #2d1b12;
+  color: #f5f0eb;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: all 0.35s ease;
+  letter-spacing: 0.5px;
+  border: 1px solid transparent;
+}
+
+.btn-primary:hover {
+  background: #4a2d1e;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(45, 27, 18, 0.2);
+}
+
+.btn-primary .btn-icon {
+  font-size: 0.9rem;
+  transition: transform 0.3s ease;
+}
+
+.btn-primary:hover .btn-icon {
+  transform: translateX(4px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 16px 32px;
+  background: transparent;
+  color: #2d1b12;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 50px;
+  border: 1.5px solid rgba(45, 27, 18, 0.2);
+  transition: all 0.35s ease;
+  letter-spacing: 0.3px;
+}
+
+.btn-secondary:hover {
+  background: rgba(45, 27, 18, 0.05);
+  border-color: #2d1b12;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   RIGHT CONTENT - PERFUME BOTTLES
+   ============================================ */
+
+.hero-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 100%;
+  min-height: 400px;
+}
+
+.bottles-container {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Individual Bottles --- */
+.bottle {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bottle img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 50px rgba(45, 27, 18, 0.10));
+  transition: transform 0.6s ease;
+}
+
+.bottle:hover img {
+  transform: scale(1.03);
+}
+
+/* Main Bottle */
+.bottle-main {
+  position: relative;
+  width: 65%;
+  height: 65%;
+  z-index: 5;
+  top: 0;
+  left: 0;
+}
+
+.bottle-main img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 30px 60px rgba(45, 27, 18, 0.15));
+  animation: floatBottle 6s ease-in-out infinite;
+}
+
+@keyframes floatBottle {
+  0%, 100% { transform: translateY(0px) rotate(-1deg); }
+  50% { transform: translateY(-15px) rotate(1deg); }
+}
+
+.bottle-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 130%;
+  height: 130%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 50%;
+}
+
+.bottle-float-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Background Bottles */
+.bottle-back-1 {
+  width: 32%;
+  height: 32%;
+  z-index: 2;
+  bottom: 5%;
+  right: -5%;
+  opacity: 0.5;
+  animation: floatBack 8s ease-in-out infinite;
+}
+
+.bottle-back-1 img {
+  filter: drop-shadow(0 10px 30px rgba(45, 27, 18, 0.06)) blur(0.5px);
+}
+
+.bottle-back-2 {
+  width: 28%;
+  height: 28%;
+  z-index: 1;
+  top: 10%;
+  left: -5%;
+  opacity: 0.4;
+  animation: floatBack 10s ease-in-out infinite reverse;
+}
+
+.bottle-back-2 img {
+  filter: drop-shadow(0 10px 30px rgba(45, 27, 18, 0.06)) blur(0.5px);
+}
+
+@keyframes floatBack {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ===== SPARKLES KEPT ===== */
+.sparkle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.7) 0%, rgba(212, 175, 55, 0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.sparkle-1 {
+  top: 12%;
+  right: 0%;
+  width: 20px;
+  height: 20px;
+}
+
+.sparkle-2 {
+  bottom: 20%;
+  left: 5%;
+  width: 14px;
+  height: 14px;
+}
+
+.sparkle-3 {
+  top: 45%;
+  right: -10%;
+  width: 10px;
+  height: 10px;
+}
+
+/* ============================================
+   SCROLL INDICATOR
+   ============================================ */
+
+.hero-scroll {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 5;
+  opacity: 0.5;
+}
+
+.scroll-text {
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #8b7355;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 35px;
+  background: linear-gradient(to bottom, #8b7355, transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(0.6); opacity: 0.4; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1200px) {
+  .hero {
+    padding: 0 4%;
+  }
+  
+  .hero-container {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 992px) {
+  .hero {
+    min-height: auto;
+    height: auto;
+    padding: 80px 4% 60px;
+  }
+
+  .hero-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+    height: auto;
+  }
+
+  .hero-content {
+    max-width: 100%;
+    align-items: center;
+    order: 1;
+  }
+
+  .hero-description {
+    max-width: 100%;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-visual {
+    min-height: 350px;
+    order: 2;
+  }
+
+  .bottles-container {
+    max-width: 400px;
+  }
+
+  .hero-glow {
+    right: 50%;
+    transform: translate(50%, -50%);
+    width: 80%;
+    height: 60%;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 60px 5% 40px;
+  }
+
+  .hero-content {
+    gap: 16px;
+  }
+
+  .hero-title {
+    font-size: clamp(2rem, 8vw, 2.8rem);
+  }
+
+  .hero-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 14px 28px;
+    font-size: 0.85rem;
+  }
+
+  .hero-visual {
+    min-height: 280px;
+  }
+
+  .bottles-container {
+    max-width: 280px;
+  }
+
+  .bottle-back-1 {
+    width: 28%;
+    height: 28%;
+  }
+
+  .bottle-back-2 {
+    width: 24%;
+    height: 24%;
+  }
+
+  .hero-scroll {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero-visual {
+    min-height: 220px;
+  }
+
+  .bottles-container {
+    max-width: 220px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+}

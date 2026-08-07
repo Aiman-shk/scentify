@@ -1,0 +1,158 @@
+import Order from '../models/Order.js';
+import { sendOrderConfirmation, sendAdminNotification } from '../config/email.js';
+
+// @desc    Create a new order
+// @route   POST /api/orders
+// @access  Public
+export const createOrder = async (req, res) => {
+  try {
+    console.log('📥 Received order data:', req.body);
+
+    const {
+      orderItems,
+      shippingAddress,
+      paymentMethod,
+      itemsPrice,
+      shippingPrice,
+      totalPrice,
+    } = req.body;
+
+    if (!orderItems || orderItems.length === 0) {
+      return res.status(400).json({ message: 'No order items' });
+    }
+
+    // Validate each order item has a product ID
+    for (let i = 0; i < orderItems.length; i++) {
+      if (!orderItems[i].product) {
+        console.log(`❌ Order item ${i} is missing product ID:`, orderItems[i]);
+        return res.status(400).json({
+          message: `Order item ${i} is missing product ID`,
+          item: orderItems[i]
+        });
+      }
+    }
+
+    const order = new Order({
+      orderItems,
+      shippingAddress,
+      paymentMethod: paymentMethod || 'Cash on Delivery',
+      itemsPrice,
+      shippingPrice,
+      totalPrice,
+      status: 'Pending', // ← ADD THIS
+    });
+
+    const createdOrder = await order.save();
+    console.log('✅ Order created:', createdOrder._id);
+
+    // ========== SEND EMAILS ==========
+    console.log('🔥🔥🔥 EMAIL CODE IS RUNNING! 🔥🔥🔥');
+    console.log('📧 Attempting to send emails...');
+    
+    try {
+      // Send confirmation email to customer
+      const customerEmail = shippingAddress.email;
+      if (customerEmail) {
+        console.log(`📧 Sending confirmation to: ${customerEmail}`);
+        await sendOrderConfirmation(createdOrder, customerEmail);
+        console.log(`✅ Confirmation email sent to ${customerEmail}`);
+      }
+
+      // Send notification to admin
+      console.log(`📧 Sending admin notification...`);
+      await sendAdminNotification(createdOrder);
+      console.log(`✅ Admin notification sent`);
+    } catch (emailError) {
+      console.error('⚠️ Email error (order still saved):', emailError.message);
+    }
+    // ==================================
+
+    res.status(201).json(createdOrder);
+  } catch (error) {
+    console.error('❌ Error creating order:', error);
+    res.status(500).json({
+      message: error.message,
+      stack: process.env.NODE_ENV === 'production' ? null : error.stack
+    });
+  }
+};
+
+// @desc    Get order by ID
+// @route   GET /api/orders/:id
+// @access  Public
+export const getOrderById = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      res.json(order);
+    } else {
+      res.status(404).json({ message: 'Order not found' });
+    }
+  } catch (error) {
+    console.error('❌ Error fetching order:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Get all orders
+// @route   GET /api/orders
+// @access  Public
+export const getOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({}).sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (error) {
+    console.error('❌ Error fetching orders:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Get order by order ID (for tracking)
+// @route   GET /api/orders/track/:id
+// @access  Public
+export const trackOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      res.json(order);
+    } else {
+      res.status(404).json({ message: 'Order not found' });
+    }
+  } catch (error) {
+    console.error('❌ Error tracking order:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Update order status
+// @route   PUT /api/orders/:id/status
+// @access  Public
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    const validStatuses = ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'];
+    
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ message: 'Invalid status' });
+    }
+
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    order.status = status;
+    
+    if (status === 'Delivered') {
+      order.isDelivered = true;
+      order.deliveredAt = new Date();
+    }
+
+    const updatedOrder = await order.save();
+    console.log(`✅ Order ${order._id} status updated to: ${status}`);
+    res.json(updatedOrder);
+  } catch (error) {
+    console.error('❌ Error updating order status:', error);
+    res.status(500).json({ message: error.message });
+  }
+};

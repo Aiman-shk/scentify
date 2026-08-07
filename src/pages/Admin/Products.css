@@ -1,0 +1,159 @@
+.products-admin h2 {
+  color: #2d1b12;
+  margin-bottom: 25px;
+}
+
+.products-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.add-product-btn {
+  padding: 10px 20px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.add-product-btn:hover {
+  background: #219a52;
+}
+
+.products-table-container {
+  overflow-x: auto;
+}
+
+.admin-products-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-products-table th {
+  text-align: left;
+  padding: 12px 10px;
+  background: #f8f4f0;
+  color: #555;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.admin-products-table td {
+  padding: 10px;
+  border-bottom: 1px solid #f0e8e0;
+  color: #444;
+  vertical-align: middle;
+}
+
+.admin-products-table tr:hover {
+  background: #faf8f6;
+}
+
+.product-thumb {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.stock-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.stock-badge.in-stock {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.stock-badge.out-of-stock {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.action-btn {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 0 3px;
+}
+
+.edit-btn {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.edit-btn:hover {
+  background: #bfdbfe;
+}
+
+.delete-btn {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.delete-btn:hover {
+  background: #fecaca;
+}
+
+.product-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.product-modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 90%;
+}
+
+.product-modal-content h3 {
+  color: #2d1b12;
+  margin-top: 0;
+}
+
+.product-modal-content p {
+  color: #666;
+  margin: 15px 0;
+}
+
+.close-modal-btn {
+  margin-top: 15px;
+  padding: 10px 25px;
+  background: #2d1b12;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.admin-loading {
+  text-align: center;
+  padding: 40px;
+  color: #888;
+}

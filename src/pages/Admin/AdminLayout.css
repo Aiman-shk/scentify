@@ -1,0 +1,150 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  padding-top: 70px;
+  background: #f5f0eb;
+}
+
+.admin-sidebar {
+  width: 250px;
+  background: #2d1b12;
+  color: white;
+  padding: 20px 0;
+  position: fixed;
+  top: 70px;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-logo {
+  padding: 0 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.admin-logo h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #f5f0eb;
+}
+
+.admin-logo p {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: #b8a89a;
+}
+
+.admin-nav {
+  flex: 1;
+  padding: 20px 0;
+}
+
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  color: #b8a89a;
+  text-decoration: none;
+  transition: all 0.3s;
+  font-size: 0.95rem;
+}
+
+.admin-nav-link:hover {
+  background: rgba(255,255,255,0.05);
+  color: white;
+}
+
+.admin-nav-link.active {
+  background: rgba(255,255,255,0.1);
+  color: #f5f0eb;
+  border-right: 3px solid #f5f0eb;
+}
+
+.admin-logout {
+  padding: 20px 24px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  color: #b8a89a;
+  border: 1px solid #b8a89a;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.logout-btn:hover {
+  background: #e74c3c;
+  color: white;
+  border-color: #e74c3c;
+}
+
+.admin-main {
+  flex: 1;
+  margin-left: 250px;
+  padding: 20px 30px 40px;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.admin-header h1 {
+  font-size: 1.8rem;
+  color: #2d1b12;
+}
+
+.admin-user {
+  background: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  font-weight: 600;
+  color: #2d1b12;
+}
+
+.admin-content {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    width: 60px;
+  }
+  
+  .admin-sidebar .admin-logo h2,
+  .admin-sidebar .admin-logo p,
+  .admin-sidebar .admin-nav-link span,
+  .admin-sidebar .logout-btn span {
+    display: none;
+  }
+  
+  .admin-sidebar .admin-nav-link {
+    justify-content: center;
+    padding: 12px;
+  }
+  
+  .admin-main {
+    margin-left: 60px;
+    padding: 15px;
+  }
+  
+  .admin-header h1 {
+    font-size: 1.3rem;
+  }
+}
