@@ -4,6 +4,7 @@ import {
   FaStar, FaRegStar, FaStarHalfAlt, FaUser, FaCheckCircle, 
   FaChevronDown, FaTimes, FaPen 
 } from 'react-icons/fa';
+import API_URL from '../../api/config'; // ← ADD THIS
 import './Reviews.css';
 
 const Reviews = ({ productId, productName }) => {
@@ -26,10 +27,12 @@ const Reviews = ({ productId, productName }) => {
     fetchReviews();
   }, [productId]);
 
+  // ===== FETCH REVIEWS =====
   const fetchReviews = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/api/reviews/product/${productId}`);
+      // ===== CHANGED: Use API_URL =====
+      const response = await fetch(`${API_URL}/reviews/product/${productId}`);
       if (response.ok) {
         const data = await response.json();
         setReviews(data);
@@ -38,6 +41,65 @@ const Reviews = ({ productId, productName }) => {
       console.error('Error fetching reviews:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // ===== SUBMIT REVIEW =====
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setSubmitError('');
+    setSubmitSuccess(false);
+
+    if (!formData.userName.trim()) {
+      setSubmitError('Please enter your name');
+      setSubmitting(false);
+      return;
+    }
+
+    if (formData.rating === 0) {
+      setSubmitError('Please select a rating');
+      setSubmitting(false);
+      return;
+    }
+
+    if (!formData.comment.trim()) {
+      setSubmitError('Please write a review');
+      setSubmitting(false);
+      return;
+    }
+
+    try {
+      // ===== CHANGED: Use API_URL =====
+      const response = await fetch(`${API_URL}/reviews`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productId,
+          userName: formData.userName.trim(),
+          rating: formData.rating,
+          comment: formData.comment.trim(),
+          productName: productName || '',
+        }),
+      });
+
+      if (response.ok) {
+        const newReview = await response.json();
+        setReviews([newReview, ...reviews]);
+        setSubmitSuccess(true);
+        setFormData({ userName: '', rating: 0, comment: '' });
+        setTimeout(() => {
+          setShowReviewForm(false);
+          setSubmitSuccess(false);
+        }, 2000);
+      } else {
+        const data = await response.json();
+        setSubmitError(data.message || 'Failed to submit review');
+      }
+    } catch (error) {
+      setSubmitError('Network error. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -83,63 +145,6 @@ const Reviews = ({ productId, productName }) => {
 
   const getInitials = (name) => {
     return name.charAt(0).toUpperCase();
-  };
-
-  const handleSubmitReview = async (e) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setSubmitError('');
-    setSubmitSuccess(false);
-
-    if (!formData.userName.trim()) {
-      setSubmitError('Please enter your name');
-      setSubmitting(false);
-      return;
-    }
-
-    if (formData.rating === 0) {
-      setSubmitError('Please select a rating');
-      setSubmitting(false);
-      return;
-    }
-
-    if (!formData.comment.trim()) {
-      setSubmitError('Please write a review');
-      setSubmitting(false);
-      return;
-    }
-
-    try {
-      const response = await fetch('http://localhost:5000/api/reviews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          productId,
-          userName: formData.userName.trim(),
-          rating: formData.rating,
-          comment: formData.comment.trim(),
-          productName: productName || '',
-        }),
-      });
-
-      if (response.ok) {
-        const newReview = await response.json();
-        setReviews([newReview, ...reviews]);
-        setSubmitSuccess(true);
-        setFormData({ userName: '', rating: 0, comment: '' });
-        setTimeout(() => {
-          setShowReviewForm(false);
-          setSubmitSuccess(false);
-        }, 2000);
-      } else {
-        const data = await response.json();
-        setSubmitError(data.message || 'Failed to submit review');
-      }
-    } catch (error) {
-      setSubmitError('Network error. Please try again.');
-    } finally {
-      setSubmitting(false);
-    }
   };
 
   const sortedReviews = [...reviews].sort((a, b) => {
