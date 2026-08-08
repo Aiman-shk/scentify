@@ -7,7 +7,7 @@ dotenv.config();
 console.log('📧 EMAIL_USER:', process.env.EMAIL_USER);
 console.log('📧 EMAIL_PASS:', process.env.EMAIL_PASS ? '✅ Set' : '❌ Missing');
 
-// ===== CREATE TRANSPORTER WITH SECURE OPTIONS =====
+// ===== CREATE TRANSPORTER WITH TIMEOUT =====
 let transporter = null;
 
 try {
@@ -17,20 +17,22 @@ try {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
     },
-    // ===== SECURITY OPTIONS =====
-    secure: true, // Use TLS
-    tls: {
-      rejectUnauthorized: process.env.NODE_ENV === 'production', // Only reject in production
-      minVersion: 'TLSv1.2', // Use modern TLS
-    },
-    pool: true, // Use pooled connections
-    maxConnections: 5, // Max connections
-    maxMessages: 100, // Max messages per connection
-    rateLimit: true, // Enable rate limiting
+    // ===== TIMEOUT OPTIONS =====
+    connectionTimeout: 5000, // 5 seconds
+    greetingTimeout: 5000,
+    socketTimeout: 10000,
     // ============================
+    secure: true,
+    tls: {
+      rejectUnauthorized: process.env.NODE_ENV === 'production',
+      minVersion: 'TLSv1.2',
+    },
+    pool: true,
+    maxConnections: 3,
+    maxMessages: 50,
   });
 
-  // Verify transporter
+  // Verify transporter (non-blocking)
   transporter.verify((error, success) => {
     if (error) {
       console.error('❌ Transporter verification failed:', error.message);
@@ -42,12 +44,29 @@ try {
   console.error('❌ Failed to create email transporter:', error.message);
 }
 
+// ===== HELPER: Send email with timeout =====
+const sendEmailWithTimeout = (mailOptions, timeoutMs = 8000) => {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      reject(new Error('Email send timeout'));
+    }, timeoutMs);
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      clearTimeout(timeout);
+      if (error) {
+        reject(error);
+      } else {
+        resolve(info);
+      }
+    });
+  });
+};
+
 // ===== HELPER: Sanitize email input =====
 const sanitizeEmail = (text) => {
   if (!text) return '';
-  // Remove potentially harmful characters
   return text
-    .replace(/[<>{}|\\^~\[\]]/g, '') // Remove special characters
+    .replace(/[<>{}|\\^~\[\]]/g, '')
     .trim();
 };
 
@@ -62,16 +81,14 @@ const getSafeOrderIdShort = (order) => {
   return id.slice(-6) || 'N/A';
 };
 
-// ===== SEND ORDER CONFIRMATION EMAIL =====
+// ===== SEND ORDER CONFIRMATION EMAIL (NON-BLOCKING) =====
 export const sendOrderConfirmation = async (order, userEmail) => {
   try {
-    // ===== VALIDATE INPUTS =====
     if (!order || !userEmail) {
       console.error('❌ Missing order or email');
       return false;
     }
 
-    // Sanitize email
     const sanitizedEmail = sanitizeEmail(userEmail);
     if (!sanitizedEmail || !sanitizedEmail.includes('@')) {
       console.error('❌ Invalid email address');
@@ -80,7 +97,6 @@ export const sendOrderConfirmation = async (order, userEmail) => {
 
     console.log(`📧 Preparing email for: ${sanitizedEmail}`);
 
-    // ===== SAFE ID CONVERSION =====
     const orderId = getSafeOrderId(order);
     const orderIdShort = getSafeOrderIdShort(order);
 
@@ -93,12 +109,11 @@ export const sendOrderConfirmation = async (order, userEmail) => {
         <td style="padding: 8px 10px; border-bottom: 1px solid #eee; text-align: right;">Rs. ${(Number(item.price) * Number(item.quantity)).toFixed(0) || 0}</td>
       </tr>
     `).join('') : '';
-    // ==============================
 
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
     const trackOrderLink = `${frontendUrl}/track-order`;
 
-    // ===== PLAIN TEXT VERSION (CRITICAL FOR DELIVERY) =====
+    // ===== PLAIN TEXT VERSION =====
     const plainText = `
 Scentify Order Confirmation
 
@@ -126,7 +141,6 @@ Questions? Reply to this email or contact us at ${process.env.EMAIL_USER}
 Thank you,
 Scentify
     `;
-    // ===================================================
 
     const mailOptions = {
       from: `"Scentify" <${process.env.EMAIL_USER}>`,
@@ -146,15 +160,12 @@ Scentify
             <tr>
               <td align="center">
                 <table cellpadding="0" cellspacing="0" border="0" width="600" style="background-color: #ffffff; border-radius: 16px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
-                  <!-- Header -->
                   <tr>
                     <td align="center" style="padding-bottom: 20px;">
                       <h1 style="color: #2d1b12; margin: 0; font-size: 28px;">Scentify</h1>
                       <p style="color: #8b7355; margin: 5px 0 0; font-size: 16px;">Thank You for Your Order</p>
                     </td>
                   </tr>
-                  
-                  <!-- Order Details -->
                   <tr>
                     <td style="background-color: #fdf8f3; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px;">
                       <p style="margin: 4px 0; color: #555; font-size: 14px;"><strong>Order ID:</strong> ${orderId}</p>
@@ -162,8 +173,6 @@ Scentify
                       <p style="margin: 4px 0; color: #555; font-size: 14px;"><strong>Payment:</strong> ${order.paymentMethod || 'N/A'}</p>
                     </td>
                   </tr>
-                  
-                  <!-- Items -->
                   <tr>
                     <td style="padding: 16px 0;">
                       <h3 style="color: #2d1b12; margin: 0 0 12px; font-size: 18px;">Items</h3>
@@ -196,8 +205,6 @@ Scentify
                       </table>
                     </td>
                   </tr>
-                  
-                  <!-- Shipping -->
                   <tr>
                     <td style="background-color: #fdf8f3; border-radius: 12px; padding: 16px 20px;">
                       <h3 style="color: #2d1b12; margin: 0 0 8px; font-size: 16px;">Shipping Address</h3>
@@ -207,15 +214,11 @@ Scentify
                       <p style="margin: 4px 0; color: #555; font-size: 14px;">${order.shippingAddress ? sanitizeEmail(order.shippingAddress.phone) : ''}</p>
                     </td>
                   </tr>
-                  
-                  <!-- Track Button -->
                   <tr>
                     <td align="center" style="padding: 24px 0 10px;">
-                      <a href="${trackOrderLink}" style="display: inline-block; background-color: #2d1b12; color: #ffffff; padding: 14px 40px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 16px; font-family: Arial, sans-serif;">Track Your Order</a>
+                      <a href="${trackOrderLink}" style="display: inline-block; background-color: #2d1b12; color: #ffffff; padding: 14px 40px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 16px;">Track Your Order</a>
                     </td>
                   </tr>
-                  
-                  <!-- Footer -->
                   <tr>
                     <td style="text-align: center; padding: 20px 0 0; color: #a89a8e; font-size: 12px; border-top: 1px solid #f0e8e0;">
                       <p style="margin: 4px 0;">You received this email because you placed an order with Scentify.</p>
@@ -231,8 +234,8 @@ Scentify
       `,
     };
 
-    // ===== SEND WITH ERROR HANDLING =====
-    const info = await transporter.sendMail(mailOptions);
+    // ===== SEND WITH TIMEOUT (8 seconds max) =====
+    const info = await sendEmailWithTimeout(mailOptions, 8000);
     console.log(`✅ Email sent to ${sanitizedEmail}`);
     console.log(`📨 Message ID: ${info.messageId}`);
     return true;
@@ -243,7 +246,7 @@ Scentify
   }
 };
 
-// ===== SEND ADMIN NOTIFICATION EMAIL =====
+// ===== SEND ADMIN NOTIFICATION EMAIL (NON-BLOCKING) =====
 export const sendAdminNotification = async (order) => {
   try {
     if (!order) {
@@ -279,7 +282,8 @@ export const sendAdminNotification = async (order) => {
       `,
     };
 
-    await transporter.sendMail(mailOptions);
+    // ===== SEND WITH TIMEOUT (5 seconds) =====
+    const info = await sendEmailWithTimeout(mailOptions, 5000);
     console.log(`✅ Admin notification sent to ${adminEmail}`);
     return true;
 
