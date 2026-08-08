@@ -39,35 +39,41 @@ export const createOrder = async (req, res) => {
       itemsPrice,
       shippingPrice,
       totalPrice,
-      status: 'Pending', // ← ADD THIS
+      status: 'Pending',
     });
 
     const createdOrder = await order.save();
     console.log('✅ Order created:', createdOrder._id);
 
-    // ========== SEND EMAILS ==========
+    // ========== SEND EMAILS IN BACKGROUND (NON-BLOCKING) ==========
     console.log('🔥🔥🔥 EMAIL CODE IS RUNNING! 🔥🔥🔥');
     console.log('📧 Attempting to send emails...');
     
-    try {
-      // Send confirmation email to customer
-      const customerEmail = shippingAddress.email;
-      if (customerEmail) {
-        console.log(`📧 Sending confirmation to: ${customerEmail}`);
-        await sendOrderConfirmation(createdOrder, customerEmail);
-        console.log(`✅ Confirmation email sent to ${customerEmail}`);
-      }
-
-      // Send notification to admin
-      console.log(`📧 Sending admin notification...`);
-      await sendAdminNotification(createdOrder);
-      console.log(`✅ Admin notification sent`);
-    } catch (emailError) {
-      console.error('⚠️ Email error (order still saved):', emailError.message);
+    // ===== REMOVED 'await' - EMAILS RUN IN BACKGROUND =====
+    // Send confirmation email to customer (don't wait)
+    const customerEmail = shippingAddress.email;
+    if (customerEmail) {
+      console.log(`📧 Sending confirmation to: ${customerEmail}`);
+      // NO AWAIT - runs in background
+      sendOrderConfirmation(createdOrder, customerEmail)
+        .then(() => console.log(`✅ Confirmation email sent to ${customerEmail}`))
+        .catch(err => console.error('⚠️ Confirmation email error:', err.message));
     }
-    // ==================================
 
-    res.status(201).json(createdOrder);
+    // Send notification to admin (don't wait)
+    console.log(`📧 Sending admin notification...`);
+    sendAdminNotification(createdOrder)
+      .then(() => console.log(`✅ Admin notification sent`))
+      .catch(err => console.error('⚠️ Admin email error:', err.message));
+    // ==========================================================
+
+    // ===== INSTANT RESPONSE (NO WAITING FOR EMAILS) =====
+    res.status(201).json({
+      success: true,
+      order: createdOrder,
+      message: 'Order placed successfully! You will receive a confirmation email shortly.',
+    });
+
   } catch (error) {
     console.error('❌ Error creating order:', error);
     res.status(500).json({
@@ -153,6 +159,23 @@ export const updateOrderStatus = async (req, res) => {
     res.json(updatedOrder);
   } catch (error) {
     console.error('❌ Error updating order status:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Delete an order
+// @route   DELETE /api/orders/:id
+// @access  Public
+export const deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    await order.deleteOne();
+    res.json({ message: 'Order removed successfully' });
+  } catch (error) {
+    console.error('❌ Error deleting order:', error);
     res.status(500).json({ message: error.message });
   }
 };
