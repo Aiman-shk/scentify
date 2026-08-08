@@ -49,30 +49,29 @@ export const createOrder = async (req, res) => {
     console.log('🔥🔥🔥 EMAIL CODE IS RUNNING! 🔥🔥🔥');
     console.log('📧 Attempting to send emails...');
     
-    // ===== REMOVED 'await' - EMAILS RUN IN BACKGROUND =====
-    // Send confirmation email to customer (don't wait)
+    // Use setImmediate to send emails after response is sent
     const customerEmail = shippingAddress.email;
+    const orderId = createdOrder._id;
+    
     if (customerEmail) {
       console.log(`📧 Sending confirmation to: ${customerEmail}`);
-      // NO AWAIT - runs in background
-      sendOrderConfirmation(createdOrder, customerEmail)
-        .then(() => console.log(`✅ Confirmation email sent to ${customerEmail}`))
-        .catch(err => console.error('⚠️ Confirmation email error:', err.message));
+      
+      // Emails run in background - NO AWAIT
+      setImmediate(() => {
+        // Send confirmation email to customer
+        sendOrderConfirmation(createdOrder, customerEmail)
+          .then(() => console.log(`✅ Confirmation email sent to ${customerEmail}`))
+          .catch(err => console.error('⚠️ Confirmation email error:', err.message));
+        
+        // Send notification to admin
+        sendAdminNotification(createdOrder)
+          .then(() => console.log(`✅ Admin notification sent`))
+          .catch(err => console.error('⚠️ Admin email error:', err.message));
+      });
     }
 
-    // Send notification to admin (don't wait)
-    console.log(`📧 Sending admin notification...`);
-    sendAdminNotification(createdOrder)
-      .then(() => console.log(`✅ Admin notification sent`))
-      .catch(err => console.error('⚠️ Admin email error:', err.message));
-    // ==========================================================
-
     // ===== INSTANT RESPONSE (NO WAITING FOR EMAILS) =====
-    res.status(201).json({
-      success: true,
-      order: createdOrder,
-      message: 'Order placed successfully! You will receive a confirmation email shortly.',
-    });
+    res.status(201).json(createdOrder);
 
   } catch (error) {
     console.error('❌ Error creating order:', error);
