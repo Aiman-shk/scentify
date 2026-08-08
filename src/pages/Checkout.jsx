@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { pakistanCities } from '../data/cities';
 import { FaCopy, FaCheckCircle, FaMoneyBillWave, FaCreditCard } from 'react-icons/fa';
-import './Checkout.css';
 import API_URL from '../api/config';
+import './Checkout.css';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ const Checkout = () => {
   const [searchCity, setSearchCity] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [orderId, setOrderId] = useState(null); // ← ADD THIS
 
   const [formData, setFormData] = useState({
     fullName: '',
@@ -57,21 +58,16 @@ const Checkout = () => {
 
   // ===== VALIDATE PHONE NUMBER (11 digits) =====
   const validatePhone = (phone) => {
-    // Remove all non-digit characters
     const cleanPhone = phone.replace(/\D/g, '');
-    // Check if it's exactly 11 digits
     return cleanPhone.length === 11;
   };
 
   // ===== FORMAT PHONE NUMBER AS USER TYPES =====
   const handlePhoneChange = (e) => {
     const value = e.target.value;
-    // Remove all non-digit characters
     const cleanValue = value.replace(/\D/g, '');
     
-    // Limit to 11 digits
     if (cleanValue.length <= 11) {
-      // Format as: 03XX-XXXXXXX (optional)
       let formatted = cleanValue;
       if (cleanValue.length >= 5) {
         formatted = `${cleanValue.slice(0, 4)}-${cleanValue.slice(4)}`;
@@ -145,7 +141,7 @@ const Checkout = () => {
         email: formData.email,
         address: formData.address,
         city: formData.city,
-        phone: cleanPhone, // Store clean 11-digit phone number
+        phone: cleanPhone,
       },
       paymentMethod: formData.paymentMethod,
       itemsPrice: parseFloat(itemsPrice.toFixed(2)),
@@ -155,8 +151,7 @@ const Checkout = () => {
 
     console.log('📤 Sending order data:', orderData);
 
-  try {
-      // ===== CHANGED: Use API_URL instead of hardcoded URL =====
+    try {
       const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: {
@@ -165,29 +160,35 @@ const Checkout = () => {
         body: JSON.stringify(orderData),
       });
 
-
       if (response.ok) {
         const order = await response.json();
         console.log('✅ Order placed:', order._id);
+        
+        // ===== SAVE ORDER ID =====
+        setOrderId(order._id);
         setSuccess(true);
-        clearCart();
+        
+        // ===== CLEAR CART AFTER NAVIGATING =====
+        // Don't clear cart here - wait for navigation
         setTimeout(() => {
+          clearCart(); // ← Clear cart after navigation
           navigate(`/order-success/${order._id}`);
         }, 2000);
       } else {
         const data = await response.json();
         console.log('❌ Error response:', data);
         setError(data.message || 'Failed to place order');
+        setLoading(false);
       }
     } catch (err) {
       console.error('❌ Network error:', err);
       setError('Network error. Please try again.');
-    } finally {
       setLoading(false);
     }
   };
 
-  if (cartItems.length === 0 && !success) {
+  // ===== FIX: Show cart items even during loading =====
+  if (cartItems.length === 0 && !success && !loading) {
     return (
       <div className="checkout-empty">
         <h2>Your cart is empty</h2>
@@ -344,7 +345,7 @@ const Checkout = () => {
                     onChange={handlePhoneChange}
                     placeholder="03XX-XXXXXXX"
                     required
-                    maxLength="12" // 03XX-XXXXXXX = 12 chars with hyphen
+                    maxLength="12"
                   />
                   <small style={{ color: '#888', fontSize: '12px', display: 'block', marginTop: '4px' }}>
                     Format: 03XX-XXXXXXX (11 digits)
@@ -442,9 +443,7 @@ const Checkout = () => {
                             <FaCopy />
                           </button>
                         </div>
-                      
-
-                      <div className="bank-row">
+                        <div className="bank-row">
                           <span className="bank-label">RAAST ID:</span>
                           <span className="bank-value">03313936993</span>
                           <button 
@@ -455,7 +454,6 @@ const Checkout = () => {
                             <FaCopy />
                           </button>
                         </div>
-                    
                       </div>
                     </div>
                   </motion.div>
