@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import './Products.css';
-
+import API_URL from '../../api/config';
 const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,16 +13,20 @@ const Products = () => {
   }, []);
 
   const fetchProducts = async () => {
-    try {
-      const res = await fetch('http://localhost:5000/api/products');
-      const data = await res.json();
-      setProducts(data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      setLoading(false);
-    }
-  };
+      try {
+        // ===== CHANGED: Use API_URL instead of hardcoded URL =====
+        const res = await fetch(`${API_URL}/products`);
+        const data = await res.json();
+        
+        // Filter for men's products
+        const mensProducts = data.filter(p => p.gender === 'Men' || p.gender === 'Unisex');
+        setProducts(mensProducts);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setLoading(false);
+      }
+    };
 
   const deleteProduct = async (id) => {
     if (window.confirm('Are you sure you want to delete this product?')) {

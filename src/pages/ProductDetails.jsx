@@ -8,7 +8,7 @@ import {
 import { useCart } from '../context/CartContext';
 import Reviews from '../components/Reviews/Reviews';
 import './Products.css';
-
+import API_URL from '../api/config';
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -102,13 +102,14 @@ const ProductDetails = () => {
     };
     return imageMap[productName] || '/images/placeholder2.jpg';
   };
-  // ======================================
 
+  // ===== FETCH PRODUCT =====
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:5000/api/products/${id}`);
+        // ===== CHANGED: Use API_URL instead of hardcoded URL =====
+        const response = await fetch(`${API_URL}/products/${id}`);
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('Product not found');
@@ -128,7 +129,6 @@ const ProductDetails = () => {
         }, 3000);
       }
     };
-
     if (id) {
       fetchProduct();
     }

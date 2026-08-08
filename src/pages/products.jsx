@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import ProductCard from '../home/ProductCard';
 import { FaSlidersH, FaTimes } from 'react-icons/fa';
 import './Products.css';
+import API_URL from '../api/config';
 
 const Products = () => {
   const location = useLocation();
@@ -17,12 +18,14 @@ const Products = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
 
+ 
   // Fetch products from backend API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const response = await fetch('http://localhost:5000/api/products');
+        // ===== CHANGED: Use API_URL instead of hardcoded URL =====
+        const response = await fetch(`${API_URL}/products`);
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }

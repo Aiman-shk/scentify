@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaEye } from 'react-icons/fa';
 import './Orders.css';
+ import API_URL from '../../api/config';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -13,7 +14,8 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/orders');
+      // ===== CHANGED: Use API_URL instead of hardcoded URL =====
+      const res = await fetch(`${API_URL}/orders`);
       const data = await res.json();
       setOrders(data.reverse());
       setLoading(false);
@@ -23,16 +25,18 @@ const Orders = () => {
     }
   };
 
-  // ========== UPDATED: Update order status with API ==========
+   // ===== UPDATE ORDER STATUS =====
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      // ===== CHANGED: Use API_URL instead of hardcoded URL =====
+      const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ status: newStatus }),
       });
+
 
       if (response.ok) {
         setOrders(orders.map(order => 

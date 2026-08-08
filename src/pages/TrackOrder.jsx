@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaSearch, FaTruck, FaCheckCircle, FaClock, FaBox, FaTimesCircle } from 'react-icons/fa';
 import './TrackOrder.css';
+import API_URL from '../api/config';
 
 const TrackOrder = () => {
   const [orderId, setOrderId] = useState('');
@@ -22,8 +23,10 @@ const TrackOrder = () => {
     setError('');
     setTracked(false);
 
+  
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/track/${orderId.trim()}`);
+      // ===== CHANGED: Use API_URL instead of hardcoded URL =====
+      const response = await fetch(`${API_URL}/orders/track/${orderId.trim()}`);
       
       if (response.ok) {
         const data = await response.json();

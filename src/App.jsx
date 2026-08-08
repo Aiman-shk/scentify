@@ -16,10 +16,6 @@ import Wishlist from './pages/Wishlist';
 import Contact from './pages/Contact';
 import PolicyPages from './pages/PolicyPages';
 
-// Category Pages
-import MensCollection from './pages/MensCollection';
-import WomensCollection from './pages/WomensCollection';
-import NewArrivals from './pages/NewArrivals';
 
 // Admin Imports
 import AdminLayout from './pages/Admin/AdminLayout';
@@ -56,10 +52,7 @@ function App() {
                 <Route path="/shipping" element={<PolicyPages />} />
                 <Route path="/returns" element={<PolicyPages />} />
 
-                {/* Category Routes */}
-                <Route path="/mens-collection" element={<MensCollection />} />
-                <Route path="/womens-collection" element={<WomensCollection />} />
-                <Route path="/new-arrivals" element={<NewArrivals />} />
+               
 
                 {/* Admin Routes */}
                 <Route path="/admin" element={<AdminLayout />}>

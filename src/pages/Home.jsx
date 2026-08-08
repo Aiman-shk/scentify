@@ -6,16 +6,18 @@ import Hero from '../home/Hero';
 import BestSellerCarousel from '../home/BestSellerCarousel';
 // import CategoryShowcase from '../home/CategoryShowcase'; // ← REMOVED
 import './Home.css';
+import API_URL from '../api/config';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch products from backend API
+   // Fetch products from backend API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/products');
+        // ===== CHANGED: Use API_URL instead of hardcoded URL =====
+        const response = await fetch(`${API_URL}/products`);
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }
@@ -27,6 +29,7 @@ const Home = () => {
         setLoading(false);
       }
     };
+
 
     fetchProducts();
   }, []);

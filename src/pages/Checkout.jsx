@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 import { pakistanCities } from '../data/cities';
 import { FaCopy, FaCheckCircle, FaMoneyBillWave, FaCreditCard } from 'react-icons/fa';
 import './Checkout.css';
+import API_URL from '../api/config';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -154,14 +155,16 @@ const Checkout = () => {
 
     console.log('📤 Sending order data:', orderData);
 
-    try {
-      const response = await fetch('http://localhost:5000/api/orders', {
+  try {
+      // ===== CHANGED: Use API_URL instead of hardcoded URL =====
+      const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(orderData),
       });
+
 
       if (response.ok) {
         const order = await response.json();

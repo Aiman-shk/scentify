@@ -3,16 +3,19 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaArrowLeft, FaShoppingBag } from 'react-icons/fa';
 import './OrderSuccess.css';
+import API_URL from '../api/config';
 
 const OrderSuccess = () => {
   const { id } = useParams();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
+ 
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/orders/${id}`);
+        // ===== CHANGED: Use API_URL instead of hardcoded URL =====
+        const response = await fetch(`${API_URL}/orders/${id}`);
         if (response.ok) {
           const data = await response.json();
           setOrder(data);
