@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaPhone, FaEnvelope, FaClock, FaInstagram, FaFacebook, FaTwitter } from 'react-icons/fa';
+import { FaPhone, FaEnvelope, FaClock, FaInstagram, FaTiktok } from 'react-icons/fa';
 import './Contact.css';
 
 const Contact = () => {
@@ -35,7 +35,7 @@ const Contact = () => {
                 <div className="contact-info-icon"><FaPhone /></div>
                 <div>
                   <h4>Call Us</h4>
-                  <p>+92 300 1234567</p>
+                  <p>+923143711412</p>
                   <p>Mon-Fri 9:00 AM - 6:00 PM</p>
                 </div>
               </div>
@@ -44,8 +44,7 @@ const Contact = () => {
                 <div className="contact-info-icon"><FaEnvelope /></div>
                 <div>
                   <h4>Email Us</h4>
-                  <p>info@scentify.com</p>
-                  <p>support@scentify.com</p>
+                  <p>scentify25@gmail.com</p>
                 </div>
               </div>
 
@@ -60,12 +59,28 @@ const Contact = () => {
               </div>
             </div>
 
+            {/* ===== SOCIAL LINKS - UPDATED ===== */}
             <div className="contact-social">
               <h4>Follow Us</h4>
               <div className="contact-social-icons">
-                <a href="#" className="social-icon"><FaFacebook /></a>
-                <a href="#" className="social-icon"><FaInstagram /></a>
-                <a href="#" className="social-icon"><FaTwitter /></a>
+                <a 
+                  href="https://www.instagram.com/scentify_perfumee?igsh=MXh0NXZoOWJyYTl1aw==" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="social-icon"
+                  aria-label="Instagram"
+                >
+                  <FaInstagram />
+                </a>
+                <a 
+                  href="https://www.tiktok.com/@scentify.perfumee?_r=1&_t=ZS-98PSza6A0Y8" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="social-icon"
+                  aria-label="TikTok"
+                >
+                  <FaTiktok />
+                </a>
               </div>
             </div>
           </div>
