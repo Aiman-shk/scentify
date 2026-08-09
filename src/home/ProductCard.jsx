@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+=import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaChevronLeft, FaChevronRight, FaHeart, FaRegHeart, FaShoppingCart } from 'react-icons/fa';
@@ -47,6 +47,7 @@ const ProductCard = ({ product, index }) => {
     addToCart(product, 1);
   };
 
+  // ===== KEPT: Hot Seller check =====
   const isHotSeller = product.rating >= 4.7 && product.numReviews > 50;
 
   return (
@@ -102,6 +103,7 @@ const ProductCard = ({ product, index }) => {
               </div>
             )}
 
+            {/* ===== HOT SELLER BADGE KEPT ===== */}
             {isHotSeller && (
               <div className="product-badge hot-seller">
                 HOT SELLER
@@ -136,6 +138,14 @@ const ProductCard = ({ product, index }) => {
               Rs. {product.price.toFixed(0)}
             </span>
           </div>
+
+          {/* ===== RATING REMOVED ===== */}
+          {/* {product.rating && (
+            <div className="product-rating">
+              {'⭐'.repeat(Math.floor(product.rating))}
+              <span className="rating-count">({product.rating})</span>
+            </div>
+          )} */}
         </div>
       </Link>
 
