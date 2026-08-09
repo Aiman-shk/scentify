@@ -1,4 +1,3 @@
-import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -7,73 +6,47 @@ dotenv.config();
 console.log('📧 EMAIL_USER:', process.env.EMAIL_USER);
 console.log('📧 BREVO_API_KEY:', process.env.BREVO_API_KEY ? '✅ Set' : '❌ Missing');
 
-// ===== CREATE TRANSPORTER WITH BREVO (Sendinblue) =====
-let transporter = null;
-
-try {
-  // Check if Brevo API key exists, otherwise fallback to Gmail
-  const useBrevo = process.env.BREVO_API_KEY && process.env.EMAIL_USER;
+// ===== SEND EMAIL USING BREVO API =====
+const sendBrevoEmail = async (mailOptions) => {
+  const apiKey = process.env.BREVO_API_KEY;
   
-  if (useBrevo) {
-    console.log('📧 Using Brevo (Sendinblue) email service');
-    transporter = nodemailer.createTransport({
-      host: 'smtp-relay.brevo.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.BREVO_API_KEY,
-      },
-      family: 4,
-      connectionTimeout: 5000,
-      socketTimeout: 5000,
-      tls: {
-        rejectUnauthorized: false,
-        minVersion: 'TLSv1.2',
-      },
-    });
-    console.log('✅ Brevo transporter created');
-  } else {
-    console.log('📧 Using Gmail email service (fallback)');
-    transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      family: 4,
-      connectionTimeout: 10000,
-      socketTimeout: 10000,
-      tls: {
-        rejectUnauthorized: false,
-        minVersion: 'TLSv1.2',
-      },
-    });
-    console.log('✅ Gmail transporter created');
+  if (!apiKey) {
+    console.error('❌ BREVO_API_KEY is missing');
+    return false;
   }
 
-} catch (error) {
-  console.error('❌ Failed to create email transporter:', error.message);
-}
-
-// ===== SEND EMAIL WITH TIMEOUT =====
-const sendEmailWithTimeout = (mailOptions, timeoutMs = 10000) => {
-  return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => {
-      reject(new Error('Email send timeout after ' + timeoutMs + 'ms'));
-    }, timeoutMs);
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      clearTimeout(timeout);
-      if (error) {
-        reject(error);
-      } else {
-        resolve(info);
-      }
+  try {
+    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': apiKey,
+      },
+      body: JSON.stringify({
+        sender: {
+          name: 'Scentify',
+          email: mailOptions.from,
+        },
+        to: [{ email: mailOptions.to }],
+        subject: mailOptions.subject,
+        textContent: mailOptions.text,
+        htmlContent: mailOptions.html,
+      }),
     });
-  });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Brevo API error');
+    }
+
+    const data = await response.json();
+    console.log('✅ Email sent via Brevo API');
+    console.log('📨 Message ID:', data.messageId);
+    return true;
+  } catch (error) {
+    console.error('❌ Brevo API error:', error.message);
+    return false;
+  }
 };
 
 // ===== HELPER: Sanitize email input =====
@@ -158,7 +131,7 @@ Scentify
     `;
 
     const mailOptions = {
-      from: `"Scentify" <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_USER,
       to: sanitizedEmail,
       subject: `Your order #${orderIdShort} is confirmed`,
       text: plainText,
@@ -249,11 +222,9 @@ Scentify
       `,
     };
 
-    // ===== SEND WITH TIMEOUT =====
-    const info = await sendEmailWithTimeout(mailOptions, 10000);
-    console.log(`✅ Email sent to ${sanitizedEmail}`);
-    console.log(`📨 Message ID: ${info.messageId}`);
-    return true;
+    // ===== SEND USING BREVO API =====
+    const result = await sendBrevoEmail(mailOptions);
+    return result;
 
   } catch (error) {
     console.error('❌ Email error:', error.message);
@@ -274,7 +245,7 @@ export const sendAdminNotification = async (order) => {
     const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
 
     const mailOptions = {
-      from: `"Scentify Admin" <${process.env.EMAIL_USER}>`,
+      from: process.env.EMAIL_USER,
       to: adminEmail,
       subject: `New Order #${orderIdShort} - ${order.shippingAddress ? sanitizeEmail(order.shippingAddress.fullName) : 'Customer'}`,
       html: `
@@ -297,10 +268,9 @@ export const sendAdminNotification = async (order) => {
       `,
     };
 
-    // ===== SEND WITH TIMEOUT =====
-    const info = await sendEmailWithTimeout(mailOptions, 5000);
-    console.log(`✅ Admin notification sent to ${adminEmail}`);
-    return true;
+    // ===== SEND USING BREVO API =====
+    const result = await sendBrevoEmail(mailOptions);
+    return result;
 
   } catch (error) {
     console.error('❌ Admin email error:', error.message);
@@ -308,4 +278,4 @@ export const sendAdminNotification = async (order) => {
   }
 };
 
-export default transporter;
+export default { sendOrderConfirmation, sendAdminNotification };
