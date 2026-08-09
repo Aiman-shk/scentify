@@ -22,13 +22,33 @@
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
 }
 
+/* ===== UPDATED LOGO STYLES ===== */
 .logo a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.logo-main {
   font-family: 'Playfair Display', Georgia, serif;
   font-size: 24px;
   font-weight: 700;
+  letter-spacing: 4px;
   color: #2d1b12;
-  text-decoration: none;
-  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.logo-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: #8b7355;
+  text-transform: lowercase;
+  margin-top: -2px;
+  font-style: italic;
 }
 
 .nav-links {
@@ -592,8 +612,14 @@
     font-size: 13px;
   }
 
-  .logo a {
+  .logo-main {
     font-size: 20px;
+    letter-spacing: 3px;
+  }
+
+  .logo-sub {
+    font-size: 9px;
+    letter-spacing: 1.5px;
   }
 
   .nav-icons {
@@ -628,8 +654,14 @@
     height: 56px;
   }
 
-  .logo a {
-    font-size: 18px;
+  .logo-main {
+    font-size: 16px;
+    letter-spacing: 2px;
+  }
+
+  .logo-sub {
+    font-size: 8px;
+    letter-spacing: 1px;
   }
 
   .nav-links {

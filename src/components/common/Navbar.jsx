@@ -42,9 +42,14 @@ const Navbar = () => {
   return (
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        {/* ===== UPDATED LOGO ===== */}
         <div className="logo">
-          <Link to="/">Scentify</Link>
+          <Link to="/">
+            <span className="logo-main">SCENTIFY</span>
+            <span className="logo-sub">Verfumes</span>
+          </Link>
         </div>
+
         <ul className="nav-links">
           <li className={isActive('/')}>
             <Link to="/">Home</Link>
@@ -56,6 +61,7 @@ const Navbar = () => {
             <Link to="/about">About</Link>
           </li>
         </ul>
+
         <div className="nav-icons">
           {/* ===== SEARCH ICON ===== */}
           <button 
