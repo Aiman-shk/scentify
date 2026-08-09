@@ -25,7 +25,7 @@ const sendBrevoEmail = async (mailOptions) => {
       body: JSON.stringify({
         sender: {
           name: 'Scentify',
-          email: 'scentify25@gmail.com', // ← HARDCODED VERIFIED SENDER
+          email: 'scentify25@gmail.com',
         },
         to: [{ email: mailOptions.to }],
         subject: mailOptions.subject,
@@ -97,7 +97,8 @@ export const sendOrderConfirmation = async (order, userEmail) => {
       </tr>
     `).join('') : '';
 
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    // ===== FIXED: Use Vercel URL for track order =====
+    const frontendUrl = process.env.FRONTEND_URL || 'https://scentifypurfume.vercel.app';
     const trackOrderLink = `${frontendUrl}/track-order`;
 
     // ===== PLAIN TEXT VERSION =====
@@ -130,7 +131,7 @@ Scentify
     `;
 
     const mailOptions = {
-      from: 'scentify25@gmail.com', // ← HARDCODED VERIFIED SENDER
+      from: 'scentify25@gmail.com',
       to: sanitizedEmail,
       subject: `Your order #${orderIdShort} is confirmed`,
       text: plainText,
@@ -244,7 +245,7 @@ export const sendAdminNotification = async (order) => {
     const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
 
     const mailOptions = {
-      from: 'scentify25@gmail.com', // ← HARDCODED VERIFIED SENDER
+      from: 'scentify25@gmail.com',
       to: adminEmail,
       subject: `New Order #${orderIdShort} - ${order.shippingAddress ? sanitizeEmail(order.shippingAddress.fullName) : 'Customer'}`,
       html: `
