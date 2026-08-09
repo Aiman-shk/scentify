@@ -11,6 +11,7 @@ export const createOrder = async (req, res) => {
     const {
       orderItems,
       shippingAddress,
+      billingAddress, // ← ADD THIS
       paymentMethod,
       itemsPrice,
       shippingPrice,
@@ -32,9 +33,11 @@ export const createOrder = async (req, res) => {
       }
     }
 
+    // ===== CREATE ORDER WITH BILLING ADDRESS =====
     const order = new Order({
       orderItems,
       shippingAddress,
+      billingAddress: billingAddress || null, // ← ADD BILLING ADDRESS
       paymentMethod: paymentMethod || 'Cash on Delivery',
       itemsPrice,
       shippingPrice,
@@ -45,33 +48,30 @@ export const createOrder = async (req, res) => {
     const createdOrder = await order.save();
     console.log('✅ Order created:', createdOrder._id);
 
-    // ========== SEND EMAILS IN BACKGROUND (NON-BLOCKING) ==========
+    // ========== SEND EMAILS IN BACKGROUND ==========
     console.log('🔥🔥🔥 EMAIL CODE IS RUNNING! 🔥🔥🔥');
     console.log('📧 Attempting to send emails...');
     
-    // Use setImmediate to send emails after response is sent
+    // ===== REMOVED 'await' - EMAILS RUN IN BACKGROUND =====
     const customerEmail = shippingAddress.email;
-    const orderId = createdOrder._id;
-    
     if (customerEmail) {
       console.log(`📧 Sending confirmation to: ${customerEmail}`);
-      
-      // Emails run in background - NO AWAIT
-      setImmediate(() => {
-        // Send confirmation email to customer
-        sendOrderConfirmation(createdOrder, customerEmail)
-          .then(() => console.log(`✅ Confirmation email sent to ${customerEmail}`))
-          .catch(err => console.error('⚠️ Confirmation email error:', err.message));
-        
-        // Send notification to admin
-        sendAdminNotification(createdOrder)
-          .then(() => console.log(`✅ Admin notification sent`))
-          .catch(err => console.error('⚠️ Admin email error:', err.message));
-      });
+      sendOrderConfirmation(createdOrder, customerEmail)
+        .then(() => console.log(`✅ Confirmation email sent to ${customerEmail}`))
+        .catch(err => console.error('⚠️ Confirmation email error:', err.message));
     }
 
-    // ===== INSTANT RESPONSE (NO WAITING FOR EMAILS) =====
-    res.status(201).json(createdOrder);
+    console.log(`📧 Sending admin notification...`);
+    sendAdminNotification(createdOrder)
+      .then(() => console.log(`✅ Admin notification sent`))
+      .catch(err => console.error('⚠️ Admin email error:', err.message));
+
+    // ===== INSTANT RESPONSE =====
+    res.status(201).json({
+      success: true,
+      order: createdOrder,
+      message: 'Order placed successfully! You will receive a confirmation email shortly.',
+    });
 
   } catch (error) {
     console.error('❌ Error creating order:', error);
