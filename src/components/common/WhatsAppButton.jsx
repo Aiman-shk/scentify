@@ -5,7 +5,7 @@ import './WhatsAppButton.css';
 
 const WhatsAppButton = () => {
   // Replace with your WhatsApp number (with country code, no + sign)
-  const phoneNumber = '923022519107'; // Example: 92 300 1234567
+  const phoneNumber = '923143711412'; // Example: 92 300 1234567
   const whatsappUrl = `https://wa.me/${phoneNumber}`;
 
   return (
