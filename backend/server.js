@@ -17,6 +17,9 @@ connectDB();
 
 const app = express();
 
+// ===== FIX: Enable trust proxy for Render =====
+app.set('trust proxy', 1);
+
 // ============================================
 // SECURITY MIDDLEWARE
 // ============================================
@@ -62,6 +65,8 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: false,
+  // ===== FIX: Trust proxy for Render =====
+  trustProxy: true,
 });
 app.use('/api', limiter);
 
