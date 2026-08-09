@@ -17,6 +17,11 @@ const Checkout = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [copied, setCopied] = useState(false);
 
+  // ===== BILLING ADDRESS STATE =====
+  const [useDifferentBilling, setUseDifferentBilling] = useState(false);
+  const [billingSearchCity, setBillingSearchCity] = useState('');
+  const [showBillingDropdown, setShowBillingDropdown] = useState(false);
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -24,10 +29,19 @@ const Checkout = () => {
     city: '',
     phone: '',
     paymentMethod: 'Cash on Delivery',
+    // Billing address fields
+    billingFullName: '',
+    billingAddress: '',
+    billingCity: '',
+    billingPhone: '',
   });
 
   const filteredCities = pakistanCities.filter(city =>
     city.toLowerCase().includes(searchCity.toLowerCase())
+  );
+
+  const filteredBillingCities = pakistanCities.filter(city =>
+    city.toLowerCase().includes(billingSearchCity.toLowerCase())
   );
 
   const handleChange = (e) => {
@@ -46,6 +60,20 @@ const Checkout = () => {
     setSearchCity(city);
     setFormData(prev => ({ ...prev, city: city }));
     setShowDropdown(false);
+  };
+
+  // ===== BILLING CITY HANDLERS =====
+  const handleBillingCitySearch = (e) => {
+    const value = e.target.value;
+    setBillingSearchCity(value);
+    setFormData(prev => ({ ...prev, billingCity: value }));
+    setShowBillingDropdown(true);
+  };
+
+  const selectBillingCity = (city) => {
+    setBillingSearchCity(city);
+    setFormData(prev => ({ ...prev, billingCity: city }));
+    setShowBillingDropdown(false);
   };
 
   // Copy to clipboard function
@@ -80,6 +108,20 @@ const Checkout = () => {
     }
   };
 
+  // ===== BILLING PHONE HANDLER =====
+  const handleBillingPhoneChange = (e) => {
+    const value = e.target.value;
+    const cleanValue = value.replace(/\D/g, '');
+    
+    if (cleanValue.length <= 11) {
+      let formatted = cleanValue;
+      if (cleanValue.length >= 5) {
+        formatted = `${cleanValue.slice(0, 4)}-${cleanValue.slice(4)}`;
+      }
+      setFormData(prev => ({ ...prev, billingPhone: formatted }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -102,6 +144,22 @@ const Checkout = () => {
       setError('Phone number must be exactly 11 digits (e.g., 03XX-XXXXXXX)');
       setLoading(false);
       return;
+    }
+
+    // ===== VALIDATE BILLING ADDRESS IF DIFFERENT =====
+    if (useDifferentBilling) {
+      if (!formData.billingFullName || !formData.billingAddress || !formData.billingCity || !formData.billingPhone) {
+        setError('Please fill in all billing address fields');
+        setLoading(false);
+        return;
+      }
+      
+      const cleanBillingPhone = formData.billingPhone.replace(/\D/g, '');
+      if (cleanBillingPhone.length !== 11) {
+        setError('Billing phone number must be exactly 11 digits (e.g., 03XX-XXXXXXX)');
+        setLoading(false);
+        return;
+      }
     }
 
     if (!pakistanCities.includes(formData.city)) {
@@ -147,6 +205,13 @@ const Checkout = () => {
         city: formData.city,
         phone: cleanPhone, // Store clean 11-digit phone number
       },
+      // ===== ADD BILLING ADDRESS IF DIFFERENT =====
+      billingAddress: useDifferentBilling ? {
+        fullName: formData.billingFullName,
+        address: formData.billingAddress,
+        city: formData.billingCity,
+        phone: formData.billingPhone.replace(/\D/g, ''),
+      } : null,
       paymentMethod: formData.paymentMethod,
       itemsPrice: parseFloat(itemsPrice.toFixed(2)),
       shippingPrice: parseFloat(shippingPrice.toFixed(2)),
@@ -155,7 +220,7 @@ const Checkout = () => {
 
     console.log('📤 Sending order data:', orderData);
 
-  try {
+    try {
       // ===== CHANGED: Use API_URL instead of hardcoded URL =====
       const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
@@ -164,7 +229,6 @@ const Checkout = () => {
         },
         body: JSON.stringify(orderData),
       });
-
 
       if (response.ok) {
         const order = await response.json();
@@ -178,10 +242,12 @@ const Checkout = () => {
         const data = await response.json();
         console.log('❌ Error response:', data);
         setError(data.message || 'Failed to place order');
+        setLoading(false);
       }
     } catch (err) {
       console.error('❌ Network error:', err);
       setError('Network error. Please try again.');
+      setLoading(false);
     } finally {
       setLoading(false);
     }
@@ -350,6 +416,125 @@ const Checkout = () => {
                     Format: 03XX-XXXXXXX (11 digits)
                   </small>
                 </div>
+              </div>
+
+              {/* ===== BILLING ADDRESS SECTION ===== */}
+              <div className="billing-section">
+                <h4>Billing Address</h4>
+                
+                <div className="billing-options">
+                  <label className="billing-option">
+                    <input
+                      type="radio"
+                      name="billingOption"
+                      checked={!useDifferentBilling}
+                      onChange={() => setUseDifferentBilling(false)}
+                    />
+                    <span>Same as shipping address</span>
+                  </label>
+
+                  <label className="billing-option">
+                    <input
+                      type="radio"
+                      name="billingOption"
+                      checked={useDifferentBilling}
+                      onChange={() => setUseDifferentBilling(true)}
+                    />
+                    <span>Use a different billing address</span>
+                  </label>
+                </div>
+
+                {/* ===== DIFFERENT BILLING ADDRESS FIELDS ===== */}
+                {useDifferentBilling && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="billing-fields"
+                  >
+                    <div className="form-group">
+                      <label>Billing Full Name *</label>
+                      <input
+                        type="text"
+                        name="billingFullName"
+                        value={formData.billingFullName}
+                        onChange={handleChange}
+                        placeholder="Billing name"
+                        required={useDifferentBilling}
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label>Billing Address *</label>
+                      <input
+                        type="text"
+                        name="billingAddress"
+                        value={formData.billingAddress}
+                        onChange={handleChange}
+                        placeholder="Billing address"
+                        required={useDifferentBilling}
+                      />
+                    </div>
+
+                    <div className="form-row">
+                      <div className="form-group">
+                        <label>Billing City *</label>
+                        <div className="city-search-container">
+                          <input
+                            type="text"
+                            value={billingSearchCity}
+                            onChange={handleBillingCitySearch}
+                            onFocus={() => setShowBillingDropdown(true)}
+                            onBlur={() => setTimeout(() => setShowBillingDropdown(false), 200)}
+                            placeholder="Search billing city..."
+                            required={useDifferentBilling}
+                            className="city-input"
+                            autoComplete="off"
+                          />
+                          {showBillingDropdown && billingSearchCity && filteredBillingCities.length > 0 && (
+                            <div className="city-dropdown">
+                              {filteredBillingCities.slice(0, 15).map((city) => (
+                                <div
+                                  key={city}
+                                  className="city-option"
+                                  onMouseDown={() => selectBillingCity(city)}
+                                >
+                                  {city}
+                                </div>
+                              ))}
+                              {filteredBillingCities.length > 15 && (
+                                <div className="city-more">
+                                  + {filteredBillingCities.length - 15} more cities...
+                                </div>
+                              )}
+                            </div>
+                          )}
+                          {showBillingDropdown && billingSearchCity && filteredBillingCities.length === 0 && (
+                            <div className="city-dropdown no-results">
+                              <span>No cities found.</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="form-group">
+                        <label>Billing Phone (11 digits) *</label>
+                        <input
+                          type="tel"
+                          name="billingPhone"
+                          value={formData.billingPhone}
+                          onChange={handleBillingPhoneChange}
+                          placeholder="03XX-XXXXXXX"
+                          required={useDifferentBilling}
+                          maxLength="12"
+                        />
+                        <small style={{ color: '#888', fontSize: '12px', display: 'block', marginTop: '4px' }}>
+                          Format: 03XX-XXXXXXX (11 digits)
+                        </small>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
               </div>
 
               {/* ===== PAYMENT SECTION ===== */}
