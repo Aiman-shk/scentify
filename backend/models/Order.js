@@ -48,7 +48,7 @@ const orderSchema = new mongoose.Schema({
       required: true,
     },
   },
-  // ===== BILLING ADDRESS (OPTIONAL) =====
+  // ========== ADD THE BILLING ADDRESS HERE ==========
   billingAddress: {
     fullName: {
       type: String,
@@ -63,17 +63,20 @@ const orderSchema = new mongoose.Schema({
       type: String,
     },
   },
+  // ====================================================
   paymentMethod: {
     type: String,
     required: true,
     default: 'Cash on Delivery',
   },
+  // ========== ADD THE STATUS FIELD HERE ==========
   status: {
     type: String,
     required: true,
     enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
     default: 'Pending',
   },
+  // ==============================================
   itemsPrice: {
     type: Number,
     required: true,
