@@ -25,7 +25,7 @@ const sendBrevoEmail = async (mailOptions) => {
       body: JSON.stringify({
         sender: {
           name: 'Scentify',
-          email: mailOptions.from,
+          email: 'scentify25@gmail.com', // ← HARDCODED VERIFIED SENDER
         },
         to: [{ email: mailOptions.to }],
         subject: mailOptions.subject,
@@ -71,7 +71,6 @@ const getSafeOrderIdShort = (order) => {
 // ===== SEND ORDER CONFIRMATION EMAIL =====
 export const sendOrderConfirmation = async (order, userEmail) => {
   try {
-    // ===== VALIDATE INPUTS =====
     if (!order || !userEmail) {
       console.error('❌ Missing order or email');
       return false;
@@ -131,7 +130,7 @@ Scentify
     `;
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: 'scentify25@gmail.com', // ← HARDCODED VERIFIED SENDER
       to: sanitizedEmail,
       subject: `Your order #${orderIdShort} is confirmed`,
       text: plainText,
@@ -245,7 +244,7 @@ export const sendAdminNotification = async (order) => {
     const adminEmail = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
 
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: 'scentify25@gmail.com', // ← HARDCODED VERIFIED SENDER
       to: adminEmail,
       subject: `New Order #${orderIdShort} - ${order.shippingAddress ? sanitizeEmail(order.shippingAddress.fullName) : 'Customer'}`,
       html: `
@@ -278,5 +277,4 @@ export const sendAdminNotification = async (order) => {
   }
 };
 
-// ===== FIXED EXPORT =====
 export default { sendOrderConfirmation, sendAdminNotification };
