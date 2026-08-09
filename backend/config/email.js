@@ -5,31 +5,54 @@ dotenv.config();
 
 // ===== SECURE LOGGING =====
 console.log('📧 EMAIL_USER:', process.env.EMAIL_USER);
-console.log('📧 EMAIL_PASS:', process.env.EMAIL_PASS ? '✅ Set' : '❌ Missing');
+console.log('📧 BREVO_API_KEY:', process.env.BREVO_API_KEY ? '✅ Set' : '❌ Missing');
 
-// ===== CREATE TRANSPORTER WITH IPv4 FIX =====
+// ===== CREATE TRANSPORTER WITH BREVO (Sendinblue) =====
 let transporter = null;
 
 try {
-  transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com', // ← Use host instead of service
-    port: 587, // ← TLS port
-    secure: false, // ← false for port 587
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-    // ===== FORCE IPv4 (FIXES ENETUNREACH ERROR) =====
-    family: 4, // ← FORCE IPv4
-    connectionTimeout: 10000,
-    socketTimeout: 10000,
-    tls: {
-      rejectUnauthorized: false, // ← Don't reject in production
-      minVersion: 'TLSv1.2',
-    },
-  });
-
-  console.log('✅ Transporter created');
+  // Check if Brevo API key exists, otherwise fallback to Gmail
+  const useBrevo = process.env.BREVO_API_KEY && process.env.EMAIL_USER;
+  
+  if (useBrevo) {
+    console.log('📧 Using Brevo (Sendinblue) email service');
+    transporter = nodemailer.createTransport({
+      host: 'smtp-relay.brevo.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.BREVO_API_KEY,
+      },
+      family: 4,
+      connectionTimeout: 5000,
+      socketTimeout: 5000,
+      tls: {
+        rejectUnauthorized: false,
+        minVersion: 'TLSv1.2',
+      },
+    });
+    console.log('✅ Brevo transporter created');
+  } else {
+    console.log('📧 Using Gmail email service (fallback)');
+    transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+      family: 4,
+      connectionTimeout: 10000,
+      socketTimeout: 10000,
+      tls: {
+        rejectUnauthorized: false,
+        minVersion: 'TLSv1.2',
+      },
+    });
+    console.log('✅ Gmail transporter created');
+  }
 
 } catch (error) {
   console.error('❌ Failed to create email transporter:', error.message);
