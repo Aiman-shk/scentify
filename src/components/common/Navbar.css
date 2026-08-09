@@ -1,3 +1,6 @@
+/* ===== FONTS FOR LOGO (matches provided logo image) ===== */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Alex+Brush&display=swap');
+
 /* ===== NAVBAR STYLES ===== */
 
 .navbar {
@@ -32,23 +35,41 @@
 }
 
 .logo-main {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 24px;
+  font-family: 'Montserrat', Arial, sans-serif;
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: 4px;
+  letter-spacing: 6px;
   color: #2d1b12;
   text-transform: uppercase;
 }
 
 .logo-sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  letter-spacing: 2px;
-  color: #8b7355;
-  text-transform: lowercase;
-  margin-top: -2px;
-  font-style: italic;
+  position: relative;
+  font-family: 'Alex Brush', 'Brush Script MT', cursive;
+  font-size: 22px;
+  font-weight: 400;
+  color: #2d1b12;
+  text-transform: none;
+  margin-top: 2px;
+  padding: 0 14px;
+}
+
+.logo-sub::before,
+.logo-sub::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 18px;
+  height: 1px;
+  background: #2d1b12;
+}
+
+.logo-sub::before {
+  left: -18px;
+}
+
+.logo-sub::after {
+  right: -18px;
 }
 
 .nav-links {
@@ -613,13 +634,25 @@
   }
 
   .logo-main {
-    font-size: 20px;
-    letter-spacing: 3px;
+    font-size: 18px;
+    letter-spacing: 4px;
   }
 
   .logo-sub {
-    font-size: 9px;
-    letter-spacing: 1.5px;
+    font-size: 18px;
+  }
+
+  .logo-sub::before,
+  .logo-sub::after {
+    width: 12px;
+  }
+
+  .logo-sub::before {
+    left: -12px;
+  }
+
+  .logo-sub::after {
+    right: -12px;
   }
 
   .nav-icons {
@@ -655,13 +688,25 @@
   }
 
   .logo-main {
-    font-size: 16px;
-    letter-spacing: 2px;
+    font-size: 15px;
+    letter-spacing: 3px;
   }
 
   .logo-sub {
-    font-size: 8px;
-    letter-spacing: 1px;
+    font-size: 15px;
+  }
+
+  .logo-sub::before,
+  .logo-sub::after {
+    width: 8px;
+  }
+
+  .logo-sub::before {
+    left: -8px;
+  }
+
+  .logo-sub::after {
+    right: -8px;
   }
 
   .nav-links {
