@@ -25,7 +25,7 @@
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
 }
 
-/* ===== UPDATED LOGO STYLES ===== */
+/* ===== LOGO STYLES ===== */
 .logo a {
   display: flex;
   flex-direction: column;
@@ -284,7 +284,6 @@
    CART DRAWER STYLES
    ============================================ */
 
-/* Overlay */
 .cart-overlay {
   position: fixed;
   top: 0;
@@ -297,7 +296,6 @@
   -webkit-backdrop-filter: blur(4px);
 }
 
-/* Drawer */
 .cart-drawer {
   position: fixed;
   top: 0;
@@ -312,7 +310,6 @@
   box-shadow: -4px 0 30px rgba(0, 0, 0, 0.08);
 }
 
-/* ===== HEADER ===== */
 .cart-drawer-header {
   display: flex;
   justify-content: space-between;
@@ -344,7 +341,6 @@
   color: #2d1b12;
 }
 
-/* ===== BODY ===== */
 .cart-drawer-body {
   flex: 1;
   overflow-y: auto;
@@ -365,7 +361,6 @@
   border-radius: 2px;
 }
 
-/* ===== EMPTY STATE ===== */
 .cart-drawer-empty {
   display: flex;
   flex-direction: column;
@@ -382,7 +377,6 @@
   margin: 0;
 }
 
-/* ===== ITEMS ===== */
 .cart-drawer-items {
   display: flex;
   flex-direction: column;
@@ -503,14 +497,12 @@
   color: #dc3545;
 }
 
-/* ===== DIVIDER ===== */
 .cart-drawer-divider {
   height: 1px;
   background: #f0e8e0;
   margin: 16px 0;
 }
 
-/* ===== SUBTOTAL ===== */
 .cart-drawer-subtotal {
   display: flex;
   justify-content: space-between;
@@ -521,7 +513,6 @@
   color: #2d1b12;
 }
 
-/* ===== BUTTONS ===== */
 .cart-drawer-buttons {
   display: flex;
   flex-direction: column;
@@ -616,6 +607,128 @@
     font-size: 14px;
     padding: 13px;
   }
+}
+
+/* ===== HAMBURGER BUTTON ===== */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #2d1b12;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.3s ease;
+}
+.hamburger-btn:hover {
+  color: #d4af37;
+}
+
+/* ===== MOBILE MENU OVERLAY ===== */
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+.mobile-menu-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ===== MOBILE MENU ===== */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  max-width: 80%;
+  height: 100vh;
+  background: #ffffff;
+  z-index: 1000;
+  padding: 20px 24px;
+  transition: right 0.3s ease;
+  box-shadow: -4px 0 30px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+.mobile-menu.open {
+  right: 0;
+}
+
+/* ===== MOBILE MENU HEADER ===== */
+.mobile-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0e8e0;
+}
+.mobile-menu-logo {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #2d1b12;
+  letter-spacing: 2px;
+}
+.mobile-menu-close {
+  background: none;
+  border: none;
+  font-size: 22px;
+  color: #6b5a4b;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.3s ease;
+}
+.mobile-menu-close:hover {
+  color: #2d1b12;
+}
+
+/* ===== MOBILE NAV LINKS ===== */
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 20px;
+  flex: 1;
+}
+.mobile-nav-link {
+  padding: 14px 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #2d1b12;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+.mobile-nav-link:hover {
+  background: #f5f0eb;
+  color: #d4af37;
+}
+.mobile-nav-link.cart-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #2d1b12;
+  padding: 14px 16px;
+}
+.mobile-nav-link.cart-link:hover {
+  background: #f5f0eb;
+  color: #d4af37;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -742,57 +855,74 @@
   }
 }
 
-/* ===== NAVBAR STYLES ===== */
-
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 40px;
-  background: transparent;
-  transition: all 0.3s ease;
-  z-index: 1000;
-  height: 70px;
+/* ============================================
+   RESPONSIVE - SHOW HAMBURGER ON MOBILE
+   ============================================ */
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: block !important;
+  }
+  .nav-links {
+    display: none !important;
+  }
+  .navbar {
+    padding: 10px 16px !important;
+    height: 60px !important;
+  }
+  .logo-main {
+    font-size: 16px !important;
+    letter-spacing: 2px !important;
+  }
+  .logo-sub {
+    font-size: 8px !important;
+  }
+  .nav-icons {
+    gap: 8px !important;
+  }
+  .icon {
+    font-size: 16px !important;
+  }
+  .search-dropdown {
+    top: 60px !important;
+    padding: 12px 16px !important;
+  }
+  .search-input-dropdown {
+    font-size: 14px !important;
+    padding: 10px 14px !important;
+  }
+  .search-submit-btn {
+    padding: 10px 16px !important;
+    font-size: 14px !important;
+  }
 }
-
-.navbar.scrolled {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+@media (max-width: 480px) {
+  .navbar {
+    padding: 8px 12px !important;
+    height: 54px !important;
+  }
+  .logo-main {
+    font-size: 14px !important;
+  }
+  .logo-sub {
+    font-size: 7px !important;
+  }
+  .icon {
+    font-size: 14px !important;
+  }
+  .mobile-menu {
+    width: 280px;
+  }
+  .mobile-nav-link {
+    font-size: 15px;
+    padding: 12px 14px;
+  }
 }
-
-/* ===== LOGO STYLES ===== */
-.logo a {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-decoration: none;
-  line-height: 1;
+@media (min-width: 769px) {
+  .hamburger-btn {
+    display: none !important;
+  }
+  .mobile-menu-overlay,
+  .mobile-menu {
+    display: none !important;
+  }
 }
-
-.logo-main {
-  font-family: 'Playfair Display', Georgia, serif;
-  font-size: 24px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  color: #2d1b12;
-  text-transform: uppercase;
-}
-
-.logo-sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 300;
-  letter-spacing: 2px;
-  color: #8b7355;
-  text-transform: lowercase;
-  margin-top: -2px;
-  font-style: italic;
-}
-
-/* ... rest of your CSS ... */

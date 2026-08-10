@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaHeart, FaSearch } from 'react-icons/fa';
+import { FaShoppingCart, FaHeart, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import CartDrawer from '../CartDrawer/CartDrawer';
@@ -17,6 +17,7 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,13 +37,18 @@ const Navbar = () => {
       navigate(`/products?search=${encodeURIComponent(searchTerm.trim())}`);
       setShowSearch(false);
       setSearchTerm('');
+      setIsMobileMenuOpen(false);
     }
+  };
+
+  const handleLinkClick = () => {
+    setIsMobileMenuOpen(false);
   };
 
   return (
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-        {/* ===== UPDATED LOGO ===== */}
+        {/* ===== LOGO ===== */}
         <div className="logo">
           <Link to="/">
             <span className="logo-main">SCENTIFY</span>
@@ -50,6 +56,7 @@ const Navbar = () => {
           </Link>
         </div>
 
+        {/* ===== DESKTOP NAV LINKS ===== */}
         <ul className="nav-links">
           <li className={isActive('/')}>
             <Link to="/">Home</Link>
@@ -62,9 +69,9 @@ const Navbar = () => {
           </li>
         </ul>
 
+        {/* ===== NAV ICONS ===== */}
         <div className="nav-icons">
-          {/* ===== SEARCH ICON ===== */}
-          <button 
+          <button
             className="icon-container search-btn"
             onClick={() => setShowSearch(!showSearch)}
             aria-label="Search"
@@ -79,8 +86,7 @@ const Navbar = () => {
             )}
           </Link>
 
-          {/* ===== CART ICON - OPENS DRAWER ===== */}
-          <button 
+          <button
             className="icon-container cart-btn"
             onClick={() => setIsCartOpen(true)}
             aria-label="Open cart"
@@ -89,6 +95,15 @@ const Navbar = () => {
             {itemCount > 0 && (
               <span className="cart-badge">{itemCount}</span>
             )}
+          </button>
+
+          {/* ===== HAMBURGER MENU TOGGLE ===== */}
+          <button
+            className="hamburger-btn"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
           </button>
         </div>
 
@@ -108,7 +123,7 @@ const Navbar = () => {
                 <FaSearch />
               </button>
             </form>
-            <button 
+            <button
               className="search-close-btn"
               onClick={() => setShowSearch(false)}
             >
@@ -117,6 +132,41 @@ const Navbar = () => {
           </div>
         )}
       </nav>
+
+      {/* ===== MOBILE MENU ===== */}
+      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`} onClick={() => setIsMobileMenuOpen(false)}>
+        <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
+          <div className="mobile-menu-header">
+            <span className="mobile-menu-logo">SCENTIFY</span>
+            <button className="mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)}>
+              <FaTimes />
+            </button>
+          </div>
+          <nav className="mobile-nav">
+            <Link to="/" className="mobile-nav-link" onClick={handleLinkClick}>
+              Home
+            </Link>
+            <Link to="/products" className="mobile-nav-link" onClick={handleLinkClick}>
+              Perfumes
+            </Link>
+            <Link to="/about" className="mobile-nav-link" onClick={handleLinkClick}>
+              About
+            </Link>
+            <Link to="/wishlist" className="mobile-nav-link" onClick={handleLinkClick}>
+              Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
+            </Link>
+            <button
+              className="mobile-nav-link cart-link"
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                setIsCartOpen(true);
+              }}
+            >
+              Cart ({itemCount})
+            </button>
+          </nav>
+        </div>
+      </div>
 
       {/* ===== CART DRAWER ===== */}
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
