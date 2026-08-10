@@ -967,3 +967,42 @@
   opacity: 1 !important;
   visibility: visible !important;
 }
+/* ===== FORCE BUTTON ICONS VISIBLE ON MOBILE ===== */
+@media (max-width: 768px) {
+  .navbar .nav-icons button,
+  .navbar .nav-icons button .icon,
+  .navbar .nav-icons button svg,
+  .navbar .nav-icons .icon-container,
+  .navbar .nav-icons .icon-container .icon,
+  .navbar .nav-icons .icon-container svg {
+    color: #2d1b12 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    fill: #2d1b12 !important;
+    display: flex !important;
+  }
+
+  .navbar .nav-icons button:hover,
+  .navbar .nav-icons button:hover .icon,
+  .navbar .nav-icons button:hover svg {
+    color: #d4af37 !important;
+    fill: #d4af37 !important;
+  }
+
+  /* Fix for hamburger icon */
+  .hamburger-btn,
+  .hamburger-btn .hamburger-icon-wrap,
+  .hamburger-btn svg {
+    color: #2d1b12 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    fill: #2d1b12 !important;
+    display: flex !important;
+  }
+
+  .hamburger-btn:hover,
+  .hamburger-btn:hover svg {
+    color: #d4af37 !important;
+    fill: #d4af37 !important;
+  }
+}
