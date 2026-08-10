@@ -139,13 +139,7 @@ const ProductCard = ({ product, index }) => {
             </span>
           </div>
 
-          {/* ===== RATING REMOVED ===== */}
-          {/* {product.rating && (
-            <div className="product-rating">
-              {'⭐'.repeat(Math.floor(product.rating))}
-              <span className="rating-count">({product.rating})</span>
-            </div>
-          )} */}
+        
         </div>
       </Link>
 
