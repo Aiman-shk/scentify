@@ -435,3 +435,132 @@
     left: 8px;
   }
 }
+
+/* ============================================
+   BEST SELLER CAROUSEL - MOBILE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .best-seller-section {
+    padding: 30px 0 !important;
+  }
+
+  .best-seller-title {
+    font-size: 20px !important;
+    letter-spacing: 3px !important;
+  }
+
+  .best-seller-subtitle {
+    font-size: 14px !important;
+  }
+
+  .carousel-wrapper {
+    gap: 8px !important;
+    padding: 5px 0 !important;
+  }
+
+  .carousel-item {
+    flex: 0 0 80% !important;
+    padding: 0 4px !important;
+  }
+
+  /* ===== SHOW ARROWS ON MOBILE ===== */
+  .carousel-arrow {
+    display: flex !important;
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 12px !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid #ddd !important;
+    border-radius: 50% !important;
+    color: #2d1b12 !important;
+    cursor: pointer !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    flex-shrink: 0 !important;
+  }
+
+  .carousel-arrow:hover:not(.disabled) {
+    background: #2d1b12 !important;
+    color: white !important;
+  }
+
+  .carousel-arrow.disabled {
+    opacity: 0.3 !important;
+    cursor: not-allowed !important;
+  }
+
+  .carousel-arrow-left {
+    left: -10px !important;
+  }
+
+  .carousel-arrow-right {
+    right: -10px !important;
+  }
+
+  .product-name {
+    font-size: 13px !important;
+  }
+
+  .product-price {
+    font-size: 15px !important;
+  }
+
+  .product-brand {
+    font-size: 12px !important;
+  }
+
+  .add-to-cart-btn {
+    font-size: 11px !important;
+    padding: 6px 10px !important;
+  }
+
+  .view-all-btn {
+    padding: 10px 20px !important;
+    font-size: 12px !important;
+  }
+
+  .carousel-dots {
+    margin-top: 15px !important;
+    gap: 8px !important;
+  }
+
+  .dot {
+    width: 8px !important;
+    height: 8px !important;
+  }
+
+  .dot.active {
+    width: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-item {
+    flex: 0 0 90% !important;
+  }
+
+  .carousel-arrow {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 10px !important;
+  }
+
+  .best-seller-title {
+    font-size: 18px !important;
+  }
+
+  .product-name {
+    font-size: 12px !important;
+  }
+
+  .product-price {
+    font-size: 13px !important;
+  }
+
+  .add-to-cart-btn {
+    font-size: 10px !important;
+    padding: 4px 8px !important;
+  }
+}

@@ -42,10 +42,14 @@
 }
 
 /* ===== LOGO STYLES ===== */
+.logo {
+  flex-shrink: 0;
+}
+
 .logo a {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; /* changed from 'center' to 'flex-start' */
   text-decoration: none;
   line-height: 1;
 }
@@ -789,6 +793,10 @@
     height: 60px !important;
   }
 
+  .logo a {
+    align-items: flex-start !important;
+  }
+
   .logo-main {
     font-size: 18px !important;
     letter-spacing: 4px !important;
@@ -800,15 +808,7 @@
 
   .logo-sub::before,
   .logo-sub::after {
-    width: 12px !important;
-  }
-
-  .logo-sub::before {
-    left: -12px !important;
-  }
-
-  .logo-sub::after {
-    right: -12px !important;
+    display: none !important; /* hide the lines on mobile */
   }
 
   .nav-icons {
