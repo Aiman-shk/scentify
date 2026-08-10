@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaHeart, FaSearch, FaBars, FaTimes, FaHome, FaTag, FaInfoCircle, FaEnvelope } from 'react-icons/fa';
+import { FaShoppingCart, FaHeart, FaSearch } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import CartDrawer from '../CartDrawer/CartDrawer';
@@ -17,7 +17,6 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isSideMenuOpen, setIsSideMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,17 +24,6 @@ const Navbar = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  // Close side menu on resize to desktop
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 768) {
-        setIsSideMenuOpen(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const isActive = (path) => {
@@ -51,23 +39,10 @@ const Navbar = () => {
     }
   };
 
-  const closeSideMenu = () => {
-    setIsSideMenuOpen(false);
-  };
-
   return (
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-        {/* ===== HAMBURGER MENU BUTTON ===== */}
-        <button 
-          className="hamburger-btn"
-          onClick={() => setIsSideMenuOpen(true)}
-          aria-label="Open menu"
-        >
-          <FaBars />
-        </button>
-
-        {/* ===== LOGO ===== */}
+        {/* ===== UPDATED LOGO ===== */}
         <div className="logo">
           <Link to="/">
             <span className="logo-main">SCENTIFY</span>
@@ -75,7 +50,6 @@ const Navbar = () => {
           </Link>
         </div>
 
-        {/* ===== DESKTOP NAV LINKS ===== */}
         <ul className="nav-links">
           <li className={isActive('/')}>
             <Link to="/">Home</Link>
@@ -85,9 +59,6 @@ const Navbar = () => {
           </li>
           <li className={isActive('/about')}>
             <Link to="/about">About</Link>
-          </li>
-          <li className={isActive('/contact')}>
-            <Link to="/contact">Contact</Link>
           </li>
         </ul>
 
@@ -146,60 +117,6 @@ const Navbar = () => {
           </div>
         )}
       </nav>
-
-      {/* ===== LEFT SIDE MENU OVERLAY ===== */}
-      <div 
-        className={`side-menu-overlay ${isSideMenuOpen ? 'open' : ''}`}
-        onClick={closeSideMenu}
-      />
-
-      {/* ===== LEFT SIDE MENU ===== */}
-      <div className={`side-menu ${isSideMenuOpen ? 'open' : ''}`}>
-        <div className="side-menu-header">
-          <div className="side-menu-logo">
-            SCENTIFY
-            <span>Perfumes</span>
-          </div>
-          <button className="side-menu-close" onClick={closeSideMenu}>
-            <FaTimes />
-          </button>
-        </div>
-
-        <nav className="side-menu-nav">
-          <Link 
-            to="/" 
-            className={`side-menu-link ${isActive('/')}`}
-            onClick={closeSideMenu}
-          >
-            <FaHome /> Home
-          </Link>
-          <Link 
-            to="/products" 
-            className={`side-menu-link ${isActive('/products')}`}
-            onClick={closeSideMenu}
-          >
-            <FaTag /> Perfumes
-          </Link>
-          <Link 
-            to="/about" 
-            className={`side-menu-link ${isActive('/about')}`}
-            onClick={closeSideMenu}
-          >
-            <FaInfoCircle /> About
-          </Link>
-          <Link 
-            to="/contact" 
-            className={`side-menu-link ${isActive('/contact')}`}
-            onClick={closeSideMenu}
-          >
-            <FaEnvelope /> Contact Us
-          </Link>
-        </nav>
-
-        <div className="side-menu-footer">
-          <p>© 2026 Scentify</p>
-        </div>
-      </div>
 
       {/* ===== CART DRAWER ===== */}
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
