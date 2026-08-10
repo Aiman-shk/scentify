@@ -953,3 +953,17 @@
     opacity: 1 !important;
   }
 }
+/* ===== FORCE ICON BUTTONS VISIBLE (overrides a global 'button' reset hiding them on mobile) ===== */
+.navbar .nav-icons button {
+  color: #2d1b12 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  background: none !important;
+}
+
+.navbar .nav-icons button svg {
+  color: inherit !important;
+  fill: currentColor !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
