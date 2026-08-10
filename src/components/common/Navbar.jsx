@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaHeart, FaSearch } from 'react-icons/fa';
+import { FaShoppingCart, FaHeart, FaSearch, FaBars, FaTimes } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import CartDrawer from '../CartDrawer/CartDrawer';
@@ -17,6 +17,7 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +26,11 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close side menu on route change
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
 
   const isActive = (path) => {
     return location.pathname === path ? 'active' : '';
@@ -42,6 +48,15 @@ const Navbar = () => {
   return (
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+        {/* ===== HAMBURGER MENU BUTTON (LEFT SIDE) ===== */}
+        <button
+          className="icon-container menu-btn"
+          onClick={() => setIsMenuOpen(true)}
+          aria-label="Open menu"
+        >
+          <FaBars className="icon" />
+        </button>
+
         {/* ===== UPDATED LOGO ===== */}
         <div className="logo">
           <Link to="/">
@@ -117,6 +132,39 @@ const Navbar = () => {
           </div>
         )}
       </nav>
+
+      {/* ===== LEFT SIDE MENU OVERLAY ===== */}
+      {isMenuOpen && (
+        <div className="side-menu-overlay" onClick={() => setIsMenuOpen(false)} />
+      )}
+
+      {/* ===== LEFT SIDE MENU DRAWER ===== */}
+      <div className={`side-menu ${isMenuOpen ? 'open' : ''}`}>
+        <div className="side-menu-header">
+          <span className="side-menu-title">Menu</span>
+          <button
+            className="side-menu-close"
+            onClick={() => setIsMenuOpen(false)}
+            aria-label="Close menu"
+          >
+            <FaTimes />
+          </button>
+        </div>
+        <ul className="side-menu-links">
+          <li className={isActive('/')}>
+            <Link to="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
+          </li>
+          <li className={isActive('/products')}>
+            <Link to="/products" onClick={() => setIsMenuOpen(false)}>Perfumes</Link>
+          </li>
+          <li className={isActive('/about')}>
+            <Link to="/about" onClick={() => setIsMenuOpen(false)}>About</Link>
+          </li>
+          <li className={isActive('/contact')}>
+            <Link to="/contact" onClick={() => setIsMenuOpen(false)}>Contact Us</Link>
+          </li>
+        </ul>
+      </div>
 
       {/* ===== CART DRAWER ===== */}
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
