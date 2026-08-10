@@ -27,6 +27,17 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu automatically if window is resized back to desktop
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const isActive = (path) => {
     return location.pathname === path ? 'active' : '';
   };
@@ -44,63 +55,70 @@ const Navbar = () => {
   return (
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-        {/* ===== LOGO ===== */}
-        <div className="logo">
-          <Link to="/">
-            <span className="logo-main">SCENTIFY</span>
-            <span className="logo-sub">Perfumes</span>
-          </Link>
-        </div>
+        <div className="navbar-inner">
+          {/* ===== LOGO ===== */}
+          <div className="logo">
+            <Link to="/">
+              <span className="logo-main">SCENTIFY</span>
+              <span className="logo-sub">Perfumes</span>
+            </Link>
+          </div>
 
-        {/* ===== DESKTOP NAV LINKS ===== */}
-        <ul className="nav-links">
-          <li className={isActive('/')}>
-            <Link to="/">Home</Link>
-          </li>
-          <li className={isActive('/products')}>
-            <Link to="/products">Perfumes</Link>
-          </li>
-          <li className={isActive('/about')}>
-            <Link to="/about">About</Link>
-          </li>
-        </ul>
+          {/* ===== DESKTOP NAV LINKS ===== */}
+          <ul className="nav-links">
+            <li className={isActive('/')}>
+              <Link to="/">Home</Link>
+            </li>
+            <li className={isActive('/products')}>
+              <Link to="/products">Perfumes</Link>
+            </li>
+            <li className={isActive('/about')}>
+              <Link to="/about">About</Link>
+            </li>
+          </ul>
 
-        {/* ===== NAV ICONS ===== */}
-        <div className="nav-icons">
-          <button
-            className="icon-container search-btn"
-            onClick={() => setShowSearch(!showSearch)}
-            aria-label="Search"
-          >
-            <FaSearch className="icon" />
-          </button>
+          {/* ===== NAV ICONS ===== */}
+          <div className="nav-icons">
+            <button
+              type="button"
+              className="icon-container search-btn"
+              onClick={() => setShowSearch((v) => !v)}
+              aria-label="Search"
+            >
+              <FaSearch className="icon" />
+            </button>
 
-          <Link to="/wishlist" className="icon-container">
-            <FaHeart className="icon" />
-            {wishlistCount > 0 && (
-              <span className="cart-badge">{wishlistCount}</span>
-            )}
-          </Link>
+            <Link to="/wishlist" className="icon-container">
+              <FaHeart className="icon" />
+              {wishlistCount > 0 && (
+                <span className="cart-badge">{wishlistCount}</span>
+              )}
+            </Link>
 
-          <button
-            className="icon-container cart-btn"
-            onClick={() => setIsCartOpen(true)}
-            aria-label="Open cart"
-          >
-            <FaShoppingCart className="icon" />
-            {itemCount > 0 && (
-              <span className="cart-badge">{itemCount}</span>
-            )}
-          </button>
+            <button
+              type="button"
+              className="icon-container cart-btn"
+              onClick={() => setIsCartOpen(true)}
+              aria-label="Open cart"
+            >
+              <FaShoppingCart className="icon" />
+              {itemCount > 0 && (
+                <span className="cart-badge">{itemCount}</span>
+              )}
+            </button>
 
-          {/* ===== HAMBURGER MENU TOGGLE ===== */}
-          <button
-            className="hamburger-btn"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
-          </button>
+            {/* ===== HAMBURGER MENU TOGGLE ===== */}
+            <button
+              type="button"
+              className="hamburger-btn"
+              onClick={() => setIsMobileMenuOpen((v) => !v)}
+              aria-label="Toggle menu"
+            >
+              <span className="hamburger-icon-wrap">
+                {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+              </span>
+            </button>
+          </div>
         </div>
 
         {/* ===== SEARCH DROPDOWN ===== */}
@@ -120,6 +138,7 @@ const Navbar = () => {
               </button>
             </form>
             <button
+              type="button"
               className="search-close-btn"
               onClick={() => setShowSearch(false)}
             >
@@ -130,14 +149,17 @@ const Navbar = () => {
       </nav>
 
       {/* ===== MOBILE MENU ===== */}
-      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`} onClick={() => setIsMobileMenuOpen(false)}>
+      <div
+        className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
         <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
           <div className="mobile-menu-header">
             <div className="mobile-menu-logo">
               SCENTIFY
               <span>Perfumes</span>
             </div>
-            <button className="mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)}>
+            <button type="button" className="mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)}>
               <FaTimes />
             </button>
           </div>
@@ -172,6 +194,7 @@ const Navbar = () => {
               {wishlistCount > 0 && <span className="mobile-badge">{wishlistCount}</span>}
             </Link>
             <button
+              type="button"
               className="mobile-nav-link"
               onClick={() => {
                 setIsMobileMenuOpen(false);
