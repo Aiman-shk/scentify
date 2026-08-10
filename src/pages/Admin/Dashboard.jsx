@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaShoppingBag, FaBox, FaUsers, FaDollarSign } from 'react-icons/fa';
+import API_URL from '../../api/config'; // ← ADD THIS
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -15,9 +16,10 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ordersRes = await fetch('http://localhost:5000/api/orders');
+        // ===== FIXED: Use API_URL =====
+        const ordersRes = await fetch(`${API_URL}/orders`);
         const orders = await ordersRes.json();
-        const productsRes = await fetch('http://localhost:5000/api/products');
+        const productsRes = await fetch(`${API_URL}/products`);
         const products = await productsRes.json();
 
         const totalOrders = orders.length;
@@ -73,7 +75,7 @@ const Dashboard = () => {
             <FaDollarSign />
           </div>
           <div className="stat-info">
-            <h3>${stats.totalRevenue.toFixed(2)}</h3>
+            <h3>Rs. {stats.totalRevenue.toFixed(0)}</h3>
             <p>Total Revenue</p>
           </div>
         </div>
@@ -107,8 +109,8 @@ const Dashboard = () => {
               {recentOrders.map(order => (
                 <tr key={order._id}>
                   <td>#{order._id.slice(-6)}</td>
-                  <td>{order.shippingAddress.fullName}</td>
-                  <td>${order.totalPrice.toFixed(2)}</td>
+                  <td>{order.shippingAddress?.fullName || 'N/A'}</td>
+                  <td>Rs. {order.totalPrice?.toFixed(0) || '0'}</td>
                   <td>
                     <span className={`status-badge status-${order.status?.toLowerCase() || 'pending'}`}>
                       {order.status || 'Pending'}

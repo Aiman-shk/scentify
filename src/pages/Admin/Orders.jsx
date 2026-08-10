@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FaEye } from 'react-icons/fa';
+import API_URL from '../../api/config';
 import './Orders.css';
- import API_URL from '../../api/config';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -14,7 +14,6 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      // ===== CHANGED: Use API_URL instead of hardcoded URL =====
       const res = await fetch(`${API_URL}/orders`);
       const data = await res.json();
       setOrders(data.reverse());
@@ -25,10 +24,8 @@ const Orders = () => {
     }
   };
 
-   // ===== UPDATE ORDER STATUS =====
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
-      // ===== CHANGED: Use API_URL instead of hardcoded URL =====
       const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
@@ -36,7 +33,6 @@ const Orders = () => {
         },
         body: JSON.stringify({ status: newStatus }),
       });
-
 
       if (response.ok) {
         setOrders(orders.map(order => 
@@ -51,7 +47,6 @@ const Orders = () => {
       alert('❌ Network error. Please try again.');
     }
   };
-  // ==========================================================
 
   if (loading) {
     return <div className="admin-loading">Loading orders...</div>;
@@ -77,11 +72,10 @@ const Orders = () => {
             {orders.map(order => (
               <tr key={order._id}>
                 <td>#{order._id.slice(-8)}</td>
-                <td>{order.shippingAddress.fullName}</td>
-                <td>{order.orderItems.length}</td>
-                <td>${order.totalPrice.toFixed(2)}</td>
+                <td>{order.shippingAddress?.fullName || 'N/A'}</td>
+                <td>{order.orderItems?.length || 0}</td>
+                <td>Rs. {order.totalPrice?.toFixed(0) || '0'}</td>
                 <td>
-                  {/* ========== UPDATED: Status dropdown ========== */}
                   <select 
                     value={order.status || 'Pending'}
                     onChange={(e) => updateOrderStatus(order._id, e.target.value)}
@@ -93,7 +87,6 @@ const Orders = () => {
                     <option value="Delivered">Delivered</option>
                     <option value="Cancelled">Cancelled</option>
                   </select>
-                  {/* =============================================== */}
                 </td>
                 <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                 <td>
@@ -112,17 +105,17 @@ const Orders = () => {
           <div className="order-detail-content" onClick={(e) => e.stopPropagation()}>
             <h3>Order Details</h3>
             <p><strong>Order ID:</strong> {selectedOrder._id}</p>
-            <p><strong>Customer:</strong> {selectedOrder.shippingAddress.fullName}</p>
-            <p><strong>Email:</strong> {selectedOrder.shippingAddress.email}</p>
-            <p><strong>Address:</strong> {selectedOrder.shippingAddress.address}</p>
-            <p><strong>City:</strong> {selectedOrder.shippingAddress.city}</p>
-            <p><strong>Phone:</strong> {selectedOrder.shippingAddress.phone}</p>
-            <p><strong>Total:</strong> ${selectedOrder.totalPrice.toFixed(2)}</p>
+            <p><strong>Customer:</strong> {selectedOrder.shippingAddress?.fullName}</p>
+            <p><strong>Email:</strong> {selectedOrder.shippingAddress?.email}</p>
+            <p><strong>Address:</strong> {selectedOrder.shippingAddress?.address}</p>
+            <p><strong>City:</strong> {selectedOrder.shippingAddress?.city}</p>
+            <p><strong>Phone:</strong> {selectedOrder.shippingAddress?.phone}</p>
+            <p><strong>Total:</strong> Rs. {selectedOrder.totalPrice?.toFixed(0)}</p>
             <p><strong>Status:</strong> {selectedOrder.status || 'Pending'}</p>
             <h4>Order Items:</h4>
             <ul>
-              {selectedOrder.orderItems.map((item, i) => (
-                <li key={i}>{item.name} × {item.quantity} = ${(item.price * item.quantity).toFixed(2)}</li>
+              {selectedOrder.orderItems?.map((item, i) => (
+                <li key={i}>{item.name} × {item.quantity} = Rs. {(item.price * item.quantity).toFixed(0)}</li>
               ))}
             </ul>
             <button className="close-modal-btn" onClick={() => setSelectedOrder(null)}>Close</button>
