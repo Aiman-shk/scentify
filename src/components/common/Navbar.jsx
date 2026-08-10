@@ -41,10 +41,6 @@ const Navbar = () => {
     }
   };
 
-  const handleLinkClick = () => {
-    setIsMobileMenuOpen(false);
-  };
-
   return (
     <>
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -137,34 +133,58 @@ const Navbar = () => {
       <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'open' : ''}`} onClick={() => setIsMobileMenuOpen(false)}>
         <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
           <div className="mobile-menu-header">
-            <span className="mobile-menu-logo">SCENTIFY</span>
+            <div className="mobile-menu-logo">
+              SCENTIFY
+              <span>Perfumes</span>
+            </div>
             <button className="mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)}>
               <FaTimes />
             </button>
           </div>
           <nav className="mobile-nav">
-            <Link to="/" className="mobile-nav-link" onClick={handleLinkClick}>
-              Home
+            <Link
+              to="/"
+              className={`mobile-nav-link ${location.pathname === '/' ? 'active' : ''}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              🏠 Home
             </Link>
-            <Link to="/products" className="mobile-nav-link" onClick={handleLinkClick}>
-              Perfumes
+            <Link
+              to="/products"
+              className={`mobile-nav-link ${location.pathname === '/products' ? 'active' : ''}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              🌸 Perfumes
             </Link>
-            <Link to="/about" className="mobile-nav-link" onClick={handleLinkClick}>
-              About
+            <Link
+              to="/about"
+              className={`mobile-nav-link ${location.pathname === '/about' ? 'active' : ''}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              ℹ️ About
             </Link>
-            <Link to="/wishlist" className="mobile-nav-link" onClick={handleLinkClick}>
-              Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
+            <Link
+              to="/wishlist"
+              className={`mobile-nav-link ${location.pathname === '/wishlist' ? 'active' : ''}`}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              ❤️ Wishlist
+              {wishlistCount > 0 && <span className="mobile-badge">{wishlistCount}</span>}
             </Link>
             <button
-              className="mobile-nav-link cart-link"
+              className="mobile-nav-link"
               onClick={() => {
                 setIsMobileMenuOpen(false);
                 setIsCartOpen(true);
               }}
             >
-              Cart ({itemCount})
+              🛒 Cart
+              {itemCount > 0 && <span className="mobile-badge">{itemCount}</span>}
             </button>
           </nav>
+          <div className="mobile-menu-footer">
+            <p>© 2026 Scentify</p>
+          </div>
         </div>
       </div>
 

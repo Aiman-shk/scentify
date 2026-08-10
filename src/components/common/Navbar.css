@@ -642,7 +642,9 @@
   visibility: visible;
 }
 
-/* ===== MOBILE MENU ===== */
+/* ===== MOBILE MENU IMPROVEMENTS ===== */
+
+/* Better looking mobile menu */
 .mobile-menu {
   position: fixed;
   top: 0;
@@ -652,54 +654,69 @@
   height: 100vh;
   background: #ffffff;
   z-index: 1000;
-  padding: 20px 24px;
+  padding: 24px;
   transition: right 0.3s ease;
   box-shadow: -4px 0 30px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
 }
+
 .mobile-menu.open {
   right: 0;
 }
 
-/* ===== MOBILE MENU HEADER ===== */
+/* Menu header with logo and close button */
 .mobile-menu-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #f0e8e0;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f0e8e0;
 }
+
 .mobile-menu-logo {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #2d1b12;
   letter-spacing: 2px;
 }
+
+.mobile-menu-logo span {
+  display: block;
+  font-size: 10px;
+  font-weight: 300;
+  color: #8b7355;
+  letter-spacing: 2px;
+  font-style: italic;
+  margin-top: -4px;
+}
+
 .mobile-menu-close {
   background: none;
   border: none;
-  font-size: 22px;
+  font-size: 24px;
   color: #6b5a4b;
   cursor: pointer;
-  padding: 4px;
+  padding: 4px 8px;
   transition: color 0.3s ease;
 }
+
 .mobile-menu-close:hover {
   color: #2d1b12;
 }
 
-/* ===== MOBILE NAV LINKS ===== */
+/* Mobile nav links - full width */
 .mobile-nav {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 20px;
+  gap: 4px;
+  margin-top: 24px;
   flex: 1;
 }
+
 .mobile-nav-link {
-  padding: 14px 16px;
+  padding: 14px 18px;
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 500;
@@ -709,26 +726,49 @@
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
+  gap: 12px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
+
 .mobile-nav-link:hover {
   background: #f5f0eb;
   color: #d4af37;
 }
-.mobile-nav-link.cart-link {
-  background: none;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  color: #2d1b12;
-  padding: 14px 16px;
-}
-.mobile-nav-link.cart-link:hover {
+
+/* Active link style */
+.mobile-nav-link.active {
   background: #f5f0eb;
   color: #d4af37;
+  font-weight: 600;
+}
+
+/* Cart/wishlist count badge in mobile */
+.mobile-nav-link .mobile-badge {
+  margin-left: auto;
+  background: #d4af37;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 20px;
+}
+
+/* Footer section */
+.mobile-menu-footer {
+  padding-top: 16px;
+  border-top: 1px solid #f0e8e0;
+  margin-top: auto;
+}
+
+.mobile-menu-footer p {
+  font-size: 12px;
+  color: #a89a8e;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -856,71 +896,104 @@
 }
 
 /* ============================================
-   RESPONSIVE - SHOW HAMBURGER ON MOBILE
+   RESPONSIVE MOBILE MENU
    ============================================ */
+
 @media (max-width: 768px) {
   .hamburger-btn {
     display: block !important;
   }
+
   .nav-links {
     display: none !important;
   }
+
   .navbar {
     padding: 10px 16px !important;
     height: 60px !important;
   }
+
   .logo-main {
     font-size: 16px !important;
     letter-spacing: 2px !important;
   }
+
   .logo-sub {
     font-size: 8px !important;
   }
+
   .nav-icons {
     gap: 8px !important;
   }
+
   .icon {
     font-size: 16px !important;
   }
+
   .search-dropdown {
     top: 60px !important;
     padding: 12px 16px !important;
   }
+
   .search-input-dropdown {
     font-size: 14px !important;
     padding: 10px 14px !important;
   }
+
   .search-submit-btn {
     padding: 10px 16px !important;
     font-size: 14px !important;
   }
+
+  .mobile-menu {
+    width: 280px;
+    padding: 20px;
+  }
+
+  .mobile-nav-link {
+    font-size: 15px;
+    padding: 12px 16px;
+  }
 }
+
 @media (max-width: 480px) {
   .navbar {
     padding: 8px 12px !important;
     height: 54px !important;
   }
+
   .logo-main {
     font-size: 14px !important;
   }
+
   .logo-sub {
     font-size: 7px !important;
   }
+
   .icon {
     font-size: 14px !important;
   }
+
   .mobile-menu {
-    width: 280px;
+    width: 260px;
+    padding: 16px;
   }
+
   .mobile-nav-link {
-    font-size: 15px;
-    padding: 12px 14px;
+    font-size: 14px;
+    padding: 10px 14px;
+  }
+
+  .mobile-menu-logo {
+    font-size: 18px;
   }
 }
+
 @media (min-width: 769px) {
   .hamburger-btn {
     display: none !important;
   }
+
   .mobile-menu-overlay,
   .mobile-menu {
     display: none !important;
