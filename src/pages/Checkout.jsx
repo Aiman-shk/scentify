@@ -315,9 +315,7 @@ const Checkout = () => {
                   <span>Rs. {(getTotalPrice() + (getTotalPrice() > 50 ? 0 : 5.99)).toFixed(0)}</span>
                 </div>
               </div>
-              <p className="shipping-note">
-                * Free shipping on orders over $50
-              </p>
+             
             </div>
           </div>
 

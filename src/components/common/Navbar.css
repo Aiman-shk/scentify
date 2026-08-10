@@ -941,3 +941,15 @@
     display: none;
   }
 }
+
+/* ===== FORCE NAV BUTTONS VISIBLE (overrides any conflicting global button reset) ===== */
+@media (max-width: 768px) {
+  .navbar .nav-icons button.icon-container,
+  .navbar .nav-icons button.search-btn,
+  .navbar .nav-icons button.cart-btn,
+  .navbar .nav-icons button.hamburger-btn {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+}
