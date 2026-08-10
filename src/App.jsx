@@ -67,8 +67,9 @@ function App() {
           </div>
         </Router>
       </CartProvider>
-    </WishlistProvider>
+    </WishlistProvider>      
   );
 }
+
 
 export default App;
