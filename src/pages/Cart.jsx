@@ -118,3 +118,21 @@ const CartPage = () => {
 };
 
 export default CartPage;
+return (
+  <>
+    {/* TEMPORARY TEST - Remove this after testing */}
+    <div style={{ 
+      height: '150px', 
+      background: 'red', 
+      width: '100%',
+      position: 'relative',
+      zIndex: 9999
+    }}>
+      TEST SPACER - You should see this red bar
+    </div>
+    
+    <div className="cart-page-wrapper">
+      {/* ... rest of your cart */}
+    </div>
+  </>
+);
