@@ -11,7 +11,7 @@
 
 /* ===== SPACER FOR NAVBAR ===== */
 .cart-spacer {
-  height: 150px; /* Adjust this value if needed */
+  height: 250px; /* Adjust this value if needed */
   width: 100%;
   display: block;
   flex-shrink: 0;
