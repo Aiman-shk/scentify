@@ -2,30 +2,23 @@
    CART PAGE - RESPONSIVE (FIXED OVERLAP)
    ============================================ */
 
+/* Force the entire page to start below navbar */
 .cart-page-wrapper {
   min-height: 100vh;
   background: #fdf8f3;
-  padding-top: 0;
+  padding-top: 150px !important; /* Force padding */
   margin-top: 0;
   position: relative;
   z-index: 1;
 }
 
-/* ===== SPACER FOR NAVBAR (70px) + ANNOUNCEMENT BAR (36px) ===== */
-.cart-spacer {
-  height: 130px; /* 70px navbar + 36px announcement + 24px padding */
-  width: 100%;
-  flex-shrink: 0;
-  background: transparent;
-}
-
+/* Make sure the container respects the padding */
 .cart-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px 40px;
   position: relative;
   z-index: 2;
-  clear: both;
 }
 
 .cart-container h1 {
@@ -34,14 +27,12 @@
   margin-top: 0;
   color: #2d1b12;
   font-family: 'Playfair Display', Georgia, serif;
-  clear: both;
 }
 
 .cart-content {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
-  clear: both;
 }
 
 .cart-items {
@@ -147,9 +138,8 @@
   padding: 2rem;
   border-radius: 8px;
   position: sticky;
-  top: 140px;
+  top: 160px;
   height: fit-content;
-  z-index: 1;
 }
 
 .cart-summary h2 {
@@ -227,10 +217,10 @@
 
 .cart-empty {
   text-align: center;
-  padding: 130px 20px 40px;
+  padding: 60px 20px 40px;
   max-width: 600px;
   margin: 0 auto;
-  min-height: 60vh;
+  min-height: 40vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -267,31 +257,9 @@
    RESPONSIVE - CART PAGE
    ============================================ */
 
-@media (max-width: 992px) {
-  .cart-spacer {
-    height: 120px;
-  }
-
-  .cart-container {
-    padding: 0 20px 30px;
-  }
-
-  .cart-summary {
-    top: 130px;
-  }
-
-  .cart-empty {
-    padding: 110px 20px 30px;
-  }
-}
-
 @media (max-width: 768px) {
-  .cart-spacer {
-    height: 110px;
-  }
-
-  .cart-container {
-    padding: 0 16px 30px;
+  .cart-page-wrapper {
+    padding-top: 130px !important;
   }
 
   .cart-content {
@@ -325,19 +293,11 @@
   .cart-container h1 {
     font-size: 2rem;
   }
-
-  .cart-empty {
-    padding: 100px 16px 30px;
-  }
-
-  .cart-empty h2 {
-    font-size: 1.8rem;
-  }
 }
 
 @media (max-width: 480px) {
-  .cart-spacer {
-    height: 100px;
+  .cart-page-wrapper {
+    padding-top: 120px !important;
   }
 
   .cart-container {
@@ -355,27 +315,5 @@
   .btn-checkout {
     font-size: 1rem;
     padding: 10px;
-  }
-
-  .cart-empty {
-    padding: 90px 12px 20px;
-  }
-
-  .cart-empty h2 {
-    font-size: 1.5rem;
-  }
-}
-
-@media (max-width: 360px) {
-  .cart-spacer {
-    height: 90px;
-  }
-
-  .cart-container {
-    padding: 0 10px 20px;
-  }
-
-  .cart-empty {
-    padding: 86px 10px 20px;
   }
 }
