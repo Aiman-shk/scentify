@@ -1274,3 +1274,82 @@
   margin-top: 4px;
   letter-spacing: 0.5px;
 }
+/* ============================================
+   FIX - PRODUCT DETAILS OVERLAP ISSUES
+   ============================================ */
+
+/* Fix badge overlapping product name */
+.product-detail-image-wrapper .discount-badge-red {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 5;
+  background: #dc3545;
+  color: #ffffff !important;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 0;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.25);
+  pointer-events: none;
+}
+
+/* Make sure badge stays inside image */
+.product-detail-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Hide back button */
+.back-btn {
+  display: none !important;
+}
+
+/* Remove any extra spacing that might cause overlap */
+.product-card-main {
+  position: relative;
+  overflow: visible;
+}
+
+.product-details-column {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure the image container doesn't overflow */
+.product-image-with-thumbnails {
+  position: relative;
+  overflow: visible;
+}
+
+/* Responsive fixes for mobile */
+@media (max-width: 768px) {
+  .product-detail-image-wrapper {
+    height: 320px;
+  }
+
+  .product-detail-image-wrapper .discount-badge-red {
+    font-size: 10px;
+    padding: 4px 10px;
+    top: 8px;
+    left: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-detail-image-wrapper {
+    height: 240px;
+  }
+
+  .product-detail-image-wrapper .discount-badge-red {
+    font-size: 9px;
+    padding: 3px 8px;
+    top: 6px;
+    left: 6px;
+  }
+}
