@@ -10,22 +10,16 @@ const AnnouncementBar = () => {
 
     let animationId;
     let scrollPosition = 0;
-    const speed = 0.8; // Pixels per frame
+    const speed = 0.8;
 
     const scroll = () => {
       if (!scrollContainer) return;
-
-      // Check if we need to reset
       const firstChild = scrollContainer.firstChild;
       if (!firstChild) return;
 
-      const containerWidth = scrollContainer.offsetWidth;
+      scrollPosition -= speed;
       const firstChildWidth = firstChild.offsetWidth;
 
-      // Move left
-      scrollPosition -= speed;
-
-      // Reset when first child is completely out of view
       if (scrollPosition < -firstChildWidth) {
         scrollPosition += firstChildWidth;
       }
@@ -34,10 +28,8 @@ const AnnouncementBar = () => {
       animationId = requestAnimationFrame(scroll);
     };
 
-    // Start animation
     animationId = requestAnimationFrame(scroll);
 
-    // Pause on hover
     const pauseScroll = () => {
       if (animationId) {
         cancelAnimationFrame(animationId);
@@ -54,7 +46,6 @@ const AnnouncementBar = () => {
     scrollContainer.addEventListener('mouseenter', pauseScroll);
     scrollContainer.addEventListener('mouseleave', resumeScroll);
 
-    // Cleanup
     return () => {
       if (animationId) {
         cancelAnimationFrame(animationId);

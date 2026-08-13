@@ -72,3 +72,23 @@
     padding: 0 10px;
   }
 }
+
+/* ===== FLAG ICON ===== */
+.flag-icon {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1;
+  margin-right: 2px;
+}
+
+@media (max-width: 768px) {
+  .flag-icon {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .flag-icon {
+    font-size: 12px;
+  }
+}
