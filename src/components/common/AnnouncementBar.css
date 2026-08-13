@@ -49,8 +49,8 @@
 
 .flag-pk svg {
   display: block;
-  width: 20px;
-  height: 14px;
+  width: 22px;
+  height: 16px;
 }
 
 /* ===== RESPONSIVE ===== */
@@ -68,7 +68,7 @@
 
   .flag-pk svg {
     width: 18px;
-    height: 12px;
+    height: 13px;
   }
 }
 
@@ -85,7 +85,7 @@
 
   .flag-pk svg {
     width: 16px;
-    height: 11px;
+    height: 12px;
   }
 }
 
