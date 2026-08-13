@@ -7,8 +7,9 @@ import {
 } from 'react-icons/fa';
 import { useCart } from '../context/CartContext';
 import Reviews from '../components/Reviews/Reviews';
-import './Products.css';
 import API_URL from '../api/config';
+import './Products.css';
+
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -102,13 +103,13 @@ const ProductDetails = () => {
     };
     return imageMap[productName] || '/images/placeholder2.jpg';
   };
+  // ======================================
 
   // ===== FETCH PRODUCT =====
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        // ===== CHANGED: Use API_URL instead of hardcoded URL =====
         const response = await fetch(`${API_URL}/products/${id}`);
         if (!response.ok) {
           if (response.status === 404) {
@@ -129,6 +130,7 @@ const ProductDetails = () => {
         }, 3000);
       }
     };
+
     if (id) {
       fetchProduct();
     }
@@ -226,9 +228,12 @@ const ProductDetails = () => {
                 ))}
               </div>
 
-              {/* Main Image */}
-              <div className="product-single-image">
-                <img src={selectedImage} alt={product.name} />
+              {/* ===== RED DISCOUNT BADGE - TOP LEFT ===== */}
+              <div className="product-detail-image-wrapper">
+                <div className="discount-badge-red">14% OFF</div>
+                <div className="product-single-image">
+                  <img src={selectedImage} alt={product.name} />
+                </div>
               </div>
             </div>
           </div>
@@ -238,24 +243,22 @@ const ProductDetails = () => {
             {/* Product Name */}
             <h1 className="product-detail-name">{product.name}</h1>
             
-            {/* ===== SUBTITLE REMOVED ===== */}
-            {/* <p className="product-detail-subtitle">
-              {product.fragranceType || 'LUXURY FRAGRANCE'}
-              <span className="subtitle-gender">FOR {product.gender?.toUpperCase() || 'UNISEX'}</span>
-            </p> */}
-
-            {/* Rating Section - No reviews count */}
+            {/* Rating Section */}
             <div className="rating-section">
               <div className="stars-wrapper">{renderStars(product.rating)}</div>
               <span className="rating-number">{product.rating}</span>
             </div>
 
-            {/* ===== PRICE ===== */}
-            <div className="price-above-notes">
-              <span className="current-price">Rs. {product.price.toFixed(0)}</span>
-              {product.originalPrice && (
-                <span className="original-price">Rs. {product.originalPrice.toFixed(0)}</span>
-              )}
+            {/* ===== PRICE WITH DISCOUNT ===== */}
+            <div className="product-price-wrapper">
+              <div className="product-price-row">
+                <span className="product-price original-price">
+                  Rs. {Math.round(product.price / 0.86).toLocaleString()}
+                </span>
+                <span className="product-price discounted-price">
+                  Rs. {product.price.toLocaleString()}
+                </span>
+              </div>
             </div>
 
             {/* ===== BEAUTIFUL NOTES DISPLAY ===== */}
@@ -303,16 +306,6 @@ const ProductDetails = () => {
                 <h3 className="info-section-title">Description</h3>
                 <p className="info-section-content">{description}</p>
               </div>
-
-              {/* ===== SHIPPING INFORMATION REMOVED ===== */}
-              {/* <div className="info-section">
-                <h3 className="info-section-title">Shipping Information</h3>
-                <p className="info-section-content">
-                  Free shipping on orders over $50. Standard delivery takes 3-5 business days.
-                  <br />
-                  Express shipping available at checkout.
-                </p>
-              </div> */}
 
               {/* Quantity & Add to Cart */}
               {product.inStock && (
