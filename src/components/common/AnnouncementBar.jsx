@@ -59,13 +59,13 @@ const AnnouncementBar = () => {
     <div className="announcement-bar">
       <div className="announcement-track" ref={scrollRef}>
         <span className="announcement-text">
-          🇵🇰 Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
+          <span className="flag-icon">🇵🇰</span> Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
         </span>
         <span className="announcement-text">
-          🇵🇰 Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
+          <span className="flag-icon">🇵🇰</span> Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
         </span>
         <span className="announcement-text">
-          🇵🇰 Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
+          <span className="flag-icon">🇵🇰</span> Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
         </span>
       </div>
     </div>
