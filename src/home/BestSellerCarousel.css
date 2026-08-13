@@ -117,25 +117,6 @@
   overflow: hidden;
 }
 
-/* ===== RED DISCOUNT BADGE ===== */
-.discount-badge-red {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 4;
-  background: #dc3545;
-  color: #ffffff;
-  font-size: 11px;
-  font-weight: 700;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  padding: 4px 12px;
-  border-radius: 0;
-  line-height: 1.4;
-  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.25);
-}
-
 .product-image {
   position: absolute;
   top: 0;
@@ -153,7 +134,7 @@
 .best-seller-badge {
   position: absolute;
   top: 12px;
-  right: 12px;
+  left: 12px;
   background: #1a1a1a;
   color: #ffffff;
   padding: 4px 12px;
@@ -185,31 +166,11 @@
   letter-spacing: 0.5px;
 }
 
-/* ===== PRICE WITH DISCOUNT ===== */
-.product-price-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 4px;
-  flex-wrap: wrap;
-}
-
-/* Original price (crossed out) */
-.product-price.original-price {
-  font-size: 14px;
-  color: #a89a8e;
-  text-decoration: line-through;
-  font-weight: 400;
-  font-family: 'Inter', sans-serif;
-}
-
-/* Discounted price (red/bold) */
-.product-price.discounted-price {
+.product-price {
   font-size: 18px;
   font-weight: 700;
-  color: #dc3545;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.3px;
+  color: #1a1a1a;
+  margin: 0;
 }
 
 /* Add to Cart Button */
@@ -353,21 +314,6 @@
     height: 38px;
     font-size: 16px;
   }
-
-  .discount-badge-red {
-    font-size: 10px;
-    padding: 3px 10px;
-    top: 8px;
-    left: 8px;
-  }
-
-  .product-price.original-price {
-    font-size: 13px;
-  }
-
-  .product-price.discounted-price {
-    font-size: 16px;
-  }
 }
 
 /* Mobile - 1 item */
@@ -399,6 +345,9 @@
     margin-top: 14px;
   }
 
+  /* Arrows stay visible on mobile now so users can still page through
+     the full catalog one item at a time; remove this rule if you'd
+     rather rely on swipe alone. */
   .carousel-arrow {
     width: 34px;
     height: 34px;
@@ -409,8 +358,8 @@
     font-size: 16px;
   }
 
-  .product-brand {
-    font-size: 13px;
+  .product-price {
+    font-size: 16px;
   }
 
   .product-info {
@@ -440,21 +389,6 @@
   .dot.active {
     width: 24px;
   }
-
-  .discount-badge-red {
-    font-size: 10px;
-    padding: 3px 10px;
-    top: 8px;
-    left: 8px;
-  }
-
-  .product-price.original-price {
-    font-size: 12px;
-  }
-
-  .product-price.discounted-price {
-    font-size: 15px;
-  }
 }
 
 /* Small Mobile */
@@ -480,6 +414,10 @@
     font-size: 12px;
   }
 
+  .product-price {
+    font-size: 14px;
+  }
+
   .add-to-cart-btn {
     font-size: 12px;
     padding: 8px 12px;
@@ -494,21 +432,6 @@
     font-size: 9px;
     padding: 3px 8px;
     top: 8px;
-    right: 8px;
-  }
-
-  .discount-badge-red {
-    font-size: 9px;
-    padding: 2px 8px;
-    top: 6px;
-    left: 6px;
-  }
-
-  .product-price.original-price {
-    font-size: 11px;
-  }
-
-  .product-price.discounted-price {
-    font-size: 14px;
+    left: 8px;
   }
 }
