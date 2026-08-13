@@ -66,6 +66,9 @@ const ProductCard = ({ product, index }) => {
     >
       <Link to={`/product/${productId}`} className="product-card-link">
         <div className="product-image-wrapper">
+          {/* ===== RED DISCOUNT BADGE - TOP LEFT ===== */}
+          <div className="discount-badge-red">14% OFF</div>
+
           <div className="product-image-container">
             <AnimatePresence mode="wait">
               <motion.img
@@ -130,27 +133,19 @@ const ProductCard = ({ product, index }) => {
         </div>
 
         <div className="product-info">
-          {/* ===== GENDER/CATEGORY REMOVED ===== */}
-          {/* <div className="product-category">{product.gender || 'Unisex'}</div> */}
-          
           <h3 className="product-name">
             {product.name}
             <span className="product-size">({product.size || '50 ML'})</span>
           </h3>
           
-          {/* ===== NEW PRICE DISPLAY WITH DISCOUNT ===== */}
-          <div className="product-price-wrapper">
-            <div className="product-price-row">
-              <span className="product-price original-price">
-                Rs. {getOriginalPrice(product.price).toLocaleString()}
-              </span>
-              <span className="discount-badge">14% OFF</span>
-            </div>
-            <div className="product-price-row">
-              <span className="product-price discounted-price">
-                Rs. {product.price.toLocaleString()}
-              </span>
-            </div>
+          {/* ===== PRICE: Original crossed out + New price on same line ===== */}
+          <div className="product-price-row">
+            <span className="product-price original-price">
+              Rs. {getOriginalPrice(product.price).toLocaleString()}
+            </span>
+            <span className="product-price discounted-price">
+              Rs. {product.price.toLocaleString()}
+            </span>
           </div>
         </div>
       </Link>
