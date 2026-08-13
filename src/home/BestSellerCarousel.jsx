@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { useCart } from '../context/CartContext'; // Import cart context
+import { useCart } from '../context/CartContext';
+import API_URL from '../api/config';
 import './BestSellerCarousel.css';
 
 const BestSellerCarousel = ({ products }) => {
@@ -10,17 +11,22 @@ const BestSellerCarousel = ({ products }) => {
   const [itemsPerView, setItemsPerView] = useState(3);
   const [viewportWidth, setViewportWidth] = useState(0);
   const viewportRef = useRef(null);
-  const { addToCart } = useCart(); // Get addToCart function from context
+  const { addToCart } = useCart();
 
-  // Use the full product list — don't cut the catalog down to 8 "top rated" items.
-  // If you specifically want a curated Best Seller list, filter by a `bestSeller: true`
-  // flag on the product instead of rating, so you don't accidentally hide most of your catalog.
-  const displayProducts = products || [];
+  // ===== Get top 8 rated products as best sellers =====
+  const bestSellers = products
+    .filter(product => product.rating >= 4.5)
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 8);
 
-  // Calculate items per view based on screen size, and measure the
-  // viewport's actual pixel width so item movement is exact (no
-  // rounding drift from nested percentages, which was causing the
-  // "half perfume" slide you saw).
+  const displayProducts = bestSellers.length > 0 ? bestSellers : products;
+
+  // ===== PRICE LOGIC: Calculate original price for 14% discount =====
+  const getOriginalPrice = (price) => {
+    return Math.round(price / 0.86); // Reverse calculate from 14% discount
+  };
+
+  // Calculate items per view based on screen size
   useEffect(() => {
     const updateLayout = () => {
       const width = window.innerWidth;
@@ -42,10 +48,8 @@ const BestSellerCarousel = ({ products }) => {
   }, []);
 
   const total = displayProducts.length;
-  // Max index = last position where a full view is still visible, then we clamp for the tail
   const maxIndex = Math.max(0, total - itemsPerView);
 
-  // Reset index if it becomes invalid (e.g. after resize or product list change)
   useEffect(() => {
     setCurrentIndex((prev) => Math.min(prev, maxIndex));
   }, [maxIndex]);
@@ -58,12 +62,10 @@ const BestSellerCarousel = ({ products }) => {
     setCurrentIndex((prev) => (prev <= 0 ? maxIndex : prev - 1));
   };
 
-  // ===== ADD TO CART HANDLER =====
   const handleAddToCart = (product, e) => {
-    e.preventDefault(); // Prevent Link navigation
-    e.stopPropagation(); // Stop event bubbling
+    e.preventDefault();
+    e.stopPropagation();
     
-    // Create cart item with required fields
     const cartItem = {
       id: product._id,
       _id: product._id,
@@ -76,11 +78,8 @@ const BestSellerCarousel = ({ products }) => {
     };
     
     addToCart(cartItem);
-    
-    // Optional: Show a quick feedback (you can replace with a toast notification)
     console.log(`✅ Added "${product.name}" to cart!`);
     
-    // Optional: Add a visual feedback
     const btn = e.currentTarget;
     const originalText = btn.textContent;
     btn.textContent = '✓ Added!';
@@ -95,8 +94,6 @@ const BestSellerCarousel = ({ products }) => {
     return null;
   }
 
-  // Exact pixel width per item — guarantees each click moves precisely
-  // one full card, never a partial one.
   const itemWidth = itemsPerView > 0 ? viewportWidth / itemsPerView : 0;
   const translatePx = currentIndex * itemWidth;
 
@@ -146,6 +143,8 @@ const BestSellerCarousel = ({ products }) => {
                     >
                       <Link to={`/product/${product._id}`} className="product-link">
                         <div className="product-image-wrapper">
+                          {/* ===== RED DISCOUNT BADGE ===== */}
+                          <div className="discount-badge-red">14% OFF</div>
                           <img
                             src={product.image || '/images/placeholder.jpg'}
                             alt={product.name}
@@ -159,10 +158,17 @@ const BestSellerCarousel = ({ products }) => {
                         <div className="product-info">
                           <h3 className="product-name">{product.name}</h3>
                           <p className="product-brand">{product.brand || 'Scentify'}</p>
-                          <p className="product-price">Rs. {product.price.toLocaleString()}</p>
+                          {/* ===== PRICE WITH DISCOUNT ===== */}
+                          <div className="product-price-row">
+                            <span className="product-price original-price">
+                              Rs. {getOriginalPrice(product.price).toLocaleString()}
+                            </span>
+                            <span className="product-price discounted-price">
+                              Rs. {product.price.toLocaleString()}
+                            </span>
+                          </div>
                         </div>
                       </Link>
-                      {/* ===== FIXED: Add to Cart Button ===== */}
                       <button
                         className="add-to-cart-btn"
                         onClick={(e) => handleAddToCart(product, e)}
@@ -187,7 +193,7 @@ const BestSellerCarousel = ({ products }) => {
           </button>
         </div>
 
-        {/* Pagination Dots — one dot per possible starting position */}
+        {/* Pagination Dots */}
         {total > itemsPerView && (
           <div className="carousel-dots">
             {Array.from({ length: maxIndex + 1 }).map((_, index) => (
