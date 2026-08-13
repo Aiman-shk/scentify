@@ -5,7 +5,7 @@
 .cart-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 110px 20px 40px; /* ← FIX: Added top padding for navbar + announcement bar */
+  padding: 130px 20px 40px; /* ← FIX: Increased top padding */
 }
 
 .cart-container h1 {
@@ -124,7 +124,7 @@
   padding: 2rem;
   border-radius: 8px;
   position: sticky;
-  top: 120px;
+  top: 140px;
   height: fit-content;
 }
 
@@ -240,13 +240,17 @@
 
 @media (max-width: 992px) {
   .cart-container {
-    padding: 100px 20px 30px;
+    padding: 120px 20px 30px;
+  }
+
+  .cart-summary {
+    top: 120px;
   }
 }
 
 @media (max-width: 768px) {
   .cart-container {
-    padding: 92px 16px 30px;
+    padding: 110px 16px 30px;
   }
 
   .cart-content {
@@ -275,15 +279,19 @@
   .cart-summary {
     position: static;
   }
+
+  .cart-container h1 {
+    font-size: 2rem;
+  }
 }
 
 @media (max-width: 480px) {
   .cart-container {
-    padding: 84px 12px 20px;
+    padding: 100px 12px 20px;
   }
 
   .cart-container h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .cart-summary {
@@ -298,6 +306,6 @@
 
 @media (max-width: 360px) {
   .cart-container {
-    padding: 80px 10px 20px;
+    padding: 95px 10px 20px;
   }
 }

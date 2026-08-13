@@ -182,7 +182,7 @@ const Checkout = () => {
 
     const totalPrice = getTotalPrice();
     
-    // ===== DELIVERY CHARGE: Rs. 250 for all orders =====
+    // ===== DELIVERY CHARGE: Rs. 250 for orders below Rs. 3000 =====
     const shippingPrice = 250;
     const itemsPrice = totalPrice;
 
