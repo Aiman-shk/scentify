@@ -10,7 +10,7 @@
 /* ===== HERO SECTION - LIGHTER COLORS (MATCHES HOMEPAGE) ===== */
 .products-hero {
   background: linear-gradient(165deg, #f9f4ef 0%, #f0e8de 40%, #e8ddd0 100%);
-  padding: 110px 20px 60px; /* ← FIX: Added top padding for announcement bar + navbar */
+  padding: 110px 20px 60px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -378,7 +378,7 @@
 
 @media screen and (max-width: 768px) {
   .products-hero {
-    padding: 92px 20px 40px; /* ← FIX: Adjusted for mobile */
+    padding: 92px 20px 40px;
   }
 
   .products-title {
@@ -428,7 +428,7 @@
 
 @media screen and (max-width: 480px) {
   .products-hero {
-    padding: 84px 16px 30px; /* ← FIX: Adjusted for small mobile */
+    padding: 84px 16px 30px;
   }
 
   .products-title {
@@ -447,7 +447,7 @@
 
 @media (max-width: 360px) {
   .products-hero {
-    padding: 80px 16px 30px; /* ← FIX: Adjusted for extra small */
+    padding: 80px 16px 30px;
   }
 }
 
@@ -468,25 +468,9 @@
   margin: 0 auto;
 }
 
-/* Back Button */
+/* ===== BACK BUTTON - HIDDEN ===== */
 .back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: transparent;
-  border: none;
-  color: var(--color-text-secondary, #6b5f55);
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  padding: 12px 0;
-  transition: all 0.3s ease;
-  font-family: 'Arial', sans-serif;
-}
-
-.back-btn:hover {
-  color: var(--color-gold, #c9a96e);
-  transform: translateX(-5px);
+  display: none !important;
 }
 
 /* Main Product Card */
@@ -550,13 +534,15 @@
 .thumbnail-vertical-item img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 4px;
 }
 
-/* Main Single Image */
-.product-single-image {
+/* ===== MAIN IMAGE FIX ===== */
+.product-detail-image-wrapper {
+  position: relative;
   flex: 1;
-  height: 450px;
+  height: 500px;
   background: var(--color-beige, #f5ede4);
   border-radius: 16px;
   overflow: hidden;
@@ -566,10 +552,20 @@
   border: 1px solid var(--color-beige-dark, #e8ddd0);
 }
 
+.product-single-image {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: var(--color-beige, #f5ede4);
+}
+
 .product-single-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* ← Shows full image without cropping */
   transition: transform 0.5s ease;
 }
 
@@ -577,11 +573,39 @@
   transform: scale(1.03);
 }
 
+/* ===== DISCOUNT BADGE - INSIDE IMAGE ===== */
+.product-detail-image-wrapper .discount-badge-red {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 5;
+  background: #dc3545;
+  color: #ffffff !important;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 0;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.25);
+  pointer-events: none;
+}
+
+.product-detail-image-wrapper .discount-badge-red::before,
+.product-detail-image-wrapper .discount-badge-red::after {
+  content: none !important;
+  display: none !important;
+}
+
 /* ===== RIGHT COLUMN ===== */
 .product-details-column {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  position: relative;
+  z-index: 1;
 }
 
 .product-detail-name {
@@ -592,6 +616,7 @@
   font-family: 'Playfair Display', Georgia, serif;
   letter-spacing: 1px;
   text-transform: uppercase;
+  padding-top: 0;
 }
 
 .product-detail-subtitle {
@@ -904,8 +929,8 @@
     max-width: 100%;
   }
 
-  .product-single-image {
-    height: 380px;
+  .product-detail-image-wrapper {
+    height: 420px;
   }
 
   .product-detail-name {
@@ -946,8 +971,12 @@
     flex-shrink: 0;
   }
 
+  .product-detail-image-wrapper {
+    height: 350px;
+  }
+
   .product-single-image {
-    height: 320px;
+    padding: 15px;
   }
 
   .product-detail-name {
@@ -983,6 +1012,13 @@
   .info-section-content {
     font-size: 13px;
   }
+
+  .product-detail-image-wrapper .discount-badge-red {
+    font-size: 10px;
+    padding: 4px 10px;
+    top: 8px;
+    left: 8px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -995,8 +1031,12 @@
     gap: 16px;
   }
 
+  .product-detail-image-wrapper {
+    height: 260px;
+  }
+
   .product-single-image {
-    height: 240px;
+    padding: 10px;
   }
 
   .thumbnail-vertical-item {
@@ -1048,6 +1088,13 @@
   .info-section-content {
     font-size: 12px;
   }
+
+  .product-detail-image-wrapper .discount-badge-red {
+    font-size: 9px;
+    padding: 3px 8px;
+    top: 6px;
+    left: 6px;
+  }
 }
 
 /* ============================================
@@ -1096,173 +1143,23 @@
 }
 
 /* ============================================
-   DISCOUNT BADGE & PRICE STYLES
+   PRODUCT CARD FIXES
    ============================================ */
 
-/* Image wrapper for badge positioning */
-.product-detail-image-wrapper {
-  position: relative;
-  flex: 1;
-  height: 450px;
-  background: var(--color-beige, #f5ede4);
-  border-radius: 16px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--color-beige-dark, #e8ddd0);
+/* Fix product card image display */
+.product-image-wrapper .product-image {
+  object-fit: contain;
+  padding: 16px;
 }
 
-/* Red discount badge for product details */
-.discount-badge-red {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 10;
-  background: #dc3545;
-  color: #ffffff !important;
-  font-size: 12px;
-  font-weight: 700;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  padding: 5px 14px;
-  border-radius: 0;
-  line-height: 1.4;
-  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.25);
-  pointer-events: none;
-}
-
-/* Remove any pseudo-elements that might add extra text */
-.discount-badge-red::before,
-.discount-badge-red::after {
-  content: none !important;
-  display: none !important;
-}
-
-/* Price wrapper for product details */
-.product-price-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  margin: 8px 0 6px;
-  width: 100%;
-}
-
+/* Fix price row to prevent overlap */
 .product-price-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  margin-top: 4px;
   flex-wrap: wrap;
-}
-
-/* Original price (crossed out - gray/muted) */
-.product-price.original-price {
-  font-size: 16px;
-  color: #a89a8e;
-  text-decoration: line-through;
-  font-weight: 400;
-  font-family: 'Inter', sans-serif;
-}
-
-/* Discounted price (red/bold) */
-.product-price.discounted-price {
-  font-size: 28px;
-  font-weight: 700;
-  color: #dc3545;
-  font-family: 'Playfair Display', Georgia, serif;
-  letter-spacing: 0.5px;
-}
-
-/* ============================================
-   FIX - DISCOUNT BADGE ON PRODUCT CARDS
-   ============================================ */
-
-/* Make sure discount badge stays clean on all product cards */
-.product-image-wrapper .discount-badge-red {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 10;
-  background: #dc3545;
-  color: #ffffff !important;
-  font-size: 11px;
-  font-weight: 700;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  padding: 4px 12px;
-  border-radius: 0;
-  line-height: 1.4;
-  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.25);
-  pointer-events: none;
-}
-
-.product-image-wrapper .discount-badge-red::before,
-.product-image-wrapper .discount-badge-red::after {
-  content: none !important;
-  display: none !important;
-}
-
-/* ============================================
-   RESPONSIVE - DISCOUNT BADGE & PRICE
-   ============================================ */
-
-@media (max-width: 768px) {
-  .product-detail-image-wrapper {
-    height: 320px;
-  }
-
-  .discount-badge-red {
-    font-size: 10px !important;
-    padding: 4px 10px !important;
-    top: 8px;
-    left: 8px;
-  }
-
-  .product-price.original-price {
-    font-size: 14px;
-  }
-
-  .product-price.discounted-price {
-    font-size: 22px;
-  }
-
-  .product-image-wrapper .discount-badge-red {
-    font-size: 10px !important;
-    padding: 3px 10px !important;
-    top: 8px;
-    left: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .product-detail-image-wrapper {
-    height: 240px;
-  }
-
-  .discount-badge-red {
-    font-size: 9px !important;
-    padding: 3px 8px !important;
-    top: 6px;
-    left: 6px;
-  }
-
-  .product-price.original-price {
-    font-size: 12px;
-  }
-
-  .product-price.discounted-price {
-    font-size: 20px;
-  }
-
-  .product-image-wrapper .discount-badge-red {
-    font-size: 9px !important;
-    padding: 2px 8px !important;
-    top: 6px;
-    left: 6px;
-  }
+  padding-right: 70px;
 }
 
 /* ProductCard.css */
@@ -1273,83 +1170,4 @@
   display: block;
   margin-top: 4px;
   letter-spacing: 0.5px;
-}
-/* ============================================
-   FIX - PRODUCT DETAILS OVERLAP ISSUES
-   ============================================ */
-
-/* Fix badge overlapping product name */
-.product-detail-image-wrapper .discount-badge-red {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 5;
-  background: #dc3545;
-  color: #ffffff !important;
-  font-size: 12px;
-  font-weight: 700;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  padding: 5px 14px;
-  border-radius: 0;
-  line-height: 1.4;
-  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.25);
-  pointer-events: none;
-}
-
-/* Make sure badge stays inside image */
-.product-detail-image-wrapper {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-/* Hide back button */
-.back-btn {
-  display: none !important;
-}
-
-/* Remove any extra spacing that might cause overlap */
-.product-card-main {
-  position: relative;
-  overflow: visible;
-}
-
-.product-details-column {
-  position: relative;
-  z-index: 1;
-}
-
-/* Ensure the image container doesn't overflow */
-.product-image-with-thumbnails {
-  position: relative;
-  overflow: visible;
-}
-
-/* Responsive fixes for mobile */
-@media (max-width: 768px) {
-  .product-detail-image-wrapper {
-    height: 320px;
-  }
-
-  .product-detail-image-wrapper .discount-badge-red {
-    font-size: 10px;
-    padding: 4px 10px;
-    top: 8px;
-    left: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .product-detail-image-wrapper {
-    height: 240px;
-  }
-
-  .product-detail-image-wrapper .discount-badge-red {
-    font-size: 9px;
-    padding: 3px 8px;
-    top: 6px;
-    left: 6px;
-  }
 }
