@@ -1,5 +1,5 @@
 /* ============================================
-   CART PAGE - RESPONSIVE
+   CART PAGE - RESPONSIVE (FIXED OVERLAP)
    ============================================ */
 
 .cart-page-wrapper {
@@ -7,31 +7,41 @@
   background: #fdf8f3;
   padding-top: 0;
   margin-top: 0;
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== SPACER FOR NAVBAR (70px) + ANNOUNCEMENT BAR (36px) ===== */
 .cart-spacer {
-  height: 110px;
+  height: 130px; /* Increased from 110px to fix overlap */
   width: 100%;
+  flex-shrink: 0;
+  background: transparent;
 }
 
 .cart-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px 40px;
+  position: relative;
+  z-index: 2;
+  clear: both;
 }
 
 .cart-container h1 {
   font-size: 2.5rem;
   margin-bottom: 2rem;
+  margin-top: 0; /* Added to remove top margin */
   color: #2d1b12;
   font-family: 'Playfair Display', Georgia, serif;
+  clear: both;
 }
 
 .cart-content {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 2rem;
+  clear: both;
 }
 
 .cart-items {
@@ -137,8 +147,9 @@
   padding: 2rem;
   border-radius: 8px;
   position: sticky;
-  top: 130px;
+  top: 130px; /* Adjusted to match spacer */
   height: fit-content;
+  z-index: 1;
 }
 
 .cart-summary h2 {
@@ -258,7 +269,7 @@
 
 @media (max-width: 992px) {
   .cart-spacer {
-    height: 100px;
+    height: 120px; /* Adjusted for tablet */
   }
 
   .cart-container {
@@ -276,7 +287,7 @@
 
 @media (max-width: 768px) {
   .cart-spacer {
-    height: 92px;
+    height: 100px; /* Adjusted for mobile */
   }
 
   .cart-container {
@@ -308,6 +319,7 @@
 
   .cart-summary {
     position: static;
+    margin-top: 1rem;
   }
 
   .cart-container h1 {
@@ -325,7 +337,7 @@
 
 @media (max-width: 480px) {
   .cart-spacer {
-    height: 84px;
+    height: 90px; /* Adjusted for small mobile */
   }
 
   .cart-container {
@@ -356,7 +368,7 @@
 
 @media (max-width: 360px) {
   .cart-spacer {
-    height: 80px;
+    height: 85px; /* Adjusted for very small screens */
   }
 
   .cart-container {
@@ -367,4 +379,3 @@
     padding: 86px 10px 20px;
   }
 }
-
