@@ -13,7 +13,7 @@
 
 /* ===== SPACER FOR NAVBAR (70px) + ANNOUNCEMENT BAR (36px) ===== */
 .cart-spacer {
-  height: 130px; /* Increased from 110px to fix overlap */
+  height: 130px; /* 70px navbar + 36px announcement + 24px padding */
   width: 100%;
   flex-shrink: 0;
   background: transparent;
@@ -31,7 +31,7 @@
 .cart-container h1 {
   font-size: 2.5rem;
   margin-bottom: 2rem;
-  margin-top: 0; /* Added to remove top margin */
+  margin-top: 0;
   color: #2d1b12;
   font-family: 'Playfair Display', Georgia, serif;
   clear: both;
@@ -147,7 +147,7 @@
   padding: 2rem;
   border-radius: 8px;
   position: sticky;
-  top: 130px; /* Adjusted to match spacer */
+  top: 140px; /* Increased to match new spacer */
   height: fit-content;
   z-index: 1;
 }
@@ -269,7 +269,7 @@
 
 @media (max-width: 992px) {
   .cart-spacer {
-    height: 120px; /* Adjusted for tablet */
+    height: 120px; /* Tablet */
   }
 
   .cart-container {
@@ -277,7 +277,7 @@
   }
 
   .cart-summary {
-    top: 120px;
+    top: 130px;
   }
 
   .cart-empty {
@@ -287,7 +287,7 @@
 
 @media (max-width: 768px) {
   .cart-spacer {
-    height: 100px; /* Adjusted for mobile */
+    height: 110px; /* 60px navbar + 32px announcement + 18px padding */
   }
 
   .cart-container {
@@ -337,7 +337,7 @@
 
 @media (max-width: 480px) {
   .cart-spacer {
-    height: 90px; /* Adjusted for small mobile */
+    height: 100px; /* 56px navbar + 28px announcement + 16px padding */
   }
 
   .cart-container {
@@ -368,7 +368,7 @@
 
 @media (max-width: 360px) {
   .cart-spacer {
-    height: 85px; /* Adjusted for very small screens */
+    height: 90px; /* Smallest */
   }
 
   .cart-container {
