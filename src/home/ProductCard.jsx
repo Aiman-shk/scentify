@@ -50,6 +50,11 @@ const ProductCard = ({ product, index }) => {
   // ===== KEPT: Hot Seller check =====
   const isHotSeller = product.rating >= 4.7 && product.numReviews > 50;
 
+  // ===== PRICE LOGIC: Calculate original price for 14% discount =====
+  const getOriginalPrice = (price) => {
+    return Math.round(price / 0.86); // Reverse calculate from 14% discount
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -133,13 +138,20 @@ const ProductCard = ({ product, index }) => {
             <span className="product-size">({product.size || '50 ML'})</span>
           </h3>
           
-          <div className="product-price-row">
-            <span className="product-price regular">
-              Rs. {product.price.toFixed(0)}
-            </span>
+          {/* ===== NEW PRICE DISPLAY WITH DISCOUNT ===== */}
+          <div className="product-price-wrapper">
+            <div className="product-price-row">
+              <span className="product-price original-price">
+                Rs. {getOriginalPrice(product.price).toLocaleString()}
+              </span>
+              <span className="discount-badge">14% OFF</span>
+            </div>
+            <div className="product-price-row">
+              <span className="product-price discounted-price">
+                Rs. {product.price.toLocaleString()}
+              </span>
+            </div>
           </div>
-
-        
         </div>
       </Link>
 

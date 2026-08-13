@@ -216,34 +216,55 @@
   font-size: 12px;
 }
 
-/* ===== Price Row ===== */
+/* ============================================
+   PRICE DISPLAY WITH DISCOUNT
+   ============================================ */
+
+.product-price-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  margin-top: 4px;
+  width: 100%;
+}
+
 .product-price-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 4px;
   flex-wrap: wrap;
 }
 
-.product-price {
-  font-size: 15px;
-  font-weight: 700;
-  font-family: 'Inter', sans-serif;
-}
-
-.product-price.regular {
-  color: #2d1b12;
-}
-
-.product-price.original {
+/* Original price (crossed out) */
+.product-price.original-price {
+  font-size: 13px;
   color: #a89a8e;
   text-decoration: line-through;
   font-weight: 400;
-  font-size: 13px;
+  font-family: 'Inter', sans-serif;
 }
 
-.product-price.discounted {
-  color: #dc3545;
+/* Discount badge */
+.discount-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #d4af37;
+  background: rgba(212, 175, 55, 0.12);
+  padding: 2px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+  font-family: 'Inter', sans-serif;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+/* Discounted price (new price) */
+.product-price.discounted-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2d1b12;
+  font-family: 'Playfair Display', Georgia, serif;
+  letter-spacing: 0.5px;
 }
 
 /* ============================================
@@ -306,8 +327,8 @@
     font-size: 13px;
   }
 
-  .product-price {
-    font-size: 14px;
+  .product-price.discounted-price {
+    font-size: 17px;
   }
 
   .product-add-btn {
@@ -342,12 +363,17 @@
     font-size: 11px;
   }
 
-  .product-price {
-    font-size: 13px;
+  .product-price.original-price {
+    font-size: 12px;
   }
 
-  .product-price.original {
-    font-size: 12px;
+  .product-price.discounted-price {
+    font-size: 17px;
+  }
+
+  .discount-badge {
+    font-size: 9px;
+    padding: 1px 8px;
   }
 
   .product-category {
@@ -423,12 +449,17 @@
     font-size: 11px;
   }
 
-  .product-price {
-    font-size: 12px;
+  .product-price.original-price {
+    font-size: 11px;
   }
 
-  .product-price.original {
-    font-size: 11px;
+  .product-price.discounted-price {
+    font-size: 15px;
+  }
+
+  .discount-badge {
+    font-size: 8px;
+    padding: 1px 6px;
   }
 
   .product-add-btn {
