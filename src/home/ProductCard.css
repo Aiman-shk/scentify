@@ -132,14 +132,19 @@
   z-index: 2;
 }
 
+/* Hot seller badge stays top-right, but shifted down so it
+   doesn't collide with the wishlist button which is also top-right */
 .product-badge.hot-seller {
   right: 10px;
+  top: 48px;
   background: #2d1b12;
   color: #ffffff;
 }
 
+/* Discount badge - top-left, always visible on every product card */
 .product-badge.discount {
   left: 10px;
+  top: 10px;
   background: #dc3545;
   color: #ffffff;
 }
@@ -219,7 +224,7 @@
 /* ===== Price Row ===== */
 .product-price-row {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 8px;
   margin-top: 4px;
   flex-wrap: wrap;
@@ -240,10 +245,14 @@
   text-decoration: line-through;
   font-weight: 400;
   font-size: 13px;
+  order: 1;
 }
 
 .product-price.discounted {
   color: #dc3545;
+  font-size: 16px;
+  font-weight: 800;
+  order: 2;
 }
 
 /* ============================================
@@ -373,10 +382,12 @@
 
   .product-badge.hot-seller {
     right: 6px;
+    top: 40px;
   }
 
   .product-badge.discount {
     left: 6px;
+    top: 6px;
   }
 
   .product-wishlist-btn {
