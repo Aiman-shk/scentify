@@ -30,7 +30,6 @@ const Checkout = () => {
     city: '',
     phone: '',
     paymentMethod: 'Cash on Delivery',
-    // Billing address fields
     billingFullName: '',
     billingAddress: '',
     billingCity: '',
@@ -47,9 +46,8 @@ const Checkout = () => {
 
   // ===== DELIVERY CHARGE LOGIC =====
   const getShippingPrice = (total) => {
-    // Free shipping on orders above Rs. 3000
-    // Rs. 250 delivery charge for orders below Rs. 3000
-    return total >= 3000 ? 0 : 250;
+    // Rs. 250 delivery charge for all orders (no free shipping)
+    return 250;
   };
 
   const handleChange = (e) => {
@@ -83,20 +81,12 @@ const Checkout = () => {
     setShowBillingDropdown(false);
   };
 
-  // Copy to clipboard function
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 3000);
   };
 
-  // ===== VALIDATE PHONE NUMBER (11 digits) =====
-  const validatePhone = (phone) => {
-    const cleanPhone = phone.replace(/\D/g, '');
-    return cleanPhone.length === 11;
-  };
-
-  // ===== FORMAT PHONE NUMBER AS USER TYPES =====
   const handlePhoneChange = (e) => {
     const value = e.target.value;
     const cleanValue = value.replace(/\D/g, '');
@@ -132,14 +122,12 @@ const Checkout = () => {
     setLoading(true);
     setError('');
 
-    // ===== VALIDATE ALL FIELDS =====
     if (!formData.fullName || !formData.email || !formData.address || !formData.city || !formData.phone) {
       setError('Please fill in all required shipping fields');
       setLoading(false);
       return;
     }
 
-    // ===== VALIDATE PHONE NUMBER (11 digits) =====
     const cleanPhone = formData.phone.replace(/\D/g, '');
     if (cleanPhone.length !== 11) {
       setError('Phone number must be exactly 11 digits (e.g., 03XX-XXXXXXX)');
@@ -147,7 +135,6 @@ const Checkout = () => {
       return;
     }
 
-    // ===== VALIDATE BILLING ADDRESS IF DIFFERENT =====
     if (useDifferentBilling) {
       if (!formData.billingFullName || !formData.billingAddress || !formData.billingCity || !formData.billingPhone) {
         setError('Please fill in all billing address fields');
@@ -195,13 +182,10 @@ const Checkout = () => {
 
     const totalPrice = getTotalPrice();
     
-    // ===== DELIVERY CHARGE CALCULATION =====
-    // Free shipping on orders above Rs. 3000
-    // Rs. 250 delivery charge for orders below Rs. 3000
-    const shippingPrice = totalPrice >= 3000 ? 0 : 250;
+    // ===== DELIVERY CHARGE: Rs. 250 for all orders =====
+    const shippingPrice = 250;
     const itemsPrice = totalPrice;
 
-    // ===== BUILD ORDER DATA =====
     const orderData = {
       orderItems,
       shippingAddress: {
@@ -272,7 +256,7 @@ const Checkout = () => {
 
   // ===== Calculate totals for display =====
   const subtotal = getTotalPrice();
-  const shipping = subtotal >= 3000 ? 0 : 250;
+  const shipping = 250; // Fixed Rs. 250 delivery charge
   const total = subtotal + shipping;
 
   return (
@@ -297,7 +281,6 @@ const Checkout = () => {
           </div>
         )}
 
-        {/* ===== TWO COLUMN LAYOUT ===== */}
         <div className="checkout-grid">
           {/* LEFT: Order Summary */}
           <div className="order-summary-wrapper">
@@ -317,8 +300,8 @@ const Checkout = () => {
                   <span>Rs. {subtotal.toFixed(0)}</span>
                 </div>
                 <div className="summary-row">
-                  <span>Delivery Charge</span>
-                  <span>{shipping === 0 ? 'FREE' : `Rs. ${shipping.toFixed(0)}`}</span>
+                  <span>Delivery Charges</span>
+                  <span>Rs. {shipping.toFixed(0)}</span>
                 </div>
                 <div className="summary-row total">
                   <span>Total</span>
@@ -326,9 +309,7 @@ const Checkout = () => {
                 </div>
               </div>
               <p className="shipping-note">
-                {shipping === 0 
-                  ? '✅ Free delivery on orders above Rs. 3000' 
-                  : `🛵 Add Rs. ${shipping} more for FREE delivery (min. Rs. 3000)`}
+                * Delivery charges: Rs. 250 for all orders
               </p>
             </div>
           </div>
@@ -457,7 +438,6 @@ const Checkout = () => {
                   </label>
                 </div>
 
-                {/* ===== DIFFERENT BILLING ADDRESS FIELDS ===== */}
                 {useDifferentBilling && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
@@ -556,7 +536,6 @@ const Checkout = () => {
                 <p className="payment-note">All transactions are secure and encrypted.</p>
 
                 <div className="payment-options">
-                  {/* Cash on Delivery */}
                   <label className={`payment-option ${formData.paymentMethod === 'Cash on Delivery' ? 'selected' : ''}`}>
                     <input
                       type="radio"
@@ -574,7 +553,6 @@ const Checkout = () => {
                     </div>
                   </label>
 
-                  {/* Online Payment */}
                   <label className={`payment-option ${formData.paymentMethod === 'Online Payment' ? 'selected' : ''}`}>
                     <input
                       type="radio"
@@ -593,7 +571,6 @@ const Checkout = () => {
                   </label>
                 </div>
 
-                {/* Online Payment Details */}
                 {formData.paymentMethod === 'Online Payment' && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
