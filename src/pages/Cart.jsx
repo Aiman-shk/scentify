@@ -7,7 +7,6 @@ const CartPage = () => {
   const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
   const cartTotal = getCartTotal();
 
-  // Handle quantity update
   const handleQuantityChange = (itemId, newQuantity) => {
     if (newQuantity < 1) {
       removeFromCart(itemId);
@@ -16,17 +15,28 @@ const CartPage = () => {
     }
   };
 
-  // Handle clear cart
   const handleClearCart = () => {
     if (window.confirm('Are you sure you want to clear your cart?')) {
       cartItems.forEach(item => removeFromCart(item.id));
     }
   };
 
+  // LOG: Check if cart is working
+  console.log('Cart items:', cartItems);
+
   return (
     <div className="cart-page-wrapper">
-      {/* SPACER - This prevents overlap with fixed navbar */}
-      <div className="cart-spacer"></div>
+      {/* SPACER - FIXED WITH INLINE STYLE AS BACKUP */}
+      <div 
+        className="cart-spacer" 
+        style={{ 
+          height: '150px', 
+          width: '100%', 
+          background: 'transparent',
+          display: 'block',
+          flexShrink: 0
+        }}
+      ></div>
       
       <div className="cart-container">
         <h1>Shopping Cart</h1>
