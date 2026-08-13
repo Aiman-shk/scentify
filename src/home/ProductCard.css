@@ -1,4 +1,4 @@
-/* ============================================
+=/* ============================================
    PRODUCT CARD - MODERN E-COMMERCE STYLE
    ============================================ */
 
@@ -42,20 +42,21 @@
 /* ===== RED DISCOUNT BADGE - TOP LEFT ===== */
 .discount-badge-red {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 10px;
+  left: 10px;
   z-index: 4;
   background: #dc3545;
   color: #ffffff;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 6px 14px;
   font-family: 'Inter', sans-serif;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
-  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.25);
+  padding: 4px 12px;
   border-radius: 0;
-  line-height: 1.2;
+  line-height: 1.4;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.25);
+  /* Sharp corners - no border-radius */
 }
 
 .product-image-container {
@@ -325,8 +326,10 @@
   }
 
   .discount-badge-red {
-    font-size: 11px;
-    padding: 5px 12px;
+    font-size: 10px;
+    padding: 3px 10px;
+    top: 8px;
+    left: 8px;
   }
 
   .product-add-btn {
@@ -371,7 +374,9 @@
 
   .discount-badge-red {
     font-size: 10px;
-    padding: 4px 10px;
+    padding: 3px 10px;
+    top: 8px;
+    left: 8px;
   }
 
   .product-nav-arrow {
@@ -453,7 +458,9 @@
 
   .discount-badge-red {
     font-size: 9px;
-    padding: 3px 8px;
+    padding: 2px 8px;
+    top: 6px;
+    left: 6px;
   }
 
   .product-add-btn {
