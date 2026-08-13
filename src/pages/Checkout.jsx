@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { pakistanCities } from '../data/cities';
 import { FaCopy, FaCheckCircle, FaMoneyBillWave, FaCreditCard } from 'react-icons/fa';
-import './Checkout.css';
 import API_URL from '../api/config';
+import './Checkout.css';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -16,6 +16,7 @@ const Checkout = () => {
   const [searchCity, setSearchCity] = useState('');
   const [showDropdown, setShowDropdown] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [orderId, setOrderId] = useState(null);
 
   // ===== BILLING ADDRESS STATE =====
   const [useDifferentBilling, setUseDifferentBilling] = useState(false);
@@ -44,6 +45,13 @@ const Checkout = () => {
     city.toLowerCase().includes(billingSearchCity.toLowerCase())
   );
 
+  // ===== DELIVERY CHARGE LOGIC =====
+  const getShippingPrice = (total) => {
+    // Free shipping on orders above Rs. 3000
+    // Rs. 250 delivery charge for orders below Rs. 3000
+    return total >= 3000 ? 0 : 250;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -62,7 +70,6 @@ const Checkout = () => {
     setShowDropdown(false);
   };
 
-  // ===== BILLING CITY HANDLERS =====
   const handleBillingCitySearch = (e) => {
     const value = e.target.value;
     setBillingSearchCity(value);
@@ -85,21 +92,16 @@ const Checkout = () => {
 
   // ===== VALIDATE PHONE NUMBER (11 digits) =====
   const validatePhone = (phone) => {
-    // Remove all non-digit characters
     const cleanPhone = phone.replace(/\D/g, '');
-    // Check if it's exactly 11 digits
     return cleanPhone.length === 11;
   };
 
   // ===== FORMAT PHONE NUMBER AS USER TYPES =====
   const handlePhoneChange = (e) => {
     const value = e.target.value;
-    // Remove all non-digit characters
     const cleanValue = value.replace(/\D/g, '');
     
-    // Limit to 11 digits
     if (cleanValue.length <= 11) {
-      // Format as: 03XX-XXXXXXX (optional)
       let formatted = cleanValue;
       if (cleanValue.length >= 5) {
         formatted = `${cleanValue.slice(0, 4)}-${cleanValue.slice(4)}`;
@@ -108,7 +110,6 @@ const Checkout = () => {
     }
   };
 
-  // ===== BILLING PHONE HANDLER =====
   const handleBillingPhoneChange = (e) => {
     const value = e.target.value;
     const cleanValue = value.replace(/\D/g, '');
@@ -133,7 +134,7 @@ const Checkout = () => {
 
     // ===== VALIDATE ALL FIELDS =====
     if (!formData.fullName || !formData.email || !formData.address || !formData.city || !formData.phone) {
-      setError('Please fill in all required fields');
+      setError('Please fill in all required shipping fields');
       setLoading(false);
       return;
     }
@@ -193,9 +194,14 @@ const Checkout = () => {
     }
 
     const totalPrice = getTotalPrice();
-    const shippingPrice = totalPrice > 50 ? 0 : 5.99;
+    
+    // ===== DELIVERY CHARGE CALCULATION =====
+    // Free shipping on orders above Rs. 3000
+    // Rs. 250 delivery charge for orders below Rs. 3000
+    const shippingPrice = totalPrice >= 3000 ? 0 : 250;
     const itemsPrice = totalPrice;
 
+    // ===== BUILD ORDER DATA =====
     const orderData = {
       orderItems,
       shippingAddress: {
@@ -203,9 +209,8 @@ const Checkout = () => {
         email: formData.email,
         address: formData.address,
         city: formData.city,
-        phone: cleanPhone, // Store clean 11-digit phone number
+        phone: cleanPhone,
       },
-      // ===== ADD BILLING ADDRESS IF DIFFERENT =====
       billingAddress: useDifferentBilling ? {
         fullName: formData.billingFullName,
         address: formData.billingAddress,
@@ -221,7 +226,6 @@ const Checkout = () => {
     console.log('📤 Sending order data:', orderData);
 
     try {
-      // ===== CHANGED: Use API_URL instead of hardcoded URL =====
       const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: {
@@ -233,9 +237,12 @@ const Checkout = () => {
       if (response.ok) {
         const order = await response.json();
         console.log('✅ Order placed:', order._id);
+        
+        setOrderId(order._id);
         setSuccess(true);
-        clearCart();
+        
         setTimeout(() => {
+          clearCart();
           navigate(`/order-success/${order._id}`);
         }, 2000);
       } else {
@@ -248,12 +255,10 @@ const Checkout = () => {
       console.error('❌ Network error:', err);
       setError('Network error. Please try again.');
       setLoading(false);
-    } finally {
-      setLoading(false);
     }
   };
 
-  if (cartItems.length === 0 && !success) {
+  if (cartItems.length === 0 && !success && !loading) {
     return (
       <div className="checkout-empty">
         <h2>Your cart is empty</h2>
@@ -264,6 +269,11 @@ const Checkout = () => {
       </div>
     );
   }
+
+  // ===== Calculate totals for display =====
+  const subtotal = getTotalPrice();
+  const shipping = subtotal >= 3000 ? 0 : 250;
+  const total = subtotal + shipping;
 
   return (
     <motion.div
@@ -304,24 +314,29 @@ const Checkout = () => {
               <div className="summary-totals">
                 <div className="summary-row">
                   <span>Items Total</span>
-                  <span>Rs. {getTotalPrice().toFixed(0)}</span>
+                  <span>Rs. {subtotal.toFixed(0)}</span>
                 </div>
                 <div className="summary-row">
-                  <span>Shipping</span>
-                  <span>{getTotalPrice() > 50 ? 'FREE' : 'Rs. 5.99'}</span>
+                  <span>Delivery Charge</span>
+                  <span>{shipping === 0 ? 'FREE' : `Rs. ${shipping.toFixed(0)}`}</span>
                 </div>
                 <div className="summary-row total">
                   <span>Total</span>
-                  <span>Rs. {(getTotalPrice() + (getTotalPrice() > 50 ? 0 : 5.99)).toFixed(0)}</span>
+                  <span>Rs. {total.toFixed(0)}</span>
                 </div>
               </div>
-             
+              <p className="shipping-note">
+                {shipping === 0 
+                  ? '✅ Free delivery on orders above Rs. 3000' 
+                  : `🛵 Add Rs. ${shipping} more for FREE delivery (min. Rs. 3000)`}
+              </p>
             </div>
           </div>
 
           {/* RIGHT: Checkout Form */}
           <div className="checkout-form-wrapper">
             <form onSubmit={handleSubmit} className="checkout-form">
+
               <div className="form-group">
                 <label>Full Name *</label>
                 <input
@@ -408,7 +423,7 @@ const Checkout = () => {
                     onChange={handlePhoneChange}
                     placeholder="03XX-XXXXXXX"
                     required
-                    maxLength="12" // 03XX-XXXXXXX = 12 chars with hyphen
+                    maxLength="12"
                   />
                   <small style={{ color: '#888', fontSize: '12px', display: 'block', marginTop: '4px' }}>
                     Format: 03XX-XXXXXXX (11 digits)
@@ -625,9 +640,7 @@ const Checkout = () => {
                             <FaCopy />
                           </button>
                         </div>
-                      
-
-                      <div className="bank-row">
+                        <div className="bank-row">
                           <span className="bank-label">RAAST ID:</span>
                           <span className="bank-value">03313936993</span>
                           <button 
@@ -638,7 +651,6 @@ const Checkout = () => {
                             <FaCopy />
                           </button>
                         </div>
-                    
                       </div>
                     </div>
                   </motion.div>
