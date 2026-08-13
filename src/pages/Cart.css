@@ -1,14 +1,17 @@
 /* ============================================
-   CART PAGE - COMPLETE NEW VERSION
+   CART PAGE - COMPLETE MODIFIED VERSION
    ============================================ */
 
 /* ----- Page Container ----- */
 .cart-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 140px 20px 60px;
+  /* Increased top padding (160px) to give enough clearance below fixed announcement bar + navbar */
+  padding: 160px 20px 60px;
   min-height: 100vh;
   background: #fdf8f3;
+  position: relative;
+  z-index: 1; /* Keeps page content layered safely underneath fixed navbars and overlays */
 }
 
 /* ----- Page Header ----- */
@@ -365,13 +368,20 @@
 }
 
 /* ============================================
-   RESPONSIVE DESIGN
+   RESPONSIVE DESIGN (RECALIBRATED FOR FIXED NAV)
    ============================================ */
+
+/* Desktop / Large Screens */
+@media (max-width: 1200px) {
+  .cart-page {
+    padding-top: 150px;
+  }
+}
 
 /* Tablet */
 @media (max-width: 992px) {
   .cart-page {
-    padding: 130px 20px 40px;
+    padding: 135px 20px 40px;
   }
 
   .cart-main {
@@ -382,7 +392,8 @@
 /* Mobile Landscape */
 @media (max-width: 768px) {
   .cart-page {
-    padding: 120px 16px 30px;
+    /* Navbar height (60px) + Announcement Bar (36px) + safe gap */
+    padding: 125px 16px 30px;
   }
 
   .cart-header h1 {
@@ -440,7 +451,8 @@
 /* Mobile Portrait */
 @media (max-width: 480px) {
   .cart-page {
-    padding: 110px 12px 20px;
+    /* Navbar height (56px) + Announcement Bar (32px) + top breathing space */
+    padding: 115px 12px 20px;
   }
 
   .cart-header h1 {
@@ -521,7 +533,8 @@
 /* Small Mobile */
 @media (max-width: 360px) {
   .cart-page {
-    padding: 100px 10px 16px;
+    /* Navbar height (50px) + Announcement Bar (28px) + top space */
+    padding: 105px 10px 16px;
   }
 
   .cart-item {
