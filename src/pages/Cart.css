@@ -2,23 +2,25 @@
    CART PAGE - RESPONSIVE (FIXED OVERLAP)
    ============================================ */
 
-/* Force the entire page to start below navbar */
 .cart-page-wrapper {
   min-height: 100vh;
   background: #fdf8f3;
-  padding-top: 150px !important; /* Force padding */
+  padding-top: 0;
   margin-top: 0;
-  position: relative;
-  z-index: 1;
 }
 
-/* Make sure the container respects the padding */
+/* ===== SPACER FOR NAVBAR ===== */
+.cart-spacer {
+  height: 150px; /* Adjust this value if needed */
+  width: 100%;
+  display: block;
+  flex-shrink: 0;
+}
+
 .cart-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px 40px;
-  position: relative;
-  z-index: 2;
 }
 
 .cart-container h1 {
@@ -258,8 +260,8 @@
    ============================================ */
 
 @media (max-width: 768px) {
-  .cart-page-wrapper {
-    padding-top: 130px !important;
+  .cart-spacer {
+    height: 130px;
   }
 
   .cart-content {
@@ -296,8 +298,8 @@
 }
 
 @media (max-width: 480px) {
-  .cart-page-wrapper {
-    padding-top: 120px !important;
+  .cart-spacer {
+    height: 120px;
   }
 
   .cart-container {
