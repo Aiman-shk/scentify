@@ -13,13 +13,9 @@ const BestSellerCarousel = ({ products }) => {
   const viewportRef = useRef(null);
   const { addToCart } = useCart();
 
-  // ===== Get top 8 rated products as best sellers =====
-  const bestSellers = products
-    .filter(product => product.rating >= 4.5)
-    .sort((a, b) => b.rating - a.rating)
-    .slice(0, 8);
-
-  const displayProducts = bestSellers.length > 0 ? bestSellers : products;
+  // ===== FIX: Show ALL products sorted by rating (no filter) =====
+  // This shows all products including Abeeha (4.4) and Velvet Bloom (4.3)
+  const displayProducts = [...products].sort((a, b) => b.rating - a.rating);
 
   // ===== PRICE LOGIC: Calculate original price for 14% discount =====
   const getOriginalPrice = (price) => {
