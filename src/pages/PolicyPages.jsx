@@ -96,7 +96,7 @@ const PolicyPages = () => {
               title: 'Shipping Costs',
              
               list: [
-                'Free shipping on all orders',
+                'Free shipping on orders RS.3000',
                             ]
             },
             {

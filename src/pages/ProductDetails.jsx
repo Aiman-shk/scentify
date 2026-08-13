@@ -205,10 +205,10 @@ const ProductDetails = () => {
       className="product-details-wrapper"
     >
       <div className="product-details-container">
-        {/* Back Button */}
-        <button onClick={() => navigate('/products')} className="back-btn">
+        {/* ===== BACK BUTTON - REMOVED ===== */}
+        {/* <button onClick={() => navigate('/products')} className="back-btn">
           <FaArrowLeft /> Back to Products
-        </button>
+        </button> */}
 
         {/* Main Product Card */}
         <div className="product-card-main product-card-single-image">
