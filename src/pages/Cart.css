@@ -2,10 +2,23 @@
    CART PAGE - RESPONSIVE
    ============================================ */
 
+.cart-page-wrapper {
+  min-height: 100vh;
+  background: #fdf8f3;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* ===== SPACER FOR NAVBAR (70px) + ANNOUNCEMENT BAR (36px) ===== */
+.cart-spacer {
+  height: 106px; /* 70px navbar + 36px announcement bar */
+  width: 100%;
+}
+
 .cart-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 130px 20px 40px; /* ← FIX: Increased top padding */
+  padding: 0 20px 40px;
 }
 
 .cart-container h1 {
@@ -124,7 +137,7 @@
   padding: 2rem;
   border-radius: 8px;
   position: sticky;
-  top: 140px;
+  top: 130px;
   height: fit-content;
 }
 
@@ -203,9 +216,14 @@
 
 .cart-empty {
   text-align: center;
-  padding: 4rem 20px;
+  padding: 130px 20px 40px;
   max-width: 600px;
   margin: 0 auto;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .cart-empty h2 {
@@ -239,18 +257,30 @@
    ============================================ */
 
 @media (max-width: 992px) {
+  .cart-spacer {
+    height: 100px;
+  }
+
   .cart-container {
-    padding: 120px 20px 30px;
+    padding: 0 20px 30px;
   }
 
   .cart-summary {
     top: 120px;
   }
+
+  .cart-empty {
+    padding: 110px 20px 30px;
+  }
 }
 
 @media (max-width: 768px) {
+  .cart-spacer {
+    height: 92px;
+  }
+
   .cart-container {
-    padding: 110px 16px 30px;
+    padding: 0 16px 30px;
   }
 
   .cart-content {
@@ -283,11 +313,23 @@
   .cart-container h1 {
     font-size: 2rem;
   }
+
+  .cart-empty {
+    padding: 100px 16px 30px;
+  }
+
+  .cart-empty h2 {
+    font-size: 1.8rem;
+  }
 }
 
 @media (max-width: 480px) {
+  .cart-spacer {
+    height: 84px;
+  }
+
   .cart-container {
-    padding: 100px 12px 20px;
+    padding: 0 12px 20px;
   }
 
   .cart-container h1 {
@@ -302,10 +344,26 @@
     font-size: 1rem;
     padding: 10px;
   }
+
+  .cart-empty {
+    padding: 90px 12px 20px;
+  }
+
+  .cart-empty h2 {
+    font-size: 1.5rem;
+  }
 }
 
 @media (max-width: 360px) {
+  .cart-spacer {
+    height: 80px;
+  }
+
   .cart-container {
-    padding: 95px 10px 20px;
+    padding: 0 10px 20px;
+  }
+
+  .cart-empty {
+    padding: 86px 10px 20px;
   }
 }

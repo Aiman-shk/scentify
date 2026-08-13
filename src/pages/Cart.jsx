@@ -25,7 +25,6 @@ const Cart = () => {
     }
   };
 
-  // Helper function to get product ID
   const getProductId = (item) => item._id || item.id;
 
   if (cartItems.length === 0) {
@@ -42,7 +41,7 @@ const Cart = () => {
 
   return (
     <div className="cart-page-wrapper">
-      {/* ===== SPACER FOR NAVBAR ===== */}
+      {/* ===== SPACER FOR NAVBAR AND ANNOUNCEMENT BAR ===== */}
       <div className="cart-spacer"></div>
       
       <div className="cart-container">
@@ -55,7 +54,7 @@ const Cart = () => {
               return (
                 <div key={productId} className="cart-item">
                   <div className="cart-item-image">
-                    <img src={item.image} alt={item.name} />
+                    <img src={item.image || '/images/placeholder.jpg'} alt={item.name} />
                   </div>
                   
                   <div className="cart-item-details">
