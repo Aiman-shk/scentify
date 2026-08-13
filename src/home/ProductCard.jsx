@@ -6,6 +6,12 @@ import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import './ProductCard.css';
 
+// ===== DISCOUNT CONFIG =====
+// All prices stored in `product.price` are treated as the FINAL (already-discounted) price.
+// We reverse-calculate the original price using this percentage so the customer
+// sees "original price -> new discounted price" on every product card.
+const DISCOUNT_PERCENT = 14;
+
 const ProductCard = ({ product, index }) => {
   const { addToCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
@@ -17,6 +23,13 @@ const ProductCard = ({ product, index }) => {
 
   // ===== FIXED: Use single image or fallback =====
   const productImages = [product.image || '/images/placeholder.jpg'];
+  // ==============================================
+
+  // ===== PRICE CALCULATION =====
+  // discountedPrice = the price the customer pays now (e.g. 2400 or 1800)
+  // originalPrice   = reverse-calculated "before discount" price shown with strikethrough
+  const discountedPrice = product.price;
+  const originalPrice = discountedPrice / (1 - DISCOUNT_PERCENT / 100);
   // ==============================================
 
   const nextImage = (e) => {
@@ -110,6 +123,11 @@ const ProductCard = ({ product, index }) => {
               </div>
             )}
 
+            {/* ===== NEW: DISCOUNT BADGE ===== */}
+            <div className="product-badge discount">
+              {DISCOUNT_PERCENT}% OFF
+            </div>
+
             <button
               className="product-wishlist-btn"
               onClick={toggleWishlist}
@@ -127,19 +145,22 @@ const ProductCard = ({ product, index }) => {
         <div className="product-info">
           {/* ===== GENDER/CATEGORY REMOVED ===== */}
           {/* <div className="product-category">{product.gender || 'Unisex'}</div> */}
-          
+
           <h3 className="product-name">
             {product.name}
             <span className="product-size">({product.size || '50 ML'})</span>
           </h3>
-          
+
+          {/* ===== UPDATED PRICE ROW: original (strikethrough) + discounted ===== */}
           <div className="product-price-row">
-            <span className="product-price regular">
-              Rs. {product.price.toFixed(0)}
+            <span className="product-price original">
+              Rs. {originalPrice.toFixed(0)}
+            </span>
+            <span className="product-price discounted">
+              Rs. {discountedPrice.toFixed(0)}
             </span>
           </div>
 
-        
         </div>
       </Link>
 
