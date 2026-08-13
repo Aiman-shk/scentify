@@ -10,7 +10,7 @@
 /* ===== HERO SECTION - LIGHTER COLORS (MATCHES HOMEPAGE) ===== */
 .products-hero {
   background: linear-gradient(165deg, #f9f4ef 0%, #f0e8de 40%, #e8ddd0 100%);
-  padding: 80px 20px 60px;
+  padding: 110px 20px 60px; /* ← FIX: Added top padding for announcement bar + navbar */
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -377,6 +377,10 @@
 }
 
 @media screen and (max-width: 768px) {
+  .products-hero {
+    padding: 92px 20px 40px; /* ← FIX: Adjusted for mobile */
+  }
+
   .products-title {
     font-size: 32px;
   }
@@ -424,7 +428,7 @@
 
 @media screen and (max-width: 480px) {
   .products-hero {
-    padding: 50px 16px 40px;
+    padding: 84px 16px 30px; /* ← FIX: Adjusted for small mobile */
   }
 
   .products-title {
@@ -438,6 +442,12 @@
 
   .filter-group {
     gap: 4px;
+  }
+}
+
+@media (max-width: 360px) {
+  .products-hero {
+    padding: 80px 16px 30px; /* ← FIX: Adjusted for extra small */
   }
 }
 
