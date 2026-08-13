@@ -11,7 +11,7 @@
 
 /* ===== SPACER FOR NAVBAR (70px) + ANNOUNCEMENT BAR (36px) ===== */
 .cart-spacer {
-  height: 106px; /* 70px navbar + 36px announcement bar */
+  height: 110px;
   width: 100%;
 }
 
