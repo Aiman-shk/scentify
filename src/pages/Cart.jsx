@@ -1,47 +1,31 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
 import './Cart.css';
 
-const Cart = () => {
-  const navigate = useNavigate();
+const CartPage = () => {
+  const { cartItems, removeFromCart, updateQuantity, getCartTotal } = useCart();
+  const cartTotal = getCartTotal();
 
-  const { 
-    cartItems, 
-    removeFromCart, 
-    updateQuantity, 
-    clearCart,
-    getTotalPrice,
-    getTotalItems 
-  } = useCart();
-
-  const totalPrice = getTotalPrice();
-  const totalItems = getTotalItems();
-
-  const handleCheckout = () => {
-    if (cartItems.length > 0) {
-      navigate('/checkout');
+  // Handle quantity update
+  const handleQuantityChange = (itemId, newQuantity) => {
+    if (newQuantity < 1) {
+      removeFromCart(itemId);
+    } else {
+      updateQuantity(itemId, newQuantity);
     }
   };
 
-  const getProductId = (item) => item._id || item.id;
-
-  if (cartItems.length === 0) {
-    return (
-      <div className="cart-empty">
-        <h2>Your Cart is Empty</h2>
-        <p>Looks like you haven't added any perfumes to your cart yet.</p>
-        <Link to="/products" className="btn-shop-now">
-          Shop Now
-        </Link>
-      </div>
-    );
-  }
+  // Handle clear cart
+  const handleClearCart = () => {
+    if (window.confirm('Are you sure you want to clear your cart?')) {
+      cartItems.forEach(item => removeFromCart(item.id));
+    }
+  };
 
   return (
     <div className="cart-page-wrapper">
-      {/* ===== SPACER FOR NAVBAR AND ANNOUNCEMENT BAR ===== */}
+      {/* SPACER - This prevents overlap with fixed navbar */}
       <div className="cart-spacer"></div>
       
       <div className="cart-container">
@@ -49,85 +33,78 @@ const Cart = () => {
         
         <div className="cart-content">
           <div className="cart-items">
-            {cartItems.map(item => {
-              const productId = getProductId(item);
-              return (
-                <div key={productId} className="cart-item">
+            {cartItems.length === 0 ? (
+              <div className="cart-empty">
+                <h2>Your cart is empty</h2>
+                <p>Browse our collection of luxurious fragrances.</p>
+                <Link to="/products" className="btn-shop-now">Shop Now</Link>
+              </div>
+            ) : (
+              cartItems.map((item) => (
+                <div className="cart-item" key={item.id}>
                   <div className="cart-item-image">
-                    <img src={item.image || '/images/placeholder.jpg'} alt={item.name} />
+                    <img 
+                      src={item.image || '/images/placeholder.jpg'} 
+                      alt={item.name} 
+                    />
                   </div>
-                  
                   <div className="cart-item-details">
                     <h3>{item.name}</h3>
-                    <p className="item-brand">{item.brand || 'Scentify'}</p>
+                    <p className="item-brand">{item.brand || '50 ML'}</p>
                     <p className="item-price">Rs. {item.price}</p>
                   </div>
-                  
                   <div className="cart-item-quantity">
                     <button 
-                      onClick={() => updateQuantity(productId, item.quantity - 1)}
                       className="qty-btn"
-                    >
-                      <FaMinus />
-                    </button>
+                      onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    >-</button>
                     <span className="qty-number">{item.quantity}</span>
                     <button 
-                      onClick={() => updateQuantity(productId, item.quantity + 1)}
                       className="qty-btn"
-                    >
-                      <FaPlus />
-                    </button>
+                      onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                    >+</button>
                   </div>
-                  
                   <div className="cart-item-total">
-                    <p>Rs. {(item.price * item.quantity).toFixed(0)}</p>
+                    <p>Rs. {item.price * item.quantity}</p>
                     <button 
-                      onClick={() => removeFromCart(productId)}
                       className="remove-btn"
-                    >
-                      <FaTrash />
-                    </button>
+                      onClick={() => removeFromCart(item.id)}
+                    >✕</button>
                   </div>
                 </div>
-              );
-            })}
+              ))
+            )}
           </div>
           
-          <div className="cart-summary">
-            <h2>Order Summary</h2>
-            <div className="summary-row">
-              <span>Items ({totalItems})</span>
-              <span>Rs. {totalPrice.toFixed(0)}</span>
+          {cartItems.length > 0 && (
+            <div className="cart-summary">
+              <h2>Cart Summary</h2>
+              <div className="summary-row">
+                <span>Subtotal</span>
+                <span>Rs. {cartTotal}</span>
+              </div>
+              <div className="summary-divider"></div>
+              <div className="summary-row total">
+                <span>Total</span>
+                <span>Rs. {cartTotal}</span>
+              </div>
+              <button className="btn-checkout">Proceed to Checkout →</button>
+              <button 
+                className="btn-clear-cart"
+                onClick={handleClearCart}
+              >
+                Clear Cart
+              </button>
+              <Link to="/products" className="continue-shopping">Continue Shopping</Link>
+              <p style={{ fontSize: '0.8rem', color: '#888', textAlign: 'center', marginTop: '1rem' }}>
+                Taxes included. Shipping and discounts calculated at checkout.
+              </p>
             </div>
-            <div className="summary-row">
-              <span>Delivery Charges</span>
-              <span>Rs. 250</span>
-            </div>
-            <div className="summary-divider"></div>
-            <div className="summary-row total">
-              <span>Total</span>
-              <span>Rs. {(totalPrice + 250).toFixed(0)}</span>
-            </div>
-            
-            <button 
-              className="btn-checkout"
-              onClick={handleCheckout}
-            >
-              Proceed to Checkout →
-            </button>
-            
-            <button onClick={clearCart} className="btn-clear-cart">
-              Clear Cart
-            </button>
-            
-            <Link to="/products" className="continue-shopping">
-              Continue Shopping
-            </Link>
-          </div>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default Cart;
+export default CartPage;

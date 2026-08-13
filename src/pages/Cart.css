@@ -147,7 +147,7 @@
   padding: 2rem;
   border-radius: 8px;
   position: sticky;
-  top: 140px; /* Increased to match new spacer */
+  top: 140px;
   height: fit-content;
   z-index: 1;
 }
@@ -269,7 +269,7 @@
 
 @media (max-width: 992px) {
   .cart-spacer {
-    height: 120px; /* Tablet */
+    height: 120px;
   }
 
   .cart-container {
@@ -287,7 +287,7 @@
 
 @media (max-width: 768px) {
   .cart-spacer {
-    height: 110px; /* 60px navbar + 32px announcement + 18px padding */
+    height: 110px;
   }
 
   .cart-container {
@@ -337,7 +337,7 @@
 
 @media (max-width: 480px) {
   .cart-spacer {
-    height: 100px; /* 56px navbar + 28px announcement + 16px padding */
+    height: 100px;
   }
 
   .cart-container {
@@ -368,7 +368,7 @@
 
 @media (max-width: 360px) {
   .cart-spacer {
-    height: 90px; /* Smallest */
+    height: 90px;
   }
 
   .cart-container {
