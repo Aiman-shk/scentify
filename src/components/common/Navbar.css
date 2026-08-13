@@ -4,7 +4,7 @@
 /* ===== NAVBAR STYLES ===== */
 
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 36px; /* ← Height of announcement bar */
   left: 0;
   right: 0;
@@ -14,7 +14,7 @@
   padding: 16px 40px;
   background: transparent;
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 1001;
   height: 70px;
 }
 
@@ -308,7 +308,7 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1001;
+  z-index: 1003;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
@@ -328,7 +328,7 @@
   max-width: 80%;
   height: 100vh;
   background: #ffffff;
-  z-index: 1002;
+  z-index: 1004;
   padding: 24px;
   transition: left 0.3s ease;
   box-shadow: 4px 0 30px rgba(0, 0, 0, 0.1);
@@ -785,9 +785,9 @@
   }
 
   .navbar {
+    top: 32px !important; /* ← Mobile announcement bar height */
     padding: 12px 20px !important;
     height: 60px !important;
-    top: 32px !important; /* ← Mobile announcement bar height */
   }
 
   .logo-main {
@@ -848,9 +848,9 @@
 
 @media (max-width: 480px) {
   .navbar {
+    top: 28px !important; /* ← Small mobile announcement bar height */
     padding: 10px 16px !important;
     height: 56px !important;
-    top: 28px !important; /* ← Small mobile announcement bar height */
   }
 
   .logo-main {
