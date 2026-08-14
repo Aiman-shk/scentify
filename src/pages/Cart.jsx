@@ -136,7 +136,7 @@ const CartPage = () => {
             </Link>
             
             <p className="cart-footer-note">
-              Taxes included. Shipping and discounts calculated at checkout.
+              Taxes included. Shipping and discounts calculated at checkout and and.
             </p>
           </div>
         </div>
