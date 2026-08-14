@@ -153,7 +153,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
                       Continue Shopping
                     </button>
                     <p className="cart-drawer-footer-note">
-                      Taxes included. Shipping and discounts calculated at checkout.
+                      Taxes included. Shipping and discounts calculated at checkoujjhjhjhjt.
                     </p>
                   </div>
                 </>
