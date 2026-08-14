@@ -55,17 +55,32 @@ const AnnouncementBar = () => {
     };
   }, []);
 
+  // Flag image component for clean reusability
+  const FlagIcon = () => (
+    <img
+      src="https://flagcdn.com/w20/pk.png"
+      alt="Pakistan Flag"
+      style={{
+        width: '18px',
+        height: 'auto',
+        marginRight: '6px',
+        verticalAlign: 'middle',
+        display: 'inline-block'
+      }}
+    />
+  );
+
   return (
     <div className="announcement-bar">
       <div className="announcement-track" ref={scrollRef}>
         <span className="announcement-text">
-          🇵🇰 Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
+          <FlagIcon /> Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
         </span>
         <span className="announcement-text">
-          🇵🇰 Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
+          <FlagIcon /> Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
         </span>
         <span className="announcement-text">
-          🇵🇰 Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
+          <FlagIcon /> Azadi Sale is Live Now! &nbsp;•&nbsp; Free Delivery on Orders Above Rs. 3000
         </span>
       </div>
     </div>
