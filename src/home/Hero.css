@@ -11,7 +11,7 @@
   align-items: center;
   background: linear-gradient(165deg, #f9f4ef 0%, #f0e8de 40%, #e8ddd0 100%);
   overflow: hidden;
-  padding: 0 5%;
+  padding: 110px 5% 40px; /* ← FIX: Added top padding for announcement bar */
 }
 
 /* ===== PARTICLES REMOVED ===== */
@@ -345,7 +345,7 @@
 
 @media (max-width: 1200px) {
   .hero {
-    padding: 0 4%;
+    padding: 110px 4% 40px;
   }
   
   .hero-container {
@@ -357,7 +357,7 @@
   .hero {
     min-height: auto;
     height: auto;
-    padding: 80px 4% 60px;
+    padding: 100px 4% 60px; /* ← FIX: Adjusted for tablet */
   }
 
   .hero-container {
@@ -398,9 +398,15 @@
   }
 }
 
+@media (max-width: 768px) {
+  .hero {
+    padding: 92px 5% 40px; /* ← FIX: Adjusted for mobile */
+  }
+}
+
 @media (max-width: 600px) {
   .hero {
-    padding: 60px 5% 40px;
+    padding: 84px 5% 30px; /* ← FIX: Adjusted for small mobile */
   }
 
   .hero-content {
@@ -445,7 +451,17 @@
   }
 }
 
+@media (max-width: 480px) {
+  .hero {
+    padding: 80px 5% 30px; /* ← FIX: Adjusted for extra small */
+  }
+}
+
 @media (max-width: 400px) {
+  .hero {
+    padding: 76px 5% 20px;
+  }
+
   .hero-visual {
     min-height: 220px;
   }

@@ -1,11 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
-import AnnouncementBar from './components/common/AnnouncementBar'; // ← ADD THIS
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
-import WhatsAppButton from './components/common/WhatsAppButton';
+import WhatsAppButton from './components/common/WhatsAppButton'; // ← ADD THIS
 import Home from './pages/Home';
 import Products from './pages/products';
 import ProductDetails from './pages/ProductDetails';
@@ -16,6 +15,7 @@ import About from './pages/About';
 import Wishlist from './pages/Wishlist';
 import Contact from './pages/Contact';
 import PolicyPages from './pages/PolicyPages';
+
 
 // Admin Imports
 import AdminLayout from './pages/Admin/AdminLayout';
@@ -32,8 +32,6 @@ function App() {
         <Router>
           <ScrollToTop />
           <div className="flex flex-col min-h-screen">
-            {/* ===== ANNOUNCEMENT BAR - ABOVE NAVBAR ===== */}
-            <AnnouncementBar />
             <Navbar />
             <main className="flex-grow">
               <Routes>
@@ -54,6 +52,8 @@ function App() {
                 <Route path="/shipping" element={<PolicyPages />} />
                 <Route path="/returns" element={<PolicyPages />} />
 
+               
+
                 {/* Admin Routes */}
                 <Route path="/admin" element={<AdminLayout />}>
                   <Route index element={<Dashboard />} />
@@ -63,12 +63,13 @@ function App() {
               </Routes>
             </main>
             <Footer />
-            <WhatsAppButton />
+            <WhatsAppButton /> {/* ← ADD THIS - Appears on every page */}
           </div>
         </Router>
       </CartProvider>
-    </WishlistProvider>
+    </WishlistProvider>      
   );
 }
+
 
 export default App;
