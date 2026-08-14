@@ -5,7 +5,7 @@
 
 .navbar {
   position: fixed;
-  top: 0;
+  top: 40px; /* ← Matches announcement bar height (40px) */
   left: 0;
   right: 0;
   display: flex;
@@ -14,7 +14,7 @@
   padding: 16px 40px;
   background: transparent;
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 1001;
   height: 70px;
 }
 
@@ -308,7 +308,7 @@
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1001;
+  z-index: 1003;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
@@ -328,7 +328,7 @@
   max-width: 80%;
   height: 100vh;
   background: #ffffff;
-  z-index: 1002;
+  z-index: 1004;
   padding: 24px;
   transition: left 0.3s ease;
   box-shadow: 4px 0 30px rgba(0, 0, 0, 0.1);
@@ -772,9 +772,10 @@
 }
 
 /* ============================================
-   RESPONSIVE - SHOW HAMBURGER ON MOBILE
+   RESPONSIVE - NAVBAR (MATCHES ANNOUNCEMENT BAR)
    ============================================ */
 
+/* Tablet */
 @media (max-width: 768px) {
   .hamburger-btn {
     display: block !important;
@@ -785,6 +786,7 @@
   }
 
   .navbar {
+    top: 36px !important; /* ← Matches announcement bar (36px) */
     padding: 12px 20px !important;
     height: 60px !important;
   }
@@ -845,8 +847,10 @@
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
   .navbar {
+    top: 32px !important; /* ← Matches announcement bar (32px) */
     padding: 10px 16px !important;
     height: 56px !important;
   }
@@ -907,6 +911,51 @@
   }
 }
 
+/* Small Mobile */
+@media (max-width: 360px) {
+  .navbar {
+    top: 28px !important; /* ← Matches announcement bar (28px) */
+    padding: 8px 12px !important;
+    height: 50px !important;
+  }
+
+  .logo-main {
+    font-size: 13px !important;
+    letter-spacing: 2px !important;
+  }
+
+  .logo-sub {
+    font-size: 13px !important;
+  }
+
+  .logo-sub::before,
+  .logo-sub::after {
+    width: 6px !important;
+  }
+
+  .logo-sub::before {
+    left: -6px !important;
+  }
+
+  .logo-sub::after {
+    right: -6px !important;
+  }
+
+  .nav-icons {
+    gap: 8px !important;
+  }
+
+  .icon {
+    font-size: 14px !important;
+  }
+
+  .search-dropdown {
+    top: 50px !important;
+    padding: 8px 12px !important;
+  }
+}
+
+/* Desktop - Hide Hamburger */
 @media (min-width: 769px) {
   .hamburger-btn {
     display: none !important;
