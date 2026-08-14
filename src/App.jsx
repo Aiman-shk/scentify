@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
-import AnnouncementBar from './components/common/AnnouncementBar'; // ← ADD THIS
+import AnnouncementBar from './components/common/AnnouncementBar';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
@@ -16,6 +16,7 @@ import About from './pages/About';
 import Wishlist from './pages/Wishlist';
 import Contact from './pages/Contact';
 import PolicyPages from './pages/PolicyPages';
+import Sitemap from './components/Sitemap'; // ← ADD THIS IMPORT
 
 // Admin Imports
 import AdminLayout from './pages/Admin/AdminLayout';
@@ -37,6 +38,9 @@ function App() {
             <Navbar />
             <main className="flex-grow">
               <Routes>
+                {/* ===== SITEMAP ROUTE - MUST BE FIRST ===== */}
+                <Route path="/sitemap.xml" element={<Sitemap />} />
+                
                 {/* Public Routes */}
                 <Route path="/" element={<Home />} />
                 <Route path="/products" element={<Products />} />
