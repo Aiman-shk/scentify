@@ -328,7 +328,7 @@ const Checkout = () => {
               <p className="shipping-note">
                 {shipping === 0 
                   ? '✅ Free delivery on orders above Rs. 3000' 
-                  : `🛵 Add Rs. ${shipping} more for FREE delivery (min. Rs. 3000)`}
+                  : `🛵 250 Delivery Charges applied on orders below RS 3000`}
               </p>
             </div>
           </div>
