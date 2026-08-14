@@ -35,13 +35,21 @@ const Sitemap = () => {
   </url>
 </urlset>`;
 
+  // Force XML response
   return (
     <div 
       dangerouslySetInnerHTML={{ __html: sitemapXML }} 
       style={{ 
+        display: 'block',
         whiteSpace: 'pre-wrap',
         fontFamily: 'monospace',
-        padding: '20px'
+        fontSize: '14px',
+        padding: '20px',
+        margin: 0,
+        background: '#ffffff',
+        minHeight: '100vh',
+        color: '#000000',
+        lineHeight: '1.6'
       }}
     />
   );
