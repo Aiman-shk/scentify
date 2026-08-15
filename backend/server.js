@@ -104,3 +104,4 @@ app.listen(PORT, () => {
   console.log(`📦 API URL: http://localhost:${PORT}/api/products`);
   console.log(`🔒 Security: Helmet, CORS, Rate Limiting enabled`);
 });
+
