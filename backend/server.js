@@ -17,7 +17,7 @@ connectDB();
 
 const app = express();
 
-// ===== FIX: Enable trust proxy for Render =====
+// ===== FIX: Enable trust proxy for Render/Vercel =====
 app.set('trust proxy', 1);
 
 // ============================================
@@ -58,6 +58,7 @@ app.use(cors({
 }));
 
 // 3. Rate Limiting - Prevent DDoS/Brute Force
+// ===== FIX: REMOVED trustProxy option =====
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // 100 requests per IP
@@ -65,8 +66,7 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: false,
-  // ===== FIX: Trust proxy for Render =====
-  trustProxy: true,
+  // trustProxy: true, // ← REMOVED - deprecated!
 });
 app.use('/api', limiter);
 
