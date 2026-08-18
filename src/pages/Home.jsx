@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaArrowRight, FaStar, FaTruck, FaShieldAlt, FaGift } from 'react-icons/fa';
+import { FaArrowRight, FaStar, FaShieldAlt, FaGift, FaLock } from 'react-icons/fa';
 import Hero from '../home/Hero';
 import BestSellerCarousel from '../home/BestSellerCarousel';
-// import CategoryShowcase from '../home/CategoryShowcase'; // ← REMOVED
 import './Home.css';
 import API_URL from '../api/config';
 
@@ -12,11 +11,9 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-   // Fetch products from backend API
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // ===== CHANGED: Use API_URL instead of hardcoded URL =====
         const response = await fetch(`${API_URL}/products`);
         if (!response.ok) {
           throw new Error('Failed to fetch products');
@@ -29,7 +26,6 @@ const Home = () => {
         setLoading(false);
       }
     };
-
 
     fetchProducts();
   }, []);
@@ -58,18 +54,12 @@ const Home = () => {
       exit={{ opacity: 0 }}
       className="home-page"
     >
-      {/* ===== HERO SECTION ===== */}
       <Hero />
 
-      {/* ===== BEST SELLER CAROUSEL ===== */}
       {products.length > 0 && (
         <BestSellerCarousel products={products} />
       )}
 
-      {/* ===== CATEGORY SHOWCASE - REMOVED ===== */}
-      {/* CategoryShowcase has been completely removed */}
-
-      {/* ===== FEATURES SECTION ===== */}
       <section className="features-section">
         <div className="container">
           <div className="features-grid">
@@ -80,8 +70,8 @@ const Home = () => {
               viewport={{ once: true }}
               className="feature-card"
             >
-              <div className="feature-icon"><FaTruck /></div>
-              <h3>Free Shipping</h3>
+              <div className="feature-icon"><FaLock /></div>
+              <h3>Secure Payments</h3>
             </motion.div>
 
             <motion.div 
