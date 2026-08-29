@@ -38,6 +38,21 @@ const Navbar = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // ===== LOCK BODY SCROLL & ADD CART-OPEN CLASS =====
+  useEffect(() => {
+    if (isCartOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('cart-open');
+    } else {
+      document.body.style.overflow = '';
+      document.body.classList.remove('cart-open');
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.body.classList.remove('cart-open');
+    };
+  }, [isCartOpen]);
+
   const isActive = (path) => {
     return location.pathname === path ? 'active' : '';
   };
@@ -57,26 +72,27 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
+      <nav className={`navbar ${scrolled ? 'scrolled' : ''} ${isCartOpen ? 'cart-open' : ''}`}>
         {/* ===== HAMBURGER MENU BUTTON ===== */}
         <button 
           className="hamburger-btn"
           onClick={() => setIsSideMenuOpen(true)}
           aria-label="Open menu"
+          disabled={isCartOpen}
         >
           <FaBars />
         </button>
 
         {/* ===== LOGO ===== */}
         <div className="logo">
-          <Link to="/">
+          <Link to="/" style={{ pointerEvents: isCartOpen ? 'none' : 'auto', opacity: isCartOpen ? 0.3 : 1 }}>
             <span className="logo-main">SCENTIFY</span>
             <span className="logo-sub">Perfumes</span>
           </Link>
         </div>
 
         {/* ===== DESKTOP NAV LINKS ===== */}
-        <ul className="nav-links">
+        <ul className="nav-links" style={{ pointerEvents: isCartOpen ? 'none' : 'auto', opacity: isCartOpen ? 0.3 : 1 }}>
           <li className={isActive('/')}>
             <Link to="/">Home</Link>
           </li>
@@ -91,17 +107,23 @@ const Navbar = () => {
           </li>
         </ul>
 
-        <div className="nav-icons">
+        <div className="nav-icons" style={{ pointerEvents: isCartOpen ? 'none' : 'auto', opacity: isCartOpen ? 0.3 : 1 }}>
           {/* ===== SEARCH ICON ===== */}
           <button 
             className="icon-container search-btn"
             onClick={() => setShowSearch(!showSearch)}
             aria-label="Search"
+            disabled={isCartOpen}
           >
             <FaSearch className="icon" />
           </button>
 
-          <Link to="/wishlist" className="icon-container">
+          <Link 
+            to="/wishlist" 
+            className="icon-container"
+            style={{ pointerEvents: isCartOpen ? 'none' : 'auto' }}
+            onClick={(e) => isCartOpen && e.preventDefault()}
+          >
             <FaHeart className="icon" />
             {wishlistCount > 0 && (
               <span className="cart-badge">{wishlistCount}</span>
@@ -113,6 +135,7 @@ const Navbar = () => {
             className="icon-container cart-btn"
             onClick={() => setIsCartOpen(true)}
             aria-label="Open cart"
+            disabled={isCartOpen}
           >
             <FaShoppingCart className="icon" />
             {itemCount > 0 && (
