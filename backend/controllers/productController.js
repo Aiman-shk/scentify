@@ -47,7 +47,8 @@ export const createProduct = async (req, res) => {
       return res.status(400).json({ errors });
     }
     
-    const { name, brand, price, description, image, gender, inStock } = sanitizedBody;
+    // ===== GENDER REMOVED FROM DESTRUCTURING =====
+    const { name, brand, price, description, image, inStock } = sanitizedBody;
     
     // Check if product already exists
     const existingProduct = await Product.findOne({ name: name.trim(), brand: brand.trim() });
@@ -61,7 +62,8 @@ export const createProduct = async (req, res) => {
       price: Number(price),
       description: description.trim(),
       image: image.trim(),
-      gender: gender || 'Unisex',
+      // ===== GENDER REMOVED =====
+      // gender: gender || 'Unisex',
       inStock: inStock !== undefined ? inStock : true,
     });
     
@@ -93,14 +95,16 @@ export const updateProduct = async (req, res) => {
       return res.status(400).json({ errors });
     }
     
-    const { name, brand, price, description, image, gender, inStock, rating, numReviews } = sanitizedBody;
+    // ===== GENDER REMOVED FROM DESTRUCTURING =====
+    const { name, brand, price, description, image, inStock, rating, numReviews } = sanitizedBody;
     
     product.name = name?.trim() || product.name;
     product.brand = brand?.trim() || product.brand;
     product.price = price ? Number(price) : product.price;
     product.description = description?.trim() || product.description;
     product.image = image?.trim() || product.image;
-    product.gender = gender || product.gender;
+    // ===== GENDER REMOVED =====
+    // product.gender = gender || product.gender;
     product.inStock = inStock !== undefined ? inStock : product.inStock;
     product.rating = rating || product.rating;
     product.numReviews = numReviews || product.numReviews;
@@ -133,18 +137,19 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
+// ===== OPTIONAL: You can remove or comment out this entire function =====
 // @desc    Get products by gender
 // @route   GET /api/products/gender/:gender
 // @access  Public
-export const getProductsByGender = async (req, res) => {
-  try {
-    const gender = sanitize(req.params.gender);
-    const products = await Product.find({ gender: gender });
-    res.status(200).json(products);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+// export const getProductsByGender = async (req, res) => {
+//   try {
+//     const gender = sanitize(req.params.gender);
+//     const products = await Product.find({ gender: gender });
+//     res.status(200).json(products);
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 // @desc    Get products by price range
 // @route   GET /api/products/price?min=0&max=10000

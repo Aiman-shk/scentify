@@ -9,15 +9,11 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // ===== CATEGORY REMOVED =====
-  // category: {
+  // ===== GENDER REMOVED =====
+  // gender: {
   //   type: String,
-  //   required: true,
+  //   default: 'Unisex',
   // },
-  gender: {
-    type: String,
-    default: 'Unisex',
-  },
   price: {
     type: Number,
     required: true,

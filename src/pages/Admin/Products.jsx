@@ -14,7 +14,8 @@ const Products = () => {
     price: '',
     description: '',
     image: '',
-    gender: 'Unisex',
+    // ===== GENDER REMOVED =====
+    // gender: 'Unisex',
     inStock: true,
   });
 
@@ -24,10 +25,9 @@ const Products = () => {
 
   const fetchProducts = async () => {
     try {
-      // ===== FIXED: Use API_URL and show ALL products =====
       const res = await fetch(`${API_URL}/products`);
       const data = await res.json();
-      setProducts(data); // ← SHOW ALL PRODUCTS (not just Men's)
+      setProducts(data);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -46,6 +46,8 @@ const Products = () => {
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price),
+          // ===== GENDER REMOVED =====
+          // gender: formData.gender,
         }),
       });
 
@@ -53,7 +55,16 @@ const Products = () => {
         const newProduct = await response.json();
         setProducts([...products, newProduct]);
         setShowAddForm(false);
-        setFormData({ name: '', brand: '', price: '', description: '', image: '', gender: 'Unisex', inStock: true });
+        setFormData({ 
+          name: '', 
+          brand: '', 
+          price: '', 
+          description: '', 
+          image: '', 
+          // ===== GENDER REMOVED =====
+          // gender: 'Unisex', 
+          inStock: true 
+        });
         alert('✅ Product added successfully!');
       } else {
         alert('❌ Failed to add product');
@@ -75,6 +86,8 @@ const Products = () => {
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price),
+          // ===== GENDER REMOVED =====
+          // gender: formData.gender,
         }),
       });
 
@@ -82,7 +95,16 @@ const Products = () => {
         const updatedProduct = await response.json();
         setProducts(products.map(p => p._id === updatedProduct._id ? updatedProduct : p));
         setEditingProduct(null);
-        setFormData({ name: '', brand: '', price: '', description: '', image: '', gender: 'Unisex', inStock: true });
+        setFormData({ 
+          name: '', 
+          brand: '', 
+          price: '', 
+          description: '', 
+          image: '', 
+          // ===== GENDER REMOVED =====
+          // gender: 'Unisex', 
+          inStock: true 
+        });
         alert('✅ Product updated successfully!');
       } else {
         alert('❌ Failed to update product');
@@ -121,7 +143,8 @@ const Products = () => {
       price: product.price,
       description: product.description,
       image: product.image,
-      gender: product.gender || 'Unisex',
+      // ===== GENDER REMOVED =====
+      // gender: product.gender || 'Unisex',
       inStock: product.inStock,
     });
   };
@@ -146,7 +169,8 @@ const Products = () => {
               <th>Image</th>
               <th>Name</th>
               <th>Brand</th>
-              <th>Gender</th>
+              {/* ===== GENDER COLUMN REMOVED ===== */}
+              {/* <th>Gender</th> */}
               <th>Price</th>
               <th>Stock</th>
               <th>Actions</th>
@@ -160,7 +184,8 @@ const Products = () => {
                 </td>
                 <td>{product.name}</td>
                 <td>{product.brand}</td>
-                <td>{product.gender || 'Unisex'}</td>
+                {/* ===== GENDER CELL REMOVED ===== */}
+                {/* <td>{product.gender || 'Unisex'}</td> */}
                 <td>Rs. {product.price.toFixed(0)}</td>
                 <td>
                   <span className={`stock-badge ${product.inStock ? 'in-stock' : 'out-of-stock'}`}>
@@ -214,7 +239,8 @@ const Products = () => {
                   required
                 />
               </div>
-              <div className="form-group">
+              {/* ===== GENDER FIELD REMOVED ===== */}
+              {/* <div className="form-group">
                 <label>Gender</label>
                 <select
                   value={formData.gender}
@@ -224,7 +250,7 @@ const Products = () => {
                   <option value="Men">Men</option>
                   <option value="Women">Women</option>
                 </select>
-              </div>
+              </div> */}
               <div className="form-group">
                 <label>Image URL</label>
                 <input
@@ -296,7 +322,8 @@ const Products = () => {
                   required
                 />
               </div>
-              <div className="form-group">
+              {/* ===== GENDER FIELD REMOVED ===== */}
+              {/* <div className="form-group">
                 <label>Gender</label>
                 <select
                   value={formData.gender}
@@ -306,7 +333,7 @@ const Products = () => {
                   <option value="Men">Men</option>
                   <option value="Women">Women</option>
                 </select>
-              </div>
+              </div> */}
               <div className="form-group">
                 <label>Image URL</label>
                 <input

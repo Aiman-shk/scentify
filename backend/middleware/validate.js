@@ -24,6 +24,7 @@ export const validateOrderInput = (data) => {
   return errors;
 };
 
+// ===== GENDER VALIDATION REMOVED =====
 export const validateProductInput = (data) => {
   const errors = {};
 
@@ -31,12 +32,25 @@ export const validateProductInput = (data) => {
     errors.name = 'Product name must be at least 2 characters';
   }
 
+  // ===== GENDER CHECK REMOVED =====
+  // if (!data.gender) {
+  //   errors.gender = 'Gender is required';
+  // }
+
   if (!data.price || data.price <= 0) {
     errors.price = 'Price must be greater than 0';
   }
 
+  if (!data.description || data.description.length < 10) {
+    errors.description = 'Description must be at least 10 characters';
+  }
+
   if (data.description && data.description.length > 2000) {
     errors.description = 'Description cannot exceed 2000 characters';
+  }
+
+  if (!data.image) {
+    errors.image = 'Image URL is required';
   }
 
   return errors;
