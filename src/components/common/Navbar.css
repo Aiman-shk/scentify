@@ -5,7 +5,7 @@
 
 .navbar {
   position: fixed;
-  top: 40px; /* ← Matches announcement bar height (40px) */
+  top: 0; /* ← FIXED: Changed from 40px to 0 */
   left: 0;
   right: 0;
   display: flex;
@@ -772,7 +772,7 @@
 }
 
 /* ============================================
-   RESPONSIVE - NAVBAR (MATCHES ANNOUNCEMENT BAR)
+   RESPONSIVE - NAVBAR
    ============================================ */
 
 /* Tablet */
@@ -786,7 +786,7 @@
   }
 
   .navbar {
-    top: 36px !important; /* ← Matches announcement bar (36px) */
+    top: 0 !important; /* ← FIXED: Changed from 36px to 0 */
     padding: 12px 20px !important;
     height: 60px !important;
   }
@@ -850,7 +850,7 @@
 /* Mobile */
 @media (max-width: 480px) {
   .navbar {
-    top: 32px !important; /* ← Matches announcement bar (32px) */
+    top: 0 !important; /* ← FIXED: Changed from 32px to 0 */
     padding: 10px 16px !important;
     height: 56px !important;
   }
@@ -914,7 +914,7 @@
 /* Small Mobile */
 @media (max-width: 360px) {
   .navbar {
-    top: 28px !important; /* ← Matches announcement bar (28px) */
+    top: 0 !important; /* ← FIXED: Changed from 28px to 0 */
     padding: 8px 12px !important;
     height: 50px !important;
   }
@@ -1007,5 +1007,55 @@
   .hamburger-btn:hover svg {
     color: #d4af37 !important;
     fill: #d4af37 !important;
+  }
+}
+
+
+/* ============================================
+   DISABLE NAVBAR INTERACTIONS WHEN CART IS OPEN
+   ============================================ */
+
+/* When cart is open, fade and disable all navbar interactions */
+.navbar.cart-open .nav-icons button,
+.navbar.cart-open .nav-icons .icon-container,
+.navbar.cart-open .cart-btn,
+.navbar.cart-open .search-btn,
+.navbar.cart-open .hamburger-btn {
+  pointer-events: none !important;
+  opacity: 0.3 !important;
+  cursor: default !important;
+}
+
+.navbar.cart-open .nav-links li a {
+  pointer-events: none !important;
+  opacity: 0.3 !important;
+}
+
+.navbar.cart-open .logo a {
+  pointer-events: none !important;
+  opacity: 0.3 !important;
+}
+
+/* ===== ENSURE CART DRAWER IS ON TOP ===== */
+body.cart-open .cart-overlay {
+  z-index: 99998 !important;
+}
+
+body.cart-open .cart-drawer {
+  z-index: 99999 !important;
+}
+
+/* ===== FIX FOR MOBILE ===== */
+@media (max-width: 768px) {
+  .navbar.cart-open .nav-icons button,
+  .navbar.cart-open .nav-icons .icon-container,
+  .navbar.cart-open .hamburger-btn {
+    pointer-events: none !important;
+    opacity: 0.3 !important;
+  }
+  
+  .navbar.cart-open .nav-links li a {
+    pointer-events: none !important;
+    opacity: 0.3 !important;
   }
 }

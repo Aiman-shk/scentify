@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
-import AnnouncementBar from './components/common/AnnouncementBar';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
@@ -42,7 +41,7 @@ function AppContent() {
   // Regular layout with navbar and footer
   return (
     <div className="flex flex-col min-h-screen">
-      <AnnouncementBar />
+      {/* ===== ANNOUNCEMENT BAR REMOVED ===== */}
       <Navbar />
       <main className="flex-grow">
         <Routes>

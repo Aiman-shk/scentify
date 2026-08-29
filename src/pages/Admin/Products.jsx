@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 import API_URL from '../../api/config';
+// ===== FIXED: Removed incorrect import =====
+// import ProductCard from "../home/ProductCard";
 import './Products.css';
 
-const Products = () => {
+const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -14,8 +16,6 @@ const Products = () => {
     price: '',
     description: '',
     image: '',
-    // ===== GENDER REMOVED =====
-    // gender: 'Unisex',
     inStock: true,
   });
 
@@ -46,8 +46,6 @@ const Products = () => {
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price),
-          // ===== GENDER REMOVED =====
-          // gender: formData.gender,
         }),
       });
 
@@ -61,8 +59,6 @@ const Products = () => {
           price: '', 
           description: '', 
           image: '', 
-          // ===== GENDER REMOVED =====
-          // gender: 'Unisex', 
           inStock: true 
         });
         alert('✅ Product added successfully!');
@@ -86,8 +82,6 @@ const Products = () => {
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price),
-          // ===== GENDER REMOVED =====
-          // gender: formData.gender,
         }),
       });
 
@@ -101,8 +95,6 @@ const Products = () => {
           price: '', 
           description: '', 
           image: '', 
-          // ===== GENDER REMOVED =====
-          // gender: 'Unisex', 
           inStock: true 
         });
         alert('✅ Product updated successfully!');
@@ -143,8 +135,6 @@ const Products = () => {
       price: product.price,
       description: product.description,
       image: product.image,
-      // ===== GENDER REMOVED =====
-      // gender: product.gender || 'Unisex',
       inStock: product.inStock,
     });
   };
@@ -169,8 +159,6 @@ const Products = () => {
               <th>Image</th>
               <th>Name</th>
               <th>Brand</th>
-              {/* ===== GENDER COLUMN REMOVED ===== */}
-              {/* <th>Gender</th> */}
               <th>Price</th>
               <th>Stock</th>
               <th>Actions</th>
@@ -184,8 +172,6 @@ const Products = () => {
                 </td>
                 <td>{product.name}</td>
                 <td>{product.brand}</td>
-                {/* ===== GENDER CELL REMOVED ===== */}
-                {/* <td>{product.gender || 'Unisex'}</td> */}
                 <td>Rs. {product.price.toFixed(0)}</td>
                 <td>
                   <span className={`stock-badge ${product.inStock ? 'in-stock' : 'out-of-stock'}`}>
@@ -239,18 +225,6 @@ const Products = () => {
                   required
                 />
               </div>
-              {/* ===== GENDER FIELD REMOVED ===== */}
-              {/* <div className="form-group">
-                <label>Gender</label>
-                <select
-                  value={formData.gender}
-                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                >
-                  <option value="Unisex">Unisex</option>
-                  <option value="Men">Men</option>
-                  <option value="Women">Women</option>
-                </select>
-              </div> */}
               <div className="form-group">
                 <label>Image URL</label>
                 <input
@@ -322,18 +296,6 @@ const Products = () => {
                   required
                 />
               </div>
-              {/* ===== GENDER FIELD REMOVED ===== */}
-              {/* <div className="form-group">
-                <label>Gender</label>
-                <select
-                  value={formData.gender}
-                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
-                >
-                  <option value="Unisex">Unisex</option>
-                  <option value="Men">Men</option>
-                  <option value="Women">Women</option>
-                </select>
-              </div> */}
               <div className="form-group">
                 <label>Image URL</label>
                 <input
@@ -374,6 +336,4 @@ const Products = () => {
   );
 };
 
-
-
-export default Products;
+export default AdminProducts;

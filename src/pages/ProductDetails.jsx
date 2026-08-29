@@ -57,33 +57,19 @@ const ProductDetails = () => {
       longevity: '07+ Hours',
       description: 'Inspired by Dior Sauvage, this fragrance is a bold blend of bergamot, Sichuan pepper, lavender, and star anise, with a warm base of Ambroxan and vanilla.',
     },
-    'Spiced': {
-      topNotes: ['Cinnamon', 'Clove', 'Oak Wood'],
-      heartNotes: ['Cognac', 'Spices', 'Woody Notes'],
-      baseNotes: ['Amber', 'Vanilla', 'Oakmoss'],
-      longevity: '07+ Hours',
-      description: 'Warm cognac infused with cinnamon, clove, and oak wood. For the bold.',
+    'Dream': {
+      topNotes: ['Strawberry', 'Peach', 'Bergamot'],
+      heartNotes: ['Candy Floss', 'Orchid', 'Lily'],
+      baseNotes: ['Vanilla', 'Musk', 'Sandalwood'],
+      longevity: '08-10 Hours',
+      description: 'Inspired by Yara Pink by Lattafa, this fragrance is a sweet and fruity gourmand delight. Opens with juicy strawberry, peach, and bergamot, blooming into a heart of candy floss, orchid, and lily, with a warm base of vanilla, musk, and sandalwood. Perfect for those who love sweet, cotton candy vibes with moderate projection.',
     },
-    'Gardenia Bliss': {
-      topNotes: ['Gardenia', 'Jasmine', 'White Tea'],
-      heartNotes: ['Coconut', 'Floral Notes', 'Vanilla'],
-      baseNotes: ['Musk', 'Woody Notes', 'Amber'],
-      longevity: '07+ Hours',
-      description: 'Fresh gardenia blossoms with hints of jasmine and white tea.',
-    },
-    'Cedar & Smoke': {
-      topNotes: ['Cedar', 'Pepper', 'Leather'],
-      heartNotes: ['Smoke', 'Woody Notes', 'Vetiver'],
-      baseNotes: ['Musk', 'Amber', 'Oakmoss'],
-      longevity: '07+ Hours',
-      description: 'Smoky cedar with a touch of leather and pepper. Rugged and sophisticated.',
-    },
-    'Citrus Sunrise': {
-      topNotes: ['Grapefruit', 'Lemon', 'Bergamot', 'Orange'],
-      heartNotes: ['Citrus', 'Floral Notes', 'Jasmine'],
-      baseNotes: ['Musk', 'Woody Notes', 'Amber'],
-      longevity: '07+ Hours',
-      description: 'Zesty citrus with grapefruit, lemon, and bergamot. A burst of energy.',
+    '9pm': {
+      topNotes: ['Apple', 'Cinnamon', 'Wild Bergamot'],
+      heartNotes: ['Orange Blossom', 'Lily of the Valley'],
+      baseNotes: ['Vanilla', 'Tonka Bean', 'Amber', 'Patchouli'],
+      longevity: '12+ Hours',
+      description: 'A bold and warm amber-vanilla fragrance with strong projection. Opens with crisp apple, cinnamon, and wild bergamot, leading to a heart of orange blossom and lily of the valley, settling into a rich base of vanilla, tonka bean, amber, and patchouli. Inspired by 9pm, this is a sweet, gourmet scent with incredible longevity.',
     },
   };
   // =========================================
@@ -96,10 +82,8 @@ const ProductDetails = () => {
       'Abeeha': '/images/abeeha2.jpg',
       'Velvet Bloom': '/images/velvetbloom2.jpg',
       'First Impression': '/images/firstimpression2.jpg',
-      'Spiced': '/images/spiced2.jpg',
-      'Gardenia Bliss': '/images/gardenia2.jpg',
-      'Cedar & Smoke': '/images/cedar2.jpg',
-      'Citrus Sunrise': '/images/citrus2.jpg',
+      'Dream': '/images/dream2.jpg',
+      '9pm': '/images/9pm2.jpg',
     };
     return imageMap[productName] || '/images/placeholder2.jpg';
   };
@@ -228,9 +212,9 @@ const ProductDetails = () => {
                 ))}
               </div>
 
-              {/* ===== RED DISCOUNT BADGE - TOP LEFT ===== */}
+              {/* ===== IMAGE WRAPPER - DISCOUNT BADGE REMOVED ===== */}
               <div className="product-detail-image-wrapper">
-                <div className="discount-badge-red">14% OFF</div>
+                {/* DISCOUNT BADGE REMOVED */}
                 <div className="product-single-image">
                   <img src={selectedImage} alt={product.name} />
                 </div>
@@ -249,12 +233,9 @@ const ProductDetails = () => {
               <span className="rating-number">{product.rating}</span>
             </div>
 
-            {/* ===== PRICE WITH DISCOUNT ===== */}
+            {/* ===== PRICE - NO DISCOUNT ===== */}
             <div className="product-price-wrapper">
               <div className="product-price-row">
-                <span className="product-price original-price">
-                  Rs. {Math.round(product.price / 0.86).toLocaleString()}
-                </span>
                 <span className="product-price discounted-price">
                   Rs. {product.price.toLocaleString()}
                 </span>
@@ -265,7 +246,7 @@ const ProductDetails = () => {
             <div className="notes-display">
               {/* Top Notes */}
               <div className="note-category">
-                <h3 className="note-category-title">Top Notes</h3>
+                <h3 className="note-category-title">Top Notes 🍎</h3>
                 <div className="note-tags">
                   {topNotes.map((note, index) => (
                     <span key={index} className="note-tag">{note}</span>
@@ -275,7 +256,7 @@ const ProductDetails = () => {
 
               {/* Heart Notes */}
               <div className="note-category">
-                <h3 className="note-category-title">Heart Notes</h3>
+                <h3 className="note-category-title">Middle Notes 🌸</h3>
                 <div className="note-tags">
                   {heartNotes.map((note, index) => (
                     <span key={index} className="note-tag">{note}</span>
@@ -285,7 +266,7 @@ const ProductDetails = () => {
 
               {/* Base Notes */}
               <div className="note-category">
-                <h3 className="note-category-title">Base Notes</h3>
+                <h3 className="note-category-title">Base Notes 💎</h3>
                 <div className="note-tags">
                   {baseNotes.map((note, index) => (
                     <span key={index} className="note-tag">{note}</span>

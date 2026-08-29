@@ -7,10 +7,22 @@ dotenv.config();
 connectDB();
 
 const products = [
+
+   {
+    name: "Dream",
+    brand: "Scentify",
+    price: 1800,
+    description: "Exotic blend of rose, oud, and incense. Transport yourself to the Middle East.",
+    image: "/images/dream1.jpg",
+    inStock: true,
+    rating: 4.9,
+    numReviews: 189,
+  },
+
   {
     name: "Signature",
     brand: "Scentify",
-    price: 2400,
+    price: 2200,
     description: "Warm cognac infused with cinnamon, clove, and oak wood. For the bold.",
     image: "/images/signature1.jpg",
     inStock: true,
@@ -47,6 +59,17 @@ const products = [
     rating: 4.3,
     numReviews: 203,
   },
+   {
+    name: "9pm",
+    brand: "Scentify",
+    price: 1800,
+    description: "Exotic blend of rose, oud, and incense. Transport yourself to the Middle East.",
+    image: "/images/9pm1.jpg",
+    inStock: true,
+    rating: 4.9,
+    numReviews: 189,
+  },
+ 
   {
     name: "Midnight",
     brand: "Scentify",
@@ -57,6 +80,8 @@ const products = [
     rating: 4.9,
     numReviews: 189,
   },
+ 
+ 
 ];
 
 const importData = async () => {

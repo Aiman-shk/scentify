@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
@@ -13,14 +13,10 @@ const BestSellerCarousel = ({ products }) => {
   const viewportRef = useRef(null);
   const { addToCart } = useCart();
 
-  // ===== FIX: Show ALL products sorted by rating (no filter) =====
-  // This shows all products including Abeeha (4.4) and Velvet Bloom (4.3)
-  const displayProducts = [...products].sort((a, b) => b.rating - a.rating);
-
-  // ===== PRICE LOGIC: Calculate original price for 14% discount =====
-  const getOriginalPrice = (price) => {
-    return Math.round(price / 0.86); // Reverse calculate from 14% discount
-  };
+  // ===== OPTIMIZED: Sort products by rating =====
+  const displayProducts = useMemo(() => {
+    return [...products].sort((a, b) => b.rating - a.rating);
+  }, [products]);
 
   // Calculate items per view based on screen size
   useEffect(() => {
@@ -74,7 +70,6 @@ const BestSellerCarousel = ({ products }) => {
     };
     
     addToCart(cartItem);
-    console.log(`✅ Added "${product.name}" to cart!`);
     
     const btn = e.currentTarget;
     const originalText = btn.textContent;
@@ -139,8 +134,9 @@ const BestSellerCarousel = ({ products }) => {
                     >
                       <Link to={`/product/${product._id}`} className="product-link">
                         <div className="product-image-wrapper">
-                          {/* ===== RED DISCOUNT BADGE ===== */}
-                          <div className="discount-badge-red">14% OFF</div>
+                          {/* ===== DISCOUNT BADGE REMOVED ===== */}
+                          {/* <div className="discount-badge-red">14% OFF</div> */}
+                          
                           <img
                             src={product.image || '/images/placeholder.jpg'}
                             alt={product.name}
@@ -154,11 +150,8 @@ const BestSellerCarousel = ({ products }) => {
                         <div className="product-info">
                           <h3 className="product-name">{product.name}</h3>
                           <p className="product-brand">{product.brand || 'Scentify'}</p>
-                          {/* ===== PRICE WITH DISCOUNT ===== */}
+                          {/* ===== PRICE WITHOUT DISCOUNT ===== */}
                           <div className="product-price-row">
-                            <span className="product-price original-price">
-                              Rs. {getOriginalPrice(product.price).toLocaleString()}
-                            </span>
                             <span className="product-price discounted-price">
                               Rs. {product.price.toLocaleString()}
                             </span>
