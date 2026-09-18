@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus, FaImage } from 'react-icons/fa';
 import API_URL from '../../api/config';
-// ===== FIXED: Removed incorrect import =====
-// import ProductCard from "../home/ProductCard";
 import './Products.css';
 
-const AdminProducts = () => {
+const Products = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
-    brand: '',
+    brand: 'Scentify',
     price: '',
     description: '',
     image: '',
+    image2: '',
     inStock: true,
+    topNotes: '',
+    heartNotes: '',
+    baseNotes: '',
+    longevity: '',
+    size: '50ml',
   });
 
   useEffect(() => {
@@ -35,14 +39,29 @@ const AdminProducts = () => {
     }
   };
 
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      brand: 'Scentify',
+      price: '',
+      description: '',
+      image: '',
+      image2: '',
+      inStock: true,
+      topNotes: '',
+      heartNotes: '',
+      baseNotes: '',
+      longevity: '',
+      size: '50ml',
+    });
+  };
+
   const handleAddProduct = async (e) => {
     e.preventDefault();
     try {
       const response = await fetch(`${API_URL}/products`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price),
@@ -53,14 +72,7 @@ const AdminProducts = () => {
         const newProduct = await response.json();
         setProducts([...products, newProduct]);
         setShowAddForm(false);
-        setFormData({ 
-          name: '', 
-          brand: '', 
-          price: '', 
-          description: '', 
-          image: '', 
-          inStock: true 
-        });
+        resetForm();
         alert('✅ Product added successfully!');
       } else {
         alert('❌ Failed to add product');
@@ -76,9 +88,7 @@ const AdminProducts = () => {
     try {
       const response = await fetch(`${API_URL}/products/${editingProduct._id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...formData,
           price: parseFloat(formData.price),
@@ -89,14 +99,7 @@ const AdminProducts = () => {
         const updatedProduct = await response.json();
         setProducts(products.map(p => p._id === updatedProduct._id ? updatedProduct : p));
         setEditingProduct(null);
-        setFormData({ 
-          name: '', 
-          brand: '', 
-          price: '', 
-          description: '', 
-          image: '', 
-          inStock: true 
-        });
+        resetForm();
         alert('✅ Product updated successfully!');
       } else {
         alert('❌ Failed to update product');
@@ -130,24 +133,37 @@ const AdminProducts = () => {
   const openEditModal = (product) => {
     setEditingProduct(product);
     setFormData({
-      name: product.name,
-      brand: product.brand,
-      price: product.price,
-      description: product.description,
-      image: product.image,
-      inStock: product.inStock,
+      name: product.name || '',
+      brand: product.brand || 'Scentify',
+      price: product.price || '',
+      description: product.description || '',
+      image: product.image || '',
+      image2: product.image2 || '',
+      inStock: product.inStock !== undefined ? product.inStock : true,
+      topNotes: product.topNotes || '',
+      heartNotes: product.heartNotes || '',
+      baseNotes: product.baseNotes || '',
+      longevity: product.longevity || '',
+      size: product.size || '50ml',
     });
   };
 
-  if (loading) {
-    return <div className="admin-loading">Loading products...</div>;
-  }
+  const closeModal = () => {
+    setShowAddForm(false);
+    setEditingProduct(null);
+    resetForm();
+  };
+
+  if (loading) return <div className="admin-loading">Loading products...</div>;
 
   return (
     <div className="products-admin">
       <div className="products-header">
         <h2>Product Management</h2>
-        <button className="add-product-btn" onClick={() => setShowAddForm(true)}>
+        <button
+          className="add-product-btn"
+          onClick={() => { setShowAddForm(true); resetForm(); }}
+        >
           <FaPlus /> Add Product
         </button>
       </div>
@@ -192,141 +208,181 @@ const AdminProducts = () => {
         </table>
       </div>
 
-      {/* Add Product Modal */}
-      {showAddForm && (
-        <div className="product-modal" onClick={() => setShowAddForm(false)}>
+      {/* ===== ADD / EDIT PRODUCT MODAL ===== */}
+      {(showAddForm || editingProduct) && (
+        <div className="product-modal" onClick={closeModal}>
           <div className="product-modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>Add New Product</h3>
-            <form onSubmit={handleAddProduct}>
-              <div className="form-group">
-                <label>Product Name</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Brand</label>
-                <input
-                  type="text"
-                  value={formData.brand}
-                  onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Price (Rs.)</label>
-                <input
-                  type="number"
-                  value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Image URL</label>
-                <input
-                  type="text"
-                  value={formData.image}
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  placeholder="/images/product.jpg"
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label>Description</label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  rows="3"
-                  required
-                />
-              </div>
-              <div className="form-group checkbox">
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={formData.inStock}
-                    onChange={(e) => setFormData({ ...formData, inStock: e.target.checked })}
-                  />
-                  In Stock
-                </label>
-              </div>
-              <div className="modal-actions">
-                <button type="button" className="cancel-btn" onClick={() => setShowAddForm(false)}>Cancel</button>
-                <button type="submit" className="submit-btn">Add Product</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+            <div className="modal-header">
+              <h3>{editingProduct ? 'Edit Product' : 'Add New Product'}</h3>
+              <p className="modal-subtitle">
+                Fill in the details below to {editingProduct ? 'update this' : 'create a new'} product.
+              </p>
+            </div>
 
-      {/* Edit Product Modal */}
-      {editingProduct && (
-        <div className="product-modal" onClick={() => setEditingProduct(null)}>
-          <div className="product-modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>Edit Product</h3>
-            <form onSubmit={handleEditProduct}>
-              <div className="form-group">
-                <label>Product Name</label>
-                <input
-                  type="text"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                />
+            <form
+              onSubmit={editingProduct ? handleEditProduct : handleAddProduct}
+              className="product-form"
+            >
+              {/* BASIC INFORMATION */}
+              <div className="form-section">
+                <h4 className="form-section-title">Basic Information</h4>
+
+                <div className="form-row-2">
+                  <div className="form-group">
+                    <label>Product Name <span className="required">*</span></label>
+                    <input
+                      type="text"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="e.g., Dream"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Brand <span className="required">*</span></label>
+                    <input
+                      type="text"
+                      value={formData.brand}
+                      onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
+                      placeholder="Scentify"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="form-row-2">
+                  <div className="form-group">
+                    <label>Price (Rs.) <span className="required">*</span></label>
+                    <input
+                      type="number"
+                      value={formData.price}
+                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                      placeholder="1800"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Size</label>
+                    <select
+                      value={formData.size}
+                      onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                    >
+                      <option value="30ml">30 ml</option>
+                      <option value="50ml">50 ml</option>
+                      <option value="100ml">100 ml</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div className="form-group">
-                <label>Brand</label>
-                <input
-                  type="text"
-                  value={formData.brand}
-                  onChange={(e) => setFormData({ ...formData, brand: e.target.value })}
-                  required
-                />
+
+              {/* IMAGES */}
+              <div className="form-section">
+                <h4 className="form-section-title">Images</h4>
+
+                <div className="form-group">
+                  <label>Main Image URL <span className="required">*</span> <FaImage className="label-icon" /></label>
+                  <input
+                    type="text"
+                    value={formData.image}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                    placeholder="/images/dream1.jpg"
+                    required
+                  />
+                  <small className="helper-text">
+                    Example: <code>/images/dream1.jpg</code> — file must be inside <code>public/images/</code>
+                  </small>
+                </div>
+
+                <div className="form-group">
+                  <label>Second Image URL (optional) <FaImage className="label-icon" /></label>
+                  <input
+                    type="text"
+                    value={formData.image2}
+                    onChange={(e) => setFormData({ ...formData, image2: e.target.value })}
+                    placeholder="/images/dream2.jpg"
+                  />
+                  <small className="helper-text">
+                    Shown as the second thumbnail on the product page.
+                  </small>
+                </div>
               </div>
-              <div className="form-group">
-                <label>Price (Rs.)</label>
-                <input
-                  type="number"
-                  value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                  required
-                />
+
+              {/* DESCRIPTION */}
+              <div className="form-section">
+                <h4 className="form-section-title">Description</h4>
+                <div className="form-group">
+                  <label>Product Description <span className="required">*</span></label>
+                  <textarea
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    rows="3"
+                    placeholder="A sweet, fruity gourmand fragrance with strawberry and vanilla..."
+                    required
+                  />
+                </div>
               </div>
-              <div className="form-group">
-                <label>Image URL</label>
-                <input
-                  type="text"
-                  value={formData.image}
-                  onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                  required
-                />
+
+              {/* FRAGRANCE NOTES */}
+              <div className="form-section">
+                <h4 className="form-section-title">Fragrance Notes</h4>
+                <div className="form-group">
+                  <label>Top Notes 🍎</label>
+                  <input
+                    type="text"
+                    value={formData.topNotes}
+                    onChange={(e) => setFormData({ ...formData, topNotes: e.target.value })}
+                    placeholder="Strawberry, Peach, Bergamot"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Heart Notes 🌸</label>
+                  <input
+                    type="text"
+                    value={formData.heartNotes}
+                    onChange={(e) => setFormData({ ...formData, heartNotes: e.target.value })}
+                    placeholder="Candy Floss, Orchid, Lily"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Base Notes 💎</label>
+                  <input
+                    type="text"
+                    value={formData.baseNotes}
+                    onChange={(e) => setFormData({ ...formData, baseNotes: e.target.value })}
+                    placeholder="Vanilla, Musk, Sandalwood"
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Longevity</label>
+                  <input
+                    type="text"
+                    value={formData.longevity}
+                    onChange={(e) => setFormData({ ...formData, longevity: e.target.value })}
+                    placeholder="8-10 Hours"
+                  />
+                </div>
               </div>
-              <div className="form-group">
-                <label>Description</label>
-                <textarea
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  rows="3"
-                  required
-                />
-              </div>
-              <div className="form-group checkbox">
-                <label>
+
+              {/* STOCK */}
+              <div className="form-section">
+                <label className="checkbox-label">
                   <input
                     type="checkbox"
                     checked={formData.inStock}
                     onChange={(e) => setFormData({ ...formData, inStock: e.target.checked })}
                   />
-                  In Stock
+                  <span>In Stock (available for purchase)</span>
                 </label>
               </div>
+
+              {/* ACTIONS */}
               <div className="modal-actions">
-                <button type="button" className="cancel-btn" onClick={() => setEditingProduct(null)}>Cancel</button>
-                <button type="submit" className="submit-btn">Update Product</button>
+                <button type="button" className="cancel-btn" onClick={closeModal}>
+                  Cancel
+                </button>
+                <button type="submit" className="submit-btn">
+                  {editingProduct ? 'Update Product' : 'Add Product'}
+                </button>
               </div>
             </form>
           </div>
@@ -336,4 +392,4 @@ const AdminProducts = () => {
   );
 };
 
-export default AdminProducts;
+export default Products;

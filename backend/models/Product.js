@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+=import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
   name: {
@@ -9,11 +9,6 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // ===== GENDER REMOVED =====
-  // gender: {
-  //   type: String,
-  //   default: 'Unisex',
-  // },
   price: {
     type: Number,
     required: true,
@@ -26,6 +21,32 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // ===== NEW FIELDS ADDED =====
+  image2: {
+    type: String,
+    default: '',
+  },
+  topNotes: {
+    type: String,
+    default: '',
+  },
+  heartNotes: {
+    type: String,
+    default: '',
+  },
+  baseNotes: {
+    type: String,
+    default: '',
+  },
+  longevity: {
+    type: String,
+    default: '',
+  },
+  size: {
+    type: String,
+    default: '50ml',
+  },
+  // ============================
   inStock: {
     type: Boolean,
     default: true,
