@@ -11,7 +11,7 @@ const AdminLayout = () => {
   const [error, setError] = useState('');
 
   // ===== CHANGE THIS PASSWORD =====
-  const ADMIN_PASSWORD = 'scent@@1098ify!';
+  const ADMIN_PASSWORD = 'scentify2026';
   // ===============================
 
   // Check if already logged in
