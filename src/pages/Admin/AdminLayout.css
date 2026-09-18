@@ -1,3 +1,4 @@
+/* ===== YOUR EXISTING CSS ===== */
 .admin-layout {
   display: flex;
   min-height: 100vh;
@@ -146,5 +147,121 @@
   
   .admin-header h1 {
     font-size: 1.3rem;
+  }
+}
+
+/* ===== LOGIN SCREEN ===== */
+.admin-login-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5ede4 0%, #e8ddb0 100%);
+  padding: 20px;
+}
+
+.admin-login-box {
+  background: #ffffff;
+  padding: 48px 40px;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(45, 27, 18, 0.15);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.lock-icon {
+  font-size: 48px;
+  color: #d4af37;
+  margin-bottom: 16px;
+}
+
+.admin-login-box h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #2d1b12;
+  margin: 0 0 8px 0;
+}
+
+.admin-login-box p {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: #6b5a4b;
+  margin: 0 0 32px 0;
+}
+
+.admin-login-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-password-input {
+  padding: 14px 18px;
+  border: 2px solid #e8e0d8;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.3s ease;
+  text-align: center;
+}
+
+.admin-password-input:focus {
+  border-color: #d4af37;
+}
+
+.error-message {
+  color: #dc3545;
+  font-size: 13px;
+  font-family: 'Inter', sans-serif;
+  margin: -8px 0 0 0;
+}
+
+.admin-login-btn {
+  padding: 14px;
+  background: #2d1b12;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.admin-login-btn:hover {
+  background: #4a2d1e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(45, 27, 18, 0.2);
+}
+
+.back-to-site {
+  display: inline-block;
+  margin-top: 24px;
+  color: #6b5a4b;
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.back-to-site:hover {
+  color: #d4af37;
+}
+
+@media (max-width: 480px) {
+  .admin-login-box {
+    padding: 32px 24px;
+  }
+
+  .admin-login-box h2 {
+    font-size: 24px;
+  }
+
+  .lock-icon {
+    font-size: 40px;
   }
 }
