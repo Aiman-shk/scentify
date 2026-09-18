@@ -3,15 +3,21 @@ import {
   createOrder,
   getOrderById,
   getOrders,
-  trackOrder, // ← ADD THIS
-  updateOrderStatus, // ← ADD THIS
+  trackOrder,
+  updateOrderStatus,
+  deleteOrder, // ← ADD THIS
 } from '../controllers/orderController.js';
 
 const router = express.Router();
 
 router.route('/').post(createOrder).get(getOrders);
-router.route('/:id').get(getOrderById);
-router.route('/track/:id').get(trackOrder); // ← ADD THIS
-router.route('/:id/status').put(updateOrderStatus); // ← ADD THIS
+
+router.route('/track/:id').get(trackOrder); // ← MOVE THIS BEFORE /:id
+
+router.route('/:id')
+  .get(getOrderById)
+  .delete(deleteOrder); // ← ADD THIS
+
+router.route('/:id/status').put(updateOrderStatus);
 
 export default router;

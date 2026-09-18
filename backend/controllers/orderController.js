@@ -11,7 +11,7 @@ export const createOrder = async (req, res) => {
     const {
       orderItems,
       shippingAddress,
-      billingAddress, // ← ADD THIS
+      billingAddress,
       paymentMethod,
       itemsPrice,
       shippingPrice,
@@ -36,7 +36,7 @@ export const createOrder = async (req, res) => {
     const order = new Order({
       orderItems,
       shippingAddress,
-      billingAddress: billingAddress || null, // ← SAVE BILLING ADDRESS
+      billingAddress: billingAddress || null,
       paymentMethod: paymentMethod || 'Cash on Delivery',
       itemsPrice,
       shippingPrice,
@@ -52,7 +52,6 @@ export const createOrder = async (req, res) => {
     console.log('📧 Attempting to send emails...');
 
     try {
-      // Send confirmation email to customer
       const customerEmail = shippingAddress.email;
       if (customerEmail) {
         console.log(`📧 Sending confirmation to: ${customerEmail}`);
@@ -60,7 +59,6 @@ export const createOrder = async (req, res) => {
         console.log(`✅ Confirmation email sent to ${customerEmail}`);
       }
 
-      // Send notification to admin
       console.log(`📧 Sending admin notification...`);
       await sendAdminNotification(createdOrder);
       console.log(`✅ Admin notification sent`);
@@ -155,6 +153,26 @@ export const updateOrderStatus = async (req, res) => {
     res.json(updatedOrder);
   } catch (error) {
     console.error('❌ Error updating order status:', error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Delete an order
+// @route   DELETE /api/orders/:id
+// @access  Private/Admin
+export const deleteOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    await order.deleteOne();
+    console.log(`🗑️ Order ${req.params.id} deleted successfully`);
+    res.status(200).json({ message: 'Order deleted successfully' });
+  } catch (error) {
+    console.error('❌ Error deleting order:', error);
     res.status(500).json({ message: error.message });
   }
 };

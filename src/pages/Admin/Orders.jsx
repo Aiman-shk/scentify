@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaEye } from 'react-icons/fa';
+import { FaEye, FaTrash } from 'react-icons/fa';
 import API_URL from '../../api/config';
 import './Orders.css';
 
@@ -48,6 +48,29 @@ const Orders = () => {
     }
   };
 
+  // ===== DELETE ORDER =====
+  const deleteOrder = async (orderId) => {
+    if (!window.confirm('Are you sure you want to delete this order? This cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/orders/${orderId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setOrders(orders.filter(order => order._id !== orderId));
+        alert('✅ Order deleted successfully!');
+      } else {
+        alert('❌ Failed to delete order');
+      }
+    } catch (error) {
+      console.error('Error deleting order:', error);
+      alert('❌ Network error. Please try again.');
+    }
+  };
+
   if (loading) {
     return <div className="admin-loading">Loading orders...</div>;
   }
@@ -90,9 +113,22 @@ const Orders = () => {
                 </td>
                 <td>{new Date(order.createdAt).toLocaleDateString()}</td>
                 <td>
-                  <button className="action-btn view-btn" onClick={() => setSelectedOrder(order)}>
-                    <FaEye />
-                  </button>
+                  <div className="action-buttons">
+                    <button 
+                      className="action-btn view-btn" 
+                      onClick={() => setSelectedOrder(order)}
+                      title="View Order"
+                    >
+                      <FaEye />
+                    </button>
+                    <button 
+                      className="action-btn delete-btn" 
+                      onClick={() => deleteOrder(order._id)}
+                      title="Delete Order"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -104,20 +140,47 @@ const Orders = () => {
         <div className="order-detail-modal" onClick={() => setSelectedOrder(null)}>
           <div className="order-detail-content" onClick={(e) => e.stopPropagation()}>
             <h3>Order Details</h3>
-            <p><strong>Order ID:</strong> {selectedOrder._id}</p>
-            <p><strong>Customer:</strong> {selectedOrder.shippingAddress?.fullName}</p>
-            <p><strong>Email:</strong> {selectedOrder.shippingAddress?.email}</p>
-            <p><strong>Address:</strong> {selectedOrder.shippingAddress?.address}</p>
-            <p><strong>City:</strong> {selectedOrder.shippingAddress?.city}</p>
-            <p><strong>Phone:</strong> {selectedOrder.shippingAddress?.phone}</p>
-            <p><strong>Total:</strong> Rs. {selectedOrder.totalPrice?.toFixed(0)}</p>
-            <p><strong>Status:</strong> {selectedOrder.status || 'Pending'}</p>
-            <h4>Order Items:</h4>
-            <ul>
-              {selectedOrder.orderItems?.map((item, i) => (
-                <li key={i}>{item.name} × {item.quantity} = Rs. {(item.price * item.quantity).toFixed(0)}</li>
-              ))}
-            </ul>
+            
+            {/* Order Info */}
+            <div className="order-detail-section">
+              <p><strong>Order ID:</strong> {selectedOrder._id}</p>
+              <p><strong>Customer:</strong> {selectedOrder.shippingAddress?.fullName}</p>
+              <p><strong>Email:</strong> {selectedOrder.shippingAddress?.email}</p>
+              <p><strong>Address:</strong> {selectedOrder.shippingAddress?.address}</p>
+              <p><strong>City:</strong> {selectedOrder.shippingAddress?.city}</p>
+              <p><strong>Phone:</strong> {selectedOrder.shippingAddress?.phone}</p>
+              <p><strong>Status:</strong> {selectedOrder.status || 'Pending'}</p>
+              <p><strong>Payment:</strong> {selectedOrder.paymentMethod || 'Cash on Delivery'}</p>
+            </div>
+
+            {/* Order Items */}
+            <div className="order-detail-section">
+              <h4>Order Items:</h4>
+              <ul>
+                {selectedOrder.orderItems?.map((item, i) => (
+                  <li key={i}>
+                    {item.name} × {item.quantity} = Rs. {(item.price * item.quantity).toFixed(0)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* ===== BILL SUMMARY ===== */}
+            <div className="order-bill-summary">
+              <div className="bill-row">
+                <span>Items Subtotal:</span>
+                <span>Rs. {selectedOrder.itemsPrice?.toFixed(0) || '0'}</span>
+              </div>
+              <div className="bill-row">
+                <span>Delivery Charges:</span>
+                <span>Rs. {selectedOrder.shippingPrice?.toFixed(0) || '0'}</span>
+              </div>
+              <div className="bill-row total-bill">
+                <span><strong>Total Bill:</strong></span>
+                <span><strong>Rs. {selectedOrder.totalPrice?.toFixed(0) || '0'}</strong></span>
+              </div>
+            </div>
+
             <button className="close-modal-btn" onClick={() => setSelectedOrder(null)}>Close</button>
           </div>
         </div>
