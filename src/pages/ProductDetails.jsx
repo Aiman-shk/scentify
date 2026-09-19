@@ -71,14 +71,6 @@ const ProductDetails = () => {
       longevity: '12+ Hours',
       description: 'A bold and warm amber-vanilla fragrance with strong projection. Opens with crisp apple, cinnamon, and wild bergamot, leading to a heart of orange blossom and lily of the valley, settling into a rich base of vanilla, tonka bean, amber, and patchouli. Inspired by 9pm, this is a sweet, gourmet scent with incredible longevity.',
     },
-
-    '9': {
-      topNotes: ['Apple', 'Cinnamon', 'Wild Bergamot'],
-      heartNotes: ['Orange Blossom', 'Lily of the Valley'],
-      baseNotes: ['Vanilla', 'Tonka Bean', 'Amber', 'Patchouli'],
-      longevity: '12+ Hours',
-      description: 'A bold and warm amber-vanilla fragrance with strong projection. Opens with crisp apple, cinnamon, and wild bergamot, leading to a heart of orange blossom and lily of the valley, settling into a rich base of vanilla, tonka bean, amber, and patchouli. Inspired by 9pm, this is a sweet, gourmet scent with incredible longevity.',
-    },
   };
   // =========================================
 
@@ -92,7 +84,7 @@ const ProductDetails = () => {
       'First Impression': '/images/firstimpression2.jpg',
       'Dream': '/images/dream2.jpg',
       '9pm': '/images/9pm2.jpg',
-       '9': '/images/dream4.jpg',
+
     };
     return imageMap[productName] || '/images/placeholder2.jpg';
   };
