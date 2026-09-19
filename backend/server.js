@@ -18,6 +18,7 @@ connectDB();
 const app = express();
 
 // ===== FIX: Enable trust proxy for Render =====
+// Required so rate limiting & CORS know the real client IP
 app.set('trust proxy', 1);
 
 // ============================================
@@ -54,19 +55,18 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   exposedHeaders: ['Content-Range', 'X-Content-Range'],
-  maxAge: 600, // Cache preflight for 10 minutes
+  maxAge: 600,
 }));
 
 // 3. Rate Limiting - Prevent DDoS/Brute Force
+// ===== FIX: Removed `trustProxy` option (handled by app.set('trust proxy', 1)) =====
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // 100 requests per IP
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
   skipSuccessfulRequests: false,
-  // ===== FIX: Trust proxy for Render =====
-  trustProxy: true,
 });
 app.use('/api', limiter);
 
