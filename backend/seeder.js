@@ -123,6 +123,28 @@ const products = [
     rating: 4.8,
     numReviews: 156,
   },
+
+
+
+   {
+    name: "Royal Oud",
+    brand: "Scentify",
+    price: 2500,
+    description: "Your product description here.",
+    image: "/images/dream3.jpg",
+    image2: "/images/dream4.jpg",
+    topNotes: "Bergamot, Lemon",
+    heartNotes: "Rose, Jasmine",
+    baseNotes: "Vanilla, Musk",
+    longevity: "10+ Hours",
+    size: "50ml",
+    inStock: true,
+    rating: 0,
+    numReviews: 0,
+  },
+
+
+
 ];
 
 const importData = async () => {
