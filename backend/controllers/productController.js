@@ -38,6 +38,9 @@ export const getProductById = async (req, res) => {
 // @access  Private/Admin (should be protected)
 export const createProduct = async (req, res) => {
   try {
+    // DEBUG LOG — see what the frontend is sending
+    console.log('🔍 BACKEND RECEIVED:', JSON.stringify(req.body, null, 2));
+
     // Sanitize all input data
     const sanitizedBody = sanitize(req.body);
     
@@ -47,7 +50,21 @@ export const createProduct = async (req, res) => {
       return res.status(400).json({ errors });
     }
     
-    const { name, brand, price, description, image, gender, inStock } = sanitizedBody;
+    // ===== DESTRUCTURE ALL FIELDS =====
+    const {
+      name,
+      brand,
+      price,
+      description,
+      image,
+      image2,
+      topNotes,
+      heartNotes,
+      baseNotes,
+      longevity,
+      size,
+      inStock,
+    } = sanitizedBody;
     
     // Check if product already exists
     const existingProduct = await Product.findOne({ name: name.trim(), brand: brand.trim() });
@@ -61,13 +78,20 @@ export const createProduct = async (req, res) => {
       price: Number(price),
       description: description.trim(),
       image: image.trim(),
-      gender: gender || 'Unisex',
+      image2: image2 ? image2.trim() : '',
+      topNotes: topNotes ? topNotes.trim() : '',
+      heartNotes: heartNotes ? heartNotes.trim() : '',
+      baseNotes: baseNotes ? baseNotes.trim() : '',
+      longevity: longevity ? longevity.trim() : '',
+      size: size || '50ml',
       inStock: inStock !== undefined ? inStock : true,
     });
     
     const createdProduct = await product.save();
+    console.log('✅ SAVED:', JSON.stringify(createdProduct, null, 2));
     res.status(201).json(createdProduct);
   } catch (error) {
+    console.error('❌ createProduct error:', error.message);
     res.status(400).json({ message: error.message });
   }
 };
@@ -77,6 +101,9 @@ export const createProduct = async (req, res) => {
 // @access  Private/Admin
 export const updateProduct = async (req, res) => {
   try {
+    // DEBUG LOG — see what the frontend is sending
+    console.log('🔍 BACKEND RECEIVED (UPDATE):', JSON.stringify(req.body, null, 2));
+
     // Sanitize all input
     const productId = sanitize(req.params.id);
     const sanitizedBody = sanitize(req.body);
@@ -93,21 +120,44 @@ export const updateProduct = async (req, res) => {
       return res.status(400).json({ errors });
     }
     
-    const { name, brand, price, description, image, gender, inStock, rating, numReviews } = sanitizedBody;
+    // ===== DESTRUCTURE ALL FIELDS =====
+    const {
+      name,
+      brand,
+      price,
+      description,
+      image,
+      image2,
+      topNotes,
+      heartNotes,
+      baseNotes,
+      longevity,
+      size,
+      inStock,
+      rating,
+      numReviews,
+    } = sanitizedBody;
     
     product.name = name?.trim() || product.name;
     product.brand = brand?.trim() || product.brand;
     product.price = price ? Number(price) : product.price;
     product.description = description?.trim() || product.description;
     product.image = image?.trim() || product.image;
-    product.gender = gender || product.gender;
+    product.image2 = image2 !== undefined ? image2.trim() : product.image2;
+    product.topNotes = topNotes !== undefined ? topNotes.trim() : product.topNotes;
+    product.heartNotes = heartNotes !== undefined ? heartNotes.trim() : product.heartNotes;
+    product.baseNotes = baseNotes !== undefined ? baseNotes.trim() : product.baseNotes;
+    product.longevity = longevity !== undefined ? longevity.trim() : product.longevity;
+    product.size = size || product.size;
     product.inStock = inStock !== undefined ? inStock : product.inStock;
     product.rating = rating || product.rating;
     product.numReviews = numReviews || product.numReviews;
     
     const updatedProduct = await product.save();
+    console.log('✅ UPDATED:', JSON.stringify(updatedProduct, null, 2));
     res.status(200).json(updatedProduct);
   } catch (error) {
+    console.error('❌ updateProduct error:', error.message);
     res.status(400).json({ message: error.message });
   }
 };
