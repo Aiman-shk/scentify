@@ -127,22 +127,21 @@ const products = [
 
 
    {
-    name: "Royal Oud",
-    brand: "Scentify",
-    price: 2500,
-    description: "Your product description here.",
-    image: "/images/dream3.jpg",
-    image2: "/images/dream4.jpg",
-    topNotes: "Bergamot, Lemon",
-    heartNotes: "Rose, Jasmine",
-    baseNotes: "Vanilla, Musk",
-    longevity: "10+ Hours",
-    size: "50ml",
-    inStock: true,
-    rating: 0,
-    numReviews: 0,
-  },
-
+  name: "Royal Oud",
+  brand: "Scentify",
+  price: 3200,
+  description: "A majestic blend of rare oud and precious woods with hints of saffron and amber.",
+  image: "/images/royaloud1.jpg",
+  image2: "/images/dream3.jpg",
+  topNotes: "Saffron, Bergamot",
+  heartNotes: "Rose, Oud, Jasmine",
+  baseNotes: "Amber, Sandalwood, Musk",
+  longevity: "10+ Hours",
+  size: "50ml",
+  inStock: true,
+  rating: 0,
+  numReviews: 0,
+},
 
 
 ];

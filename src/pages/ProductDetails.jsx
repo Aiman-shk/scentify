@@ -71,6 +71,19 @@ const ProductDetails = () => {
       longevity: '12+ Hours',
       description: 'A bold and warm amber-vanilla fragrance with strong projection. Opens with crisp apple, cinnamon, and wild bergamot, leading to a heart of orange blossom and lily of the valley, settling into a rich base of vanilla, tonka bean, amber, and patchouli. Inspired by 9pm, this is a sweet, gourmet scent with incredible longevity.',
     },
+
+    // ============================================================
+    // ===== ADD NEW PERFUMES HERE =====
+    // Copy the pattern below and paste above this comment
+    // ============================================================
+    'Royal Oud': {
+       topNotes: ['Saffron', 'Bergamot'],
+     heartNotes: ['Rose', 'Oud', 'Jasmine'],
+       baseNotes: ['Amber', 'Sandalwood', 'Musk'],
+       longevity: '10+ Hours',
+       description: 'A majestic blend of rare oud and precious woods with hints of saffron and amber.',
+     },
+    // ============================================================
   };
   // =========================================
 
@@ -84,6 +97,9 @@ const ProductDetails = () => {
       'First Impression': '/images/firstimpression2.jpg',
       'Dream': '/images/dream2.jpg',
       '9pm': '/images/9pm2.jpg',
+
+      'Royal Oud': '/images/dream3.jpg',
+      // ============================================================
     };
     return imageMap[productName] || '/images/placeholder2.jpg';
   };
@@ -144,19 +160,36 @@ const ProductDetails = () => {
     }
   };
 
-  // ===== Get product-specific notes =====
-  const productNotes = fragranceNotesData[product?.name] || fragranceNotesData['Signature'];
-  const topNotes = productNotes?.topNotes || [];
-  const heartNotes = productNotes?.heartNotes || [];
-  const baseNotes = productNotes?.baseNotes || [];
-  const longevity = productNotes?.longevity || '07+ Hours';
-  const description = productNotes?.description || product?.description || 'No description available.';
-  // =====================================
+  // ===== Get product-specific notes (DB first, hardcoded fallback) =====
+  const productNotes = fragranceNotesData[product?.name] || null;
+
+  const parseNotes = (dbValue, fallbackArray) => {
+    if (dbValue && dbValue.trim() !== '') {
+      return dbValue.split(',').map(n => n.trim()).filter(Boolean);
+    }
+    return fallbackArray || [];
+  };
+
+  const topNotes = parseNotes(product?.topNotes, productNotes?.topNotes);
+  const heartNotes = parseNotes(product?.heartNotes, productNotes?.heartNotes);
+  const baseNotes = parseNotes(product?.baseNotes, productNotes?.baseNotes);
+  const longevity = product?.longevity || productNotes?.longevity || '07+ Hours';
+  const description = product?.description || productNotes?.description || 'No description available.';
+  // ====================================================================
+
+  // ===== SECOND IMAGE — DB first, hardcoded fallback =====
+  const getImage2 = () => {
+    if (product?.image2 && product.image2.trim() !== '') {
+      return product.image2;
+    }
+    return getSecondImage(product?.name);
+  };
+  // =======================================================
 
   // ===== BUILD THUMBNAILS =====
   const thumbnails = [
     product?.image || '/images/placeholder.jpg',
-    getSecondImage(product?.name),
+    getImage2(),
   ].filter(Boolean);
   // ============================
 
@@ -212,9 +245,8 @@ const ProductDetails = () => {
                 ))}
               </div>
 
-              {/* ===== IMAGE WRAPPER - DISCOUNT BADGE REMOVED ===== */}
+              {/* Image */}
               <div className="product-detail-image-wrapper">
-                {/* DISCOUNT BADGE REMOVED */}
                 <div className="product-single-image">
                   <img src={selectedImage} alt={product.name} />
                 </div>
@@ -224,16 +256,13 @@ const ProductDetails = () => {
 
           {/* Right Column - Details */}
           <div className="product-details-column">
-            {/* Product Name */}
             <h1 className="product-detail-name">{product.name}</h1>
             
-            {/* Rating Section */}
             <div className="rating-section">
               <div className="stars-wrapper">{renderStars(product.rating)}</div>
               <span className="rating-number">{product.rating}</span>
             </div>
 
-            {/* ===== PRICE - NO DISCOUNT ===== */}
             <div className="product-price-wrapper">
               <div className="product-price-row">
                 <span className="product-price discounted-price">
@@ -242,9 +271,8 @@ const ProductDetails = () => {
               </div>
             </div>
 
-            {/* ===== BEAUTIFUL NOTES DISPLAY ===== */}
+            {/* Notes Display */}
             <div className="notes-display">
-              {/* Top Notes */}
               <div className="note-category">
                 <h3 className="note-category-title">Top Notes 🍎</h3>
                 <div className="note-tags">
@@ -254,7 +282,6 @@ const ProductDetails = () => {
                 </div>
               </div>
 
-              {/* Heart Notes */}
               <div className="note-category">
                 <h3 className="note-category-title">Middle Notes 🌸</h3>
                 <div className="note-tags">
@@ -264,7 +291,6 @@ const ProductDetails = () => {
                 </div>
               </div>
 
-              {/* Base Notes */}
               <div className="note-category">
                 <h3 className="note-category-title">Base Notes 💎</h3>
                 <div className="note-tags">
@@ -274,21 +300,19 @@ const ProductDetails = () => {
                 </div>
               </div>
 
-              {/* Longevity */}
               <div className="note-longevity">
                 <span className="longevity-label">LONGEVITY</span>
                 <span className="longevity-value">{longevity}</span>
               </div>
             </div>
 
-            {/* ===== DESCRIPTION ===== */}
+            {/* Description */}
             <div className="product-info-centered">
               <div className="info-section">
                 <h3 className="info-section-title">Description</h3>
                 <p className="info-section-content">{description}</p>
               </div>
 
-              {/* Quantity & Add to Cart */}
               {product.inStock && (
                 <div className="add-to-cart-section">
                   <div className="quantity-selector">
@@ -316,7 +340,7 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        {/* ===== CUSTOMER REVIEWS SECTION ===== */}
+        {/* Reviews */}
         <div className="reviews-wrapper">
           <Reviews productId={product._id} productName={product.name} />
         </div>
