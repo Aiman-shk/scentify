@@ -68,6 +68,21 @@ const products = [
     numReviews: 189,
   },
  
+{
+    name: "9",
+    brand: "Scentify",
+    // ===== CATEGORY REMOVED =====
+    gender: "Unisex",
+    price: 1800,
+    description: "Exotic blend of rose, oud, and incense. Transport yourself to the Middle East.",
+    image: "/images/midnight1.jpg",
+    inStock: true,
+    rating: 4.9,
+    numReviews: 189,
+  }
+ 
+
+
 ];
 
 const importData = async () => {
