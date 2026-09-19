@@ -9,6 +9,15 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // ===== CATEGORY REMOVED =====
+  // category: {
+  //   type: String,
+  //   required: true,
+  // },
+  gender: {
+    type: String,
+    default: 'Unisex',
+  },
   price: {
     type: Number,
     required: true,
@@ -20,30 +29,6 @@ const productSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-  },
-  image2: {
-    type: String,
-    default: '',
-  },
-  topNotes: {
-    type: String,
-    default: '',
-  },
-  heartNotes: {
-    type: String,
-    default: '',
-  },
-  baseNotes: {
-    type: String,
-    default: '',
-  },
-  longevity: {
-    type: String,
-    default: '',
-  },
-  size: {
-    type: String,
-    default: '50ml',
   },
   inStock: {
     type: Boolean,
@@ -61,7 +46,5 @@ const productSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-// ===== SAFE MODEL REGISTRATION =====
-// Prevents OverwriteModelError by reusing the model if it already exists
-const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
+const Product = mongoose.model('Product', productSchema);
 export default Product;
