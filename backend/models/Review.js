@@ -4,7 +4,8 @@ const reviewSchema = new mongoose.Schema({
   productId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
-    required: true,
+    required: false,
+    default: null,
   },
   userId: {
     type: String,
@@ -12,21 +13,26 @@ const reviewSchema = new mongoose.Schema({
   },
   userName: {
     type: String,
-    required: true,
+    required: false,
+    default: 'Guest User',
+    trim: true,
   },
   rating: {
     type: Number,
-    required: true,
+    required: false,
     min: 1,
     max: 5,
+    default: 5,
   },
   comment: {
     type: String,
-    required: true,
+    required: false,
     trim: true,
+    default: '',
   },
   productName: {
     type: String,
+    default: '',
   },
   verified: {
     type: Boolean,
@@ -38,5 +44,7 @@ const reviewSchema = new mongoose.Schema({
   },
 });
 
-const Review = mongoose.model('Review', reviewSchema);
+// ===== SAFE MODEL REGISTRATION =====
+// This prevents OverwriteModelError by reusing the model if it already exists
+const Review = mongoose.models.Review || mongoose.model('Review', reviewSchema);
 export default Review;

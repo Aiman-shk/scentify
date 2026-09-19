@@ -48,7 +48,6 @@ const orderSchema = new mongoose.Schema({
       required: true,
     },
   },
-  // ========== ADD THE BILLING ADDRESS HERE ==========
   billingAddress: {
     fullName: {
       type: String,
@@ -63,20 +62,17 @@ const orderSchema = new mongoose.Schema({
       type: String,
     },
   },
-  // ====================================================
   paymentMethod: {
     type: String,
     required: true,
     default: 'Cash on Delivery',
   },
-  // ========== ADD THE STATUS FIELD HERE ==========
   status: {
     type: String,
     required: true,
     enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
     default: 'Pending',
   },
-  // ==============================================
   itemsPrice: {
     type: Number,
     required: true,
@@ -111,5 +107,7 @@ const orderSchema = new mongoose.Schema({
   },
 });
 
-const Order = mongoose.model('Order', orderSchema);
+// ===== SAFE MODEL REGISTRATION =====
+// Prevents OverwriteModelError by reusing the model if it already exists
+const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 export default Order;
