@@ -84,7 +84,6 @@ const ProductDetails = () => {
       'First Impression': '/images/firstimpression2.jpg',
       'Dream': '/images/dream2.jpg',
       '9pm': '/images/9pm2.jpg',
-
     };
     return imageMap[productName] || '/images/placeholder2.jpg';
   };
@@ -145,21 +144,33 @@ const ProductDetails = () => {
     }
   };
 
-  // ===== Get product-specific notes =====
-  const productNotes = fragranceNotesData[product?.name] || fragranceNotesData['Signature'];
-  const topNotes = productNotes?.topNotes || [];
-  const heartNotes = productNotes?.heartNotes || [];
-  const baseNotes = productNotes?.baseNotes || [];
-  const longevity = productNotes?.longevity || '07+ Hours';
-  const description = productNotes?.description || product?.description || 'No description available.';
-  // =====================================
+  // ===== Get product-specific notes (DB first, hardcoded fallback) =====
+  const productNotes = fragranceNotesData[product?.name] || null;
 
-  // ===== BUILD THUMBNAILS =====
+  const parseNotes = (dbValue, fallbackArray) => {
+    if (dbValue && String(dbValue).trim() !== '') {
+      return String(dbValue).split(',').map(n => n.trim()).filter(Boolean);
+    }
+    return fallbackArray || [];
+  };
+
+  const topNotes = parseNotes(product?.topNotes, productNotes?.topNotes);
+  const heartNotes = parseNotes(product?.heartNotes, productNotes?.heartNotes);
+  const baseNotes = parseNotes(product?.baseNotes, productNotes?.baseNotes);
+  const longevity = product?.longevity || productNotes?.longevity || '07+ Hours';
+  const description = product?.description || productNotes?.description || 'No description available.';
+  // =====================================================================
+
+  // ===== BUILD THUMBNAILS (DB first for image2) =====
+  const secondImage = (product?.image2 && product.image2.trim() !== '')
+    ? product.image2
+    : getSecondImage(product?.name);
+
   const thumbnails = [
     product?.image || '/images/placeholder.jpg',
-    getSecondImage(product?.name),
+    secondImage,
   ].filter(Boolean);
-  // ============================
+  // ==================================================
 
   if (loading) {
     return (
