@@ -26,7 +26,7 @@ const products = [
     inStock: true,
     rating: 4.7,
     numReviews: 87,
-    isHotSeller: false,
+    isHotSeller: true,
   },
   {
     name: "First Impression",
@@ -77,7 +77,7 @@ const products = [
     inStock: true,
     rating: 4.3,
     numReviews: 203,
-    isHotSeller: false,
+    isHotSeller: true,
   },
   {
     name: "Midnight",
@@ -111,7 +111,7 @@ const products = [
     inStock: true,
     rating: 4.5,
     numReviews: 45,
-    isHotSeller: false,
+    isHotSeller: true,
   },
   {
     name: "9pm",
@@ -128,7 +128,7 @@ const products = [
     inStock: true,
     rating: 4.8,
     numReviews: 156,
-    isHotSeller: false,
+    isHotSeller: true,
   },
 
   // ===== YOUR NEW PRODUCT =====
