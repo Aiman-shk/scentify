@@ -39,7 +39,7 @@ const products = [
     baseNotes: "Amber, Vetiver, Texas Cedar",
     longevity: "10+ Hours",
     size: "50ml",
-    inStock: false,
+    inStock: true,
     rating: 4.5,
     numReviews: 67,
   },
