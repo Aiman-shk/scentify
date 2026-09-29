@@ -127,24 +127,7 @@ const products = [
 
 
  // ===== YOUR NEW PRODUCT =====
-  {
-    name: "Oud and Roses",
-    brand: "Scentify",
-    price: 2500,
-    description: "A majestic blend of rare oud and precious woods with hints of saffron and amber.",
-    image: "/images/Oud and Roses1.jpg",
-    image2: "/images/Oud and Roses2.jpg",
-    topNotes: "Saffron, Bergamot",
-    heartNotes: "Rose, Oud, Jasmine",
-    baseNotes: "Amber, Sandalwood, Musk",
-    longevity: "10+ Hours",
-    size: "50ml",
-    inStock: true,
-    rating: 0,
-    numReviews: 0,
-  },
-
-
+  
 
 
   
