@@ -26,6 +26,7 @@ const products = [
     inStock: true,
     rating: 4.7,
     numReviews: 87,
+    isHotSeller: false,
   },
   {
     name: "First Impression",
@@ -42,6 +43,7 @@ const products = [
     inStock: true,
     rating: 4.5,
     numReviews: 67,
+    isHotSeller: true,   // ✅ HOT SELLER
   },
   {
     name: "Abeeha",
@@ -58,6 +60,7 @@ const products = [
     inStock: true,
     rating: 4.4,
     numReviews: 112,
+    isHotSeller: false,
   },
   {
     name: "Velvet Bloom",
@@ -74,6 +77,7 @@ const products = [
     inStock: true,
     rating: 4.3,
     numReviews: 203,
+    isHotSeller: false,
   },
   {
     name: "Midnight",
@@ -90,6 +94,7 @@ const products = [
     inStock: true,
     rating: 4.9,
     numReviews: 189,
+    isHotSeller: false,  // ❌ NO HOT SELLER
   },
   {
     name: "Dream",
@@ -106,6 +111,7 @@ const products = [
     inStock: true,
     rating: 4.5,
     numReviews: 45,
+    isHotSeller: false,
   },
   {
     name: "9pm",
@@ -122,11 +128,10 @@ const products = [
     inStock: true,
     rating: 4.8,
     numReviews: 156,
+    isHotSeller: false,
   },
 
-
-
- // ===== YOUR NEW PRODUCT =====
+  // ===== YOUR NEW PRODUCT =====
   {
     name: "Oud and Roses",
     brand: "Scentify",
@@ -134,17 +139,16 @@ const products = [
     description: "Impression of oud and roses by Ahmed Al maghribi.",
     image: "/images/Oud and Roses1.jpg",
     image2: "/images/Oud and Roses2.jpg",
-  topNotes: "Turkish rose, Lavender, Lemon, Peony",
-heartNotes: "Sandalwood, White flowers, Frankincense (Olibanum)",
-baseNotes: "Agarwood (Oud), Guaiac wood, Oakmoss, Musk, Amber",
+    topNotes: "Turkish rose, Lavender, Lemon, Peony",
+    heartNotes: "Sandalwood, White flowers, Frankincense (Olibanum)",
+    baseNotes: "Agarwood (Oud), Guaiac wood, Oakmoss, Musk, Amber",
     longevity: "10+ Hours",
     size: "50ml",
     inStock: true,
     rating: 0,
     numReviews: 0,
+    isHotSeller: true,   // ✅ HOT SELLER
   },
-
-
 ];
 
 const importData = async () => {

@@ -46,8 +46,8 @@ const ProductCard = ({ product, index }) => {
     addToCart(product, 1);
   };
 
-  // ===== KEPT: Hot Seller check =====
-  const isHotSeller = product.rating >= 4.7 && product.numReviews > 50;
+  // ===== HOT SELLER: uses isHotSeller field from DB =====
+  const isHotSeller = product.isHotSeller === true;
 
   return (
     <motion.div
@@ -105,7 +105,7 @@ const ProductCard = ({ product, index }) => {
               </div>
             )}
 
-            {/* ===== HOT SELLER BADGE KEPT ===== */}
+            {/* ===== HOT SELLER BADGE ===== */}
             {isHotSeller && (
               <div className="product-badge hot-seller">
                 HOT SELLER

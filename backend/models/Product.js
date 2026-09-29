@@ -56,6 +56,19 @@ const productSchema = new mongoose.Schema({
     type: String,
     default: '50ml',
   },
+  // ===== BADGE FLAGS =====
+  isHotSeller: {
+    type: Boolean,
+    default: false,
+  },
+  isBestSeller: {
+    type: Boolean,
+    default: false,
+  },
+  isNewArrival: {
+    type: Boolean,
+    default: false,
+  },
   // =====================
   inStock: {
     type: Boolean,
