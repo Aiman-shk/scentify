@@ -128,7 +128,7 @@ const products = [
 
  // ===== YOUR NEW PRODUCT =====
   {
-    name: "Royal Oud",
+    name: "Oud and Roses",
     brand: "Scentify",
     price: 3200,
     description: "A majestic blend of rare oud and precious woods with hints of saffron and amber.",

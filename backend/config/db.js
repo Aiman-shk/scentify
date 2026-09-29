@@ -1,24 +1,36 @@
+// 🔧 DNS FIX for Windows — MUST be first
+import dns from 'node:dns';
+dns.setServers(['8.8.8.8', '8.8.4.4']);
+
+// Load .env BEFORE mongoose (so MONGO_URI is available)
+import dotenv from 'dotenv';
+dotenv.config();
+
 import mongoose from 'mongoose';
 
 const connectDB = async () => {
   try {
+    if (!process.env.MONGO_URI) {
+      console.error('❌ MONGO_URI is not defined in .env');
+      process.exit(1);
+    }
+
+    console.log('🔍 Connecting to:', process.env.MONGO_URI.split('@')[1] || 'localhost');
+
     const conn = await mongoose.connect(process.env.MONGO_URI, {
-      // ===== SECURITY OPTIONS =====
-      serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
-      socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-      family: 4, // Use IPv4, skip trying IPv6
-      maxPoolSize: 10, // Maximum number of connections in pool
-      minPoolSize: 2, // Minimum number of connections in pool
-      retryWrites: true, // Retry failed writes
-      retryReads: true, // Retry failed reads
-      // ============================
+      serverSelectionTimeoutMS: 15000,
+      socketTimeoutMS: 45000,
+      family: 4,
+      maxPoolSize: 10,
+      minPoolSize: 2,
+      retryWrites: true,
+      retryReads: true,
     });
     
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     console.log(`📊 Database: ${conn.connection.name}`);
     console.log(`🔌 Connection Pool: ${conn.connection.poolSize}`);
     
-    // Handle connection errors after initial connection
     mongoose.connection.on('error', (err) => {
       console.error('❌ MongoDB connection error:', err);
     });
@@ -31,7 +43,6 @@ const connectDB = async () => {
       console.log('✅ MongoDB reconnected');
     });
 
-    // Graceful shutdown
     process.on('SIGINT', async () => {
       await mongoose.connection.close();
       console.log('✅ MongoDB connection closed through app termination');
@@ -40,7 +51,6 @@ const connectDB = async () => {
 
   } catch (error) {
     console.error(`❌ MongoDB Connection Error: ${error.message}`);
-    // Don't exit immediately, retry logic
     setTimeout(() => {
       console.log('🔄 Retrying MongoDB connection...');
       connectDB();
